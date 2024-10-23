@@ -17,9 +17,9 @@ sub foo ($x) {
     }
 }
 
-my $unit = A->new->disassemble(\&foo);
+my $tree = A->new->disassemble(\&foo);
 
-$unit->walk(top_down => sub ($op) {
+$tree->walk(top_down => sub ($op) {
     say((sprintf '%-80s %20s',
             (sprintf '%8s[%d]%s(%s)%s' =>
                     $op->type,

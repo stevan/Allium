@@ -16,4 +16,10 @@ use Allium::Operation::LISTOP;
 use Allium::Operation::PMOP;
 use Allium::Operation::LOOP;
 
-class Allium::Operations {}
+package Allium::Operations {
+
+    sub build($, $type, %args) {
+        my $class = sprintf 'Allium::Operation::%s' => $type;
+        return $class->new( %args );
+    }
+}

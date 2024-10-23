@@ -6,7 +6,7 @@ use Allium::Optree::Walker::TopDown;
 use Allium::Optree::Walker::BottomUp;
 use Allium::Optree::Walker::ExecOrder;
 
-class A::OP::Unit {
+class Allium::Optree {
     field $root  :param :reader;
     field $start :param :reader;
 
