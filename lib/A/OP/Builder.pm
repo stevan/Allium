@@ -4,8 +4,8 @@ use experimental qw[ class ];
 
 use B ();
 
-use A::OP;
 use A::OP::Unit;
+use Allium::Operations;
 
 class A::OP::Builder {
     field %built;
@@ -24,7 +24,7 @@ class A::OP::Builder {
 
         return $built{ ${$b} } if exists $built{ ${$b} };
 
-        my $class = sprintf 'A::%s' => B::class($b);
+        my $class = sprintf 'Allium::Operation::%s' => B::class($b);
 
         my $is_null = $b->name eq 'null';
         my $name    = $is_null ? substr(B::ppname( $b->targ ), 3) : $b->name;

@@ -2,7 +2,7 @@
 use v5.40;
 use experimental qw[ class ];
 
-class A::OP::Walker::BottomUp :isa(A::OP::Walker) {
+class Allium::Optree::Walker::BottomUp :isa(Allium::Optree::Walker) {
     field $f :param :reader;
 
     method walk_listop ($op) {

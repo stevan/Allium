@@ -16,4 +16,4 @@ use Allium::Operation::LISTOP;
 use Allium::Operation::PMOP;
 use Allium::Operation::LOOP;
 
-class Allium::Operation {}
+class Allium::Operations {}
