@@ -18,17 +18,16 @@ class Allium::InstructionSet::Loader {
                         optional => !!($a->{optional}),
                     );
                 }
-
                 $prototype = Allium::Opcode::Prototype->new( arguments => \@args );
             }
 
-            my $flags = Allium::Opcode::Flags->new(
-                ($c->{flags}
-                    ? (map { ($_ => true) } $c->{flags}->@*)
-                    : ())
+            my $flags = Allium::Flags::Opcode::StaticFlags->new(
+                flags => $c->{static_flags}
             );
 
-            my $private = +{};
+            my $private = Allium::Flags::Opcode::PrivateFlags->new(
+                flags => $c->{private_flags},
+            );
 
             push @opcodes => Allium::Opcode->new(
                 category        => $c->{category},
@@ -36,8 +35,8 @@ class Allium::InstructionSet::Loader {
                 description     => $c->{description},
                 operation_types => $c->{operation_types},
                 prototype       => $prototype,
-                flags           => $flags,
-                private         => $private,
+                static_flags    => $flags,
+                private_flags   => $private,
             );
         }
 

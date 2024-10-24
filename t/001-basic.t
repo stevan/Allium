@@ -19,7 +19,7 @@ sub foo ($x) {
 
 my $tree = A->new->disassemble(\&foo);
 
-$tree->walk(top_down => sub ($op) {
+$tree->walk(bottom_up => sub ($op) {
     say((sprintf '%-80s %20s',
             (sprintf '%8s[%d]%s(%s)%s' =>
                     $op->type,

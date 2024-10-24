@@ -5,6 +5,8 @@ use experimental qw[ class ];
 # TODO: remove this dependency
 use importer 'Path::Tiny' => qw[ path ];
 
+use B::Op_private;
+
 use Allium::InstructionSet::Loader;
 
 class Allium::InstructionSet::Loader::FromPerlCheckout {
@@ -54,27 +56,26 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
         '-' => [ 'FILESTAT_OP',  ], # filestat_op
     );
 
-# Other options are:
-#   needs stack mark                    - m  (OA_MARK)
-#   needs constant folding              - f  (OA_FOLDCONST)
-#   produces a scalar                   - s  (OA_RETSCALAR)
-#   produces an integer                 - i  (unused)
-#   needs a target                      - t  (OA_TARGET)
-#   target can be in a pad              - T  (OA_TARGET|OA_TARGLEX)
-#   has a corresponding integer version - I  (OA_OTHERINT)
-#   make temp copy in list assignment   - d  (OA_DANGEROUS)
-#   uses $_ if no argument given        - u  (OA_DEFGV)
+    #  m | needs stack mark                    | (OA_MARK)
+    #  f | needs constant folding              | (OA_FOLDCONST)
+    #  s | produces a scalar                   | (OA_RETSCALAR)
+    #  i | produces an integer                 | (unused)
+    #  t | needs a target                      | (OA_TARGET)
+    #  T | target can be in a pad              | (OA_TARGET|OA_TARGLEX)
+    #  I | has a corresponding integer version | (OA_OTHERINT)
+    #  d | make temp copy in list assignment   | (OA_DANGEROUS)
+    #  u | uses $_ if no argument given        | (OA_DEFGV)
 
     my %regen_opcode_opflags_map = (
-        m => 'needs_stack_mark',
-        f => 'fold_constants',
-        s => 'always_produces_scalar',
-        t => 'needs_target_scalar',
-        T => 'needs_target_scalar_which_may_be_lexical',
-        i => 'always_produces_integer',
-        I => 'has_corresponding_int_op',
-        d => 'danger_make_temp_copy_in_list_assignment',
-        u => 'defaults_to_topic',
+        m => 'OA_MARK',
+        f => 'OA_FOLDCONST',
+        s => 'OA_RETSCALAR',
+        t => 'OA_TARGET',
+        T => 'OA_TARGET|OA_TARGLEX',
+        i => 'OA_RETINT',
+        I => 'OA_OTHERINT',
+        d => 'OA_DANGEROUS',
+        u => 'OA_DEFGV',
     );
 
     ## ---------------------------------------------------------------------------------------------
@@ -119,11 +120,14 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
 
             $opcodes[$idx]->{description}     = $desc // '';
             $opcodes[$idx]->{operation_types} = $self->parse_opclass($flags);
-            $opcodes[$idx]->{flags}           = $self->parse_flags($flags);
-
-            next unless $args;
-            $opcodes[$idx]->{prototype} = $self->parse_args($args);
+            $opcodes[$idx]->{static_flags}    = $self->parse_flags($flags);
+            $opcodes[$idx]->{prototype}       = $self->parse_args($args // '');
+            $opcodes[$idx]->{private_flags}   = $self->extract_private_flags($name);
         }
+    }
+
+    method extract_private_flags ($name) {
+        return $B::Op_private::bits{$name} // +{}
     }
 
     method parse_flags ($flags) {

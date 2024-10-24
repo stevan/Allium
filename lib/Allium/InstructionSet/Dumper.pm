@@ -17,8 +17,8 @@ class Allium::InstructionSet::Dumper {
             description     => $opcode->description,
             operation_types => $opcode->operation_types,
             prototype       => $self->dump_prototype($opcode->prototype),
-            flags           => $self->dump_flags($opcode->flags),
-            private         => $self->dump_private($opcode->private),
+            static_flags    => $self->dump_static_flags($opcode->static_flags),
+            private_flags   => $self->dump_private_flags($opcode->private_flags),
         }
     }
 
@@ -34,11 +34,11 @@ class Allium::InstructionSet::Dumper {
         };
     }
 
-    method dump_flags ($flags) {
-        return +{ $flags->get_flags_as_hash };
+    method dump_static_flags ($flags) {
+        return $flags->as_ARRAY;
     }
 
-    method dump_private ($private) {
-        return +{};
+    method dump_private_flags ($private) {
+        return $private->as_HASH;
     }
 }
