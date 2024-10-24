@@ -19,20 +19,20 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
     ## ---------------------------------------------------------------------------------------------
 
     my %regen_opcode_arg_types = (
-        'S'     => 'SCALAR',
-        'S<'    => 'NUMERIC',
-        'S|'    => 'BINARY',
-        'C'     => 'CODE',
-        'A'     => 'ARRAY',
-        'H'     => 'HASH',
-        'R'     => 'REF',
-        'L'     => 'LIST',
+        'S'     => 'Scalar',
+        'S<'    => 'Numeric',
+        'S|'    => 'Binary',
+        'C'     => 'Code',
+        'A'     => 'Array',
+        'H'     => 'Hash',
+        'R'     => 'Ref',
+        'L'     => 'List',
     # not really needed right now ...
-        'Fs'    => 'SOCKET',
-        'F-'    => 'FILETEST',
-        'DF'    => 'DIR',
-        'F'     => 'FILE',
-        'F-+'   => 'FILETEST_ACCESS',
+        'Fs'    => 'Any',
+        'F-'    => 'Any',
+        'DF'    => 'Any',
+        'F'     => 'Any',
+        'F-+'   => 'Any',
     );
 
     my %regen_opcode_opclass_map = (
@@ -53,6 +53,17 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
         '}' => [ 'LOOPEXOP',     ], # loopexop
         '-' => [ 'FILESTAT_OP',  ], # filestat_op
     );
+
+# Other options are:
+#   needs stack mark                    - m  (OA_MARK)
+#   needs constant folding              - f  (OA_FOLDCONST)
+#   produces a scalar                   - s  (OA_RETSCALAR)
+#   produces an integer                 - i  (unused)
+#   needs a target                      - t  (OA_TARGET)
+#   target can be in a pad              - T  (OA_TARGET|OA_TARGLEX)
+#   has a corresponding integer version - I  (OA_OTHERINT)
+#   make temp copy in list assignment   - d  (OA_DANGEROUS)
+#   uses $_ if no argument given        - u  (OA_DEFGV)
 
     my %regen_opcode_opflags_map = (
         m => 'needs_stack_mark',

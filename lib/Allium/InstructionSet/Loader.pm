@@ -13,11 +13,9 @@ class Allium::InstructionSet::Loader {
             if ($c->{signature}) {
                 foreach my ($i, $a) (indexed $c->{signature}->@*) {
                     my $type = $a->{type};
-                    Allium::Opcode::ArgType->can( $type )
-                        || die "Could not find type($type) for arg[$i] for opcode(",$c->{name},")";
 
                     push @signature => Allium::Opcode::Arg->new(
-                        type     => Allium::Opcode::ArgType->$type,
+                        type     => $type,
                         optional => !!($a->{optional}),
                     );
                 }
