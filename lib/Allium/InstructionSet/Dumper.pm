@@ -12,15 +12,18 @@ class Allium::InstructionSet::Dumper {
 
     method dump_opcode ($opcode) {
         return +{
-            name    => $opcode->name,
-            opclass => $opcode->opclass,
-            args    => $self->dump_args($opcode->args),
-            flags   => $self->dump_flags($opcode->flags),
+            category    => $opcode->category,
+            name        => $opcode->name,
+            description => $opcode->description,
+            operation   => $opcode->operation,
+            signature   => $self->dump_signature($opcode->signature),
+            flags       => $self->dump_flags($opcode->flags),
+            private     => $self->dump_private($opcode->private),
         }
     }
 
-    method dump_args ($args) {
-        return +[ map $self->dump_arg($_), @$args ];
+    method dump_signature ($signature) {
+        return +[ map $self->dump_arg($_), @$signature ];
     }
 
     method dump_arg ($args) {
@@ -32,5 +35,9 @@ class Allium::InstructionSet::Dumper {
 
     method dump_flags ($flags) {
         return +{ $flags->get_flags_as_hash };
+    }
+
+    method dump_private ($private) {
+        return +{};
     }
 }

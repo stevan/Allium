@@ -9,6 +9,7 @@ use Allium::InstructionSet::Loader;
 
 class Allium::InstructionSet::Loader::FromPerlCheckout {
     field $perl_checkout :param :reader;
+    field $data_directory :param :reader;
 
     field @opcodes;
     field %name_to_idx;
@@ -19,13 +20,13 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
 
     my %regen_opcode_arg_types = (
         'S'     => 'SCALAR',
-        'H'     => 'HASH',
         'S<'    => 'NUMERIC',
-        'L'     => 'LIST',
+        'S|'    => 'BINARY',
         'C'     => 'CODE',
         'A'     => 'ARRAY',
+        'H'     => 'HASH',
         'R'     => 'REF',
-        'S|'    => 'BINARY',
+        'L'     => 'LIST',
     # not really needed right now ...
         'Fs'    => 'SOCKET',
         'F-'    => 'FILETEST',
@@ -69,9 +70,26 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
 
     method generate {
         my $perl = path($perl_checkout);
+        my $data = path($data_directory);
         $self->parse_opcode_h( $perl->child('opcode.h') );
         $self->parse_regen_opcodes( $perl->child('regen')->child('opcodes') );
+        $self->parse_opcode_categories( $data->child('opcode-categories.csv') );
         return Allium::InstructionSet::Loader->new->load( \@opcodes );
+    }
+
+    ## ---------------------------------------------------------------------------------------------
+
+    method parse_opcode_categories ($file) {
+        my @lines = $file->lines({ chomp => 1 });
+        foreach my $line (@lines) {
+            my ($name, undef, $category) = split ',' => $line;
+
+            my $idx = $name_to_idx{$name};
+
+            defined $idx || die "Could not find ($name) opcode";
+
+            $opcodes[$idx]->{category} = $category;
+        }
     }
 
     ## ---------------------------------------------------------------------------------------------
@@ -86,16 +104,14 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
 
             my $idx = $name_to_idx{$name};
 
-            $opcodes[$idx]->{desc}       = $desc if $desc;
-            $opcodes[$idx]->{opclass}    = $self->parse_opclass($flags);
-            $opcodes[$idx]->{flags}      = $self->parse_flags($flags);
+            defined $idx || die "Could not find ($name) opcode";
+
+            $opcodes[$idx]->{description} = $desc // '';
+            $opcodes[$idx]->{operation}   = $self->parse_opclass($flags);
+            $opcodes[$idx]->{flags}       = $self->parse_flags($flags);
+
             next unless $args;
-            $opcodes[$idx]->{args} = $self->parse_args($args);
-            # For debugging ... ignored by other tools
-            # $opcodes[$idx]->{raw} = +{
-            #     args  => $args,
-            #     flags => $flags,
-            # };
+            $opcodes[$idx]->{signature} = $self->parse_args($args);
         }
     }
 

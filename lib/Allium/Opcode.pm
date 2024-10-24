@@ -7,10 +7,11 @@ use Allium::Opcode::ArgType;
 use Allium::Opcode::Flags;
 
 class Allium::Opcode {
-    field $name    :param :reader;
-    field $opclass :param :reader;
-    field $args    :param :reader;
-    field $flags   :param :reader;
+    field $category    :param :reader;
+    field $name        :param :reader;
+    field $description :param :reader;
+    field $operation   :param :reader;
+    field $signature   :param :reader;
+    field $flags       :param :reader;
+    field $private     :param :reader;
 }
-
-

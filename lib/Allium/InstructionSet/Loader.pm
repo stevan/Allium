@@ -9,13 +9,14 @@ class Allium::InstructionSet::Loader {
         my @opcodes;
         foreach my $c (@$raw) {
 
-            my @args;
-            if ($c->{args}) {
-                foreach my ($i, $a) (indexed $c->{args}->@*) {
+            my @signature;
+            if ($c->{signature}) {
+                foreach my ($i, $a) (indexed $c->{signature}->@*) {
                     my $type = $a->{type};
                     Allium::Opcode::ArgType->can( $type )
                         || die "Could not find type($type) for arg[$i] for opcode(",$c->{name},")";
-                    push @args => Allium::Opcode::Arg->new(
+
+                    push @signature => Allium::Opcode::Arg->new(
                         type     => Allium::Opcode::ArgType->$type,
                         optional => !!($a->{optional}),
                     );
@@ -28,11 +29,16 @@ class Allium::InstructionSet::Loader {
                     : ())
             );
 
+            my $private = +{};
+
             push @opcodes => Allium::Opcode->new(
-                name    => $c->{name},
-                opclass => $c->{opclass},
-                args    => \@args,
-                flags   => $flags,
+                category    => $c->{category},
+                name        => $c->{name},
+                description => $c->{description},
+                operation   => $c->{operation},
+                signature   => \@signature,
+                flags       => $flags,
+                private     => $private,
             );
         }
 

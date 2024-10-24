@@ -23,9 +23,9 @@
 ```json
 {
     // human information
-    "category"  : "Core",
-    "name"      : "warn",
-    "desc"      : "warns something",
+    "category"    : "Core",
+    "name"        : "warn",
+    "description" : "warns something",
 
     // the Operation type(s) this opcode can be
     "operation" : [ "LISTOP" ],

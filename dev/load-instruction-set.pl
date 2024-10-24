@@ -8,9 +8,10 @@ use JSON;
 use Allium::InstructionSet::Loader::FromPerlCheckout;
 use Allium::InstructionSet::Dumper;
 
-sub main ($perl_checkout) {
+sub main ($perl_checkout, $data_directory) {
     my $gen = Allium::InstructionSet::Loader::FromPerlCheckout->new(
-        perl_checkout => $perl_checkout
+        perl_checkout  => $perl_checkout,
+        data_directory => $data_directory,
     );
 
     my $instruction_set = $gen->generate;
