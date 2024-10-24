@@ -29,13 +29,11 @@ class A::OP::Builder {
 
         my $op = Allium::Operations->build(
             B::class($b), (
-                name    => $name,
-                desc    => $b->desc,
-                addr    => ${ $b },
-                type    => B::class($b),
-                # ...
-                is_null         => $is_null,
-                has_descendents => !!($b->flags & B::OPf_KIDS()),
+                name          => $name,
+                addr          => ${ $b },
+                is_nullified  => $is_null,
+                public_flags  => $self->build_public_flags($b),
+                private_flags => $self->build_private_flags($b),
             )
         );
 
@@ -51,5 +49,27 @@ class A::OP::Builder {
         $op->parent = $self->get($b->parent);
 
         return $op;
+    }
+
+    method build_public_flags ($b) {
+        Allium::Flags::Operation::PublicFlags->new( bits => $b->flags,
+            wants_void         => !! (($b->flags & B::OPf_WANT) == B::OPf_WANT_VOID  ),
+            wants_scalar       => !! (($b->flags & B::OPf_WANT) == B::OPf_WANT_SCALAR),
+            wants_list         => !! (($b->flags & B::OPf_WANT) == B::OPf_WANT_LIST  ),
+
+            has_descendents    => !! ($b->flags & B::OPf_KIDS   ),
+            was_parenthesized  => !! ($b->flags & B::OPf_PARENS ),
+            return_container   => !! ($b->flags & B::OPf_REF    ),
+            is_lvalue          => !! ($b->flags & B::OPf_MOD    ),
+            is_mutator_varient => !! ($b->flags & B::OPf_STACKED),
+            is_special         => !! ($b->flags & B::OPf_SPECIAL),
+        )
+    }
+
+    method build_private_flags ($b) {
+        Allium::Flags::Operation::PrivateFlags->new( bits => $b->private,
+            introduces_lexical => !! ($b->private & B::OPpLVAL_INTRO),
+            has_pad_target     => !! ($b->private & B::OPpTARGET_MY),
+        );
     }
 }

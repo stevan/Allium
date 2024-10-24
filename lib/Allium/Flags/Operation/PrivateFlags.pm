@@ -3,11 +3,32 @@
 use v5.40;
 use experimental qw[ class ];
 
+# NOTE:
+# just add flags here when needed
+
 class Allium::Flags::Operation::PrivateFlags {
-    field $b :param :reader;
+    field $bits :param :reader;
 
-    # does this op create a new variable?
-    method is_declaration { !! ($b->private & B::OPpLVAL_INTRO) }
+    field $introduces_lexical :param :reader;
+    field $has_pad_target     :param :reader;
 
-    method has_pad_target { !! ($b->private & B::OPpTARGET_MY) }
+    method to_string (%opts) {
+        my $seperator = $opts{seperator} // ', ';
+        my $verbosity = $opts{verbosity} // 0;
+
+        return join $seperator => (
+            ($introduces_lexical ? '^(l)'  : ()),
+            ($has_pad_target     ? '>(p)' : ()),
+        ) if $verbosity < 0;
+
+        return join $seperator => (
+            ($introduces_lexical ? 'intro(lex)'  : ()),
+            ($has_pad_target     ? 'target(pad)' : ()),
+        ) if $verbosity == 0;
+
+        return join $seperator => (
+            ($introduces_lexical ? 'introduces_lexical' : ()),
+            ($has_pad_target     ? 'has_pad_target'     : ()),
+        ) if $verbosity > 0;
+    }
 }

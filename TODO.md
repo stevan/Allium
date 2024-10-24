@@ -12,3 +12,39 @@
 - Value and Container types
     - B::MOP::Opcode::Value
     - B::MOP::Opcode::Container
+
+
+
+
+<!----------------------------------------------------------------------------->
+## Misc.
+<!----------------------------------------------------------------------------->
+
+Useful Unicode
+```
+╭╮
+╰╯
+┌─┬─┐
+├─┼─┤
+└─┴─┘
+┈ ┊
+
+┄ ┆
+
+╌ ╎
+```
+
+
+Interesting diagram
+```
+      ╭─────────────────────────────╮
+      │                  ╭───╮      │
+      │  ╭───╮           │╭─╮│      │
+      │  ↑   │           │↑ ││      │
+void (*signal(int, void (*fp)(int)))(int);
+ ↑    ↑      │      ↑    ↑  ││      │
+ │    ╰──────╯      │    ╰──╯│      │
+ │                  ╰────────╯      │
+ ╰──────────────────────────────────╯
+```
+(https://tex.stackexchange.com/questions/284791/connecting-vertical-box-drawing-characters)

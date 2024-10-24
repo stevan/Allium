@@ -1,7 +1,9 @@
 #!perl
 
 use v5.40;
+use utf8;
 use experimental qw[ class ];
+use open         qw[ :std :encoding(UTF-8) ];
 
 use Test::More;
 
@@ -14,22 +16,54 @@ sub foo ($x) {
     else {
         my $y = 1300;
         my $z = cos($y + $x);
+        my @test = (1 .. 100);
     }
 }
 
 my $tree = A->new->disassemble(\&foo);
 
-$tree->walk(bottom_up => sub ($op) {
-    say((sprintf '%-80s %20s',
-            (sprintf '%8s[%d]%s(%s)%s' =>
-                    $op->type,
-                    $op->addr,
+=pod
+╭╮
+╰╯
+┌─┬─┐
+├─┼─┤
+└─┴─┘
+┈ ┊
+=cut
+
+sub format_reset               { "\e[0m" }
+sub format_bg_color ($color)   { sprintf "\e[48;2;%d;%d;%d;m" => @$color }
+sub format_fg_color ($color)   { sprintf "\e[38;2;%d;%d;%d;m" => @$color }
+sub format_color    ($fg, $bg) { sprintf "\e[38;2;%d;%d;%d;48;2;%d;%d;%d;m"  => @$fg, @$bg }
+
+sub format_address ($addr) {
+    state %colors;
+    my @rgb = @{ $colors{$addr} //= [ map { (int(rand(64)) * 4) - 1  } qw[ r g b ] ] };
+    sprintf "\e[48;2;%d;%d;%d;m %d \e[0m" => @rgb, $addr;
+}
+
+my @headers = qw[ opcode operation public-flags private-flags next-opcode ];
+my @widths  = (45, 10, 20, 15, 12);
+
+
+say('╭─',('─' x 45),'─┬─',('─' x 10),'─┬─',('─' x 20),'─┬─',('─' x 15),'─┬─',('─' x 12),'─╮',);
+say((sprintf '│ %-45s │ %-10s │ %-20s │ %-15s │ %12s │', @headers));
+say('├─',('─' x 45),'─┼─',('─' x 10),'─┼─',('─' x 20),'─┼─',('─' x 15),'─┼─',('─' x 12),'─┤',);
+
+$tree->walk(top_down => sub ($op) {
+    say('│ ',format_address($op->addr),
+        (sprintf ' ┊ %-30s │ %10s │ %-20s │ %-15s │ ',
+            (sprintf '%s(%s)%s' =>
                     ('  ' x $op->depth),
                     $op->name,
-                    ($op->is_null ? '*' : '')),
-            (sprintf '-> %10s' =>
-                    ($op->next ? $op->next->addr : '(end)'))));
+                    ($op->is_nullified ? '*' : '')),
+            ($op->type),
+            ($op->public_flags->to_string( seperator => ' ', verbosity => -1 )),
+            ($op->private_flags->to_string( seperator => ' ', verbosity => -1 ))),
+        ($op->next ? format_address($op->next->addr) : '    (end)   '),' │',
+    );
 });
 
+say('╰─',('─' x 45),'─┴─',('─' x 10),'─┴─',('─' x 20),'─┴─',('─' x 15),'─┴─',('─' x 12),'─╯',);
 
 done_testing;

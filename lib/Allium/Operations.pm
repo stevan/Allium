@@ -16,6 +16,9 @@ use Allium::Operation::LISTOP;
 use Allium::Operation::PMOP;
 use Allium::Operation::LOOP;
 
+use Allium::Flags::Operation::PublicFlags;
+use Allium::Flags::Operation::PrivateFlags;
+
 package Allium::Operations {
 
     sub build($, $type, %args) {

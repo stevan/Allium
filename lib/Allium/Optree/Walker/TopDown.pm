@@ -5,40 +5,12 @@ use experimental qw[ class ];
 class Allium::Optree::Walker::TopDown :isa(Allium::Optree::Walker) {
     field $f :param :reader;
 
-    method walk_listop ($op) {
-        #say "walk_listop with $op";
+    method walk ($op) {
         $f->($op);
-        for (my $child = $op->first; $child; $child = $child->sibling) {
-            $self->walk($child);
+        if ($op->has_descendents) {
+            for (my $child = $op->first; $child; $child = $child->sibling) {
+                $self->walk($child);
+            }
         }
-    }
-
-    method walk_binop ($op) {
-        #say "walk_binop with $op";
-        $f->($op);
-        $self->walk($op->first) if $op->has_first;
-        $self->walk($op->last)  if $op->has_last;
-    }
-
-    method walk_logop ($op) {
-        #say "walk_logop with $op";
-        $f->($op);
-        for (my $child = $op->first; $child; $child = $child->sibling) {
-            $self->walk($child);
-        }
-    }
-
-    method walk_unop ($op) {
-        #say "walk_unop with $op";
-        $f->($op);
-        $self->walk($op->first) if $op->has_first;
-    }
-
-    method walk_op ($op) {
-        #say "walk_op with $op";
-        $f->($op);
-        $self->walk($op->sibling)
-            if $op->has_descendents
-            && $op->has_sibling;
     }
 }

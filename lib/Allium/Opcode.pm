@@ -2,7 +2,6 @@
 use v5.40;
 use experimental qw[ class ];
 
-
 use Allium::Opcode::Prototype;
 
 use Allium::Flags::Opcode::StaticFlags;
