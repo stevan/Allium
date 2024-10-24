@@ -7,9 +7,11 @@ package Allium::Datatypes {
     ## ---------------------------------------------------------------------------------------------
     ## Containers
     ## ---------------------------------------------------------------------------------------------
-
-    # Containers are what variables hold, they can
-    # contain a Value, and have a Type associated
+    ## Containers are what variables can hold, they can
+    ## contain a Value, and have a Type associated with them.
+    ##
+    ## These map the SV, AV, HV, GV, CV types in perl.
+    ## ---------------------------------------------------------------------------------------------
 
     class Allium::Datatype::Container {}
 
@@ -17,19 +19,20 @@ package Allium::Datatypes {
     class Allium::Datatype::Container::Array   :isa(Allium::Datatype::Container) {}
     class Allium::Datatype::Container::Hash    :isa(Allium::Datatype::Container) {}
     class Allium::Datatype::Container::Glob    :isa(Allium::Datatype::Container) {}
-
-    # NOTE: Code is left out here, because you cannot change the
-    # contents of Code, so it doesn't really fit. And it is not
-    # made from SVs like all the others.
+    class Allium::Datatype::Container::Code    :isa(Allium::Datatype::Container) {}
 
     ## ---------------------------------------------------------------------------------------------
     ## Values
     ## ---------------------------------------------------------------------------------------------
-
-    # Values are actual things that can be stored in a container, and can
-    # be mapped back to some kind of literal value
+    ## Values are actual things that can be stored in a container, and can
+    ## be mapped back to some kind of "literal" value. They all map to some
+    ## Type, but do not hold that type themselves.
+    ##
+    ## These map to the IV, NV, PV, RV things in Perl.
+    ## ---------------------------------------------------------------------------------------------
 
     class Allium::Datatype::Value {}
+
     class Allium::Datatype::Value::Undef    :isa(Allium::Datatype::Value) {}
     class Allium::Datatype::Value::Bool     :isa(Allium::Datatype::Value) {}
     class Allium::Datatype::Value::String   :isa(Allium::Datatype::Value) {}

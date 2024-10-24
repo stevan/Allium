@@ -9,16 +9,17 @@ class Allium::InstructionSet::Loader {
         my @opcodes;
         foreach my $c (@$raw) {
 
-            my @signature;
-            if ($c->{signature}) {
-                foreach my ($i, $a) (indexed $c->{signature}->@*) {
-                    my $type = $a->{type};
-
-                    push @signature => Allium::Opcode::Arg->new(
-                        type     => $type,
+            my $prototype;
+            if ($c->{prototype}) {
+                my @args;
+                foreach my ($i, $a) (indexed $c->{prototype}->@*) {
+                    push @args => Allium::Opcode::Argument->new(
+                        type     => $a->{type},
                         optional => !!($a->{optional}),
                     );
                 }
+
+                $prototype = Allium::Opcode::Prototype->new( arguments => \@args );
             }
 
             my $flags = Allium::Opcode::Flags->new(
@@ -30,13 +31,13 @@ class Allium::InstructionSet::Loader {
             my $private = +{};
 
             push @opcodes => Allium::Opcode->new(
-                category    => $c->{category},
-                name        => $c->{name},
-                description => $c->{description},
-                operation   => $c->{operation},
-                signature   => \@signature,
-                flags       => $flags,
-                private     => $private,
+                category        => $c->{category},
+                name            => $c->{name},
+                description     => $c->{description},
+                operation_types => $c->{operation_types},
+                prototype       => $prototype,
+                flags           => $flags,
+                private         => $private,
             );
         }
 

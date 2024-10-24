@@ -117,12 +117,12 @@ class Allium::InstructionSet::Loader::FromPerlCheckout {
 
             defined $idx || die "Could not find ($name) opcode";
 
-            $opcodes[$idx]->{description} = $desc // '';
-            $opcodes[$idx]->{operation}   = $self->parse_opclass($flags);
-            $opcodes[$idx]->{flags}       = $self->parse_flags($flags);
+            $opcodes[$idx]->{description}     = $desc // '';
+            $opcodes[$idx]->{operation_types} = $self->parse_opclass($flags);
+            $opcodes[$idx]->{flags}           = $self->parse_flags($flags);
 
             next unless $args;
-            $opcodes[$idx]->{signature} = $self->parse_args($args);
+            $opcodes[$idx]->{prototype} = $self->parse_args($args);
         }
     }
 

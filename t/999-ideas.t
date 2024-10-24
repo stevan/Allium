@@ -5,5 +5,6 @@ use experimental qw[ class ];
 
 use Test::More;
 
-
 done_testing;
+
+__END__

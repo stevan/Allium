@@ -15,7 +15,6 @@ sub main ($perl_checkout, $data_directory) {
     );
 
     my $instruction_set = $gen->generate;
-    warn $instruction_set;
 
     my $raw = Allium::InstructionSet::Dumper->new->dump($instruction_set);
 

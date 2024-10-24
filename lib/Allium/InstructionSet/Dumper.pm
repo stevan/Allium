@@ -12,18 +12,19 @@ class Allium::InstructionSet::Dumper {
 
     method dump_opcode ($opcode) {
         return +{
-            category    => $opcode->category,
-            name        => $opcode->name,
-            description => $opcode->description,
-            operation   => $opcode->operation,
-            signature   => $self->dump_signature($opcode->signature),
-            flags       => $self->dump_flags($opcode->flags),
-            private     => $self->dump_private($opcode->private),
+            category        => $opcode->category,
+            name            => $opcode->name,
+            description     => $opcode->description,
+            operation_types => $opcode->operation_types,
+            prototype       => $self->dump_prototype($opcode->prototype),
+            flags           => $self->dump_flags($opcode->flags),
+            private         => $self->dump_private($opcode->private),
         }
     }
 
-    method dump_signature ($signature) {
-        return +[ map $self->dump_arg($_), @$signature ];
+    method dump_prototype ($prototype) {
+        return +[] unless $prototype;
+        return +[ map $self->dump_arg($_), $prototype->arguments->@* ];
     }
 
     method dump_arg ($args) {
