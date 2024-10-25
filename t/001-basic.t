@@ -6,6 +6,7 @@ use experimental qw[ class ];
 use open         qw[ :std :encoding(UTF-8) ];
 
 use Test::More;
+use Test::Differences;
 
 use A;
 
@@ -22,42 +23,14 @@ sub foo ($x) {
 
 my $tree = A->new->disassemble(\&foo);
 
-=pod
-╭╮
-╰╯
-┌─┬─┐
-├─┼─┤
-└─┴─┘
-┈ ┊
-=cut
+my (@top_down, @bottom_up);
+$tree->walk(top_down  => sub ($op) { push @top_down  => $op });
+$tree->walk(bottom_up => sub ($op) { push @bottom_up => $op });
 
-sub format_address ($addr) {
-    state %colors;
-    my @rgb = @{ $colors{$addr} //= [ map { (int(rand(64)) * 4) - 1  } qw[ r g b ] ] };
-    sprintf "\e[48;2;%d;%d;%d;m %d \e[0m" => @rgb, $addr;
-}
-
-my @headers = qw[ opcode operation public-flags private-flags next-opcode ];
-my @widths  = (45, 10, 20, 15, 12);
-
-say('╭─',('─' x 45),'─┬─',('─' x 10),'─┬─',('─' x 20),'─┬─',('─' x 15),'─┬─',('─' x 12),'─╮',);
-say((sprintf '│ %-45s │ %-10s │ %-20s │ %-15s │ %12s │', @headers));
-say('├─',('─' x 45),'─┼─',('─' x 10),'─┼─',('─' x 20),'─┼─',('─' x 15),'─┼─',('─' x 12),'─┤',);
-
-$tree->walk(bottom_up => sub ($op) {
-    say('│ ',format_address($op->addr),
-        (sprintf ' ┊ %-30s │ %10s │ %-20s │ %-15s │ ',
-            (sprintf '%s(%s)%s' =>
-                    ('  ' x $op->depth),
-                    $op->name,
-                    ($op->is_nullified ? '*' : '')),
-            ($op->type),
-            ($op->public_flags->to_string( seperator => ' ', verbosity => -1 )),
-            ($op->private_flags->to_string( seperator => ' ', verbosity => -1 ))),
-        ($op->next ? format_address($op->next->addr) : '    (end)   '),' │',
-    );
-});
-
-say('╰─',('─' x 45),'─┴─',('─' x 10),'─┴─',('─' x 20),'─┴─',('─' x 15),'─┴─',('─' x 12),'─╯',);
+eq_or_diff(
+    [ map $_->addr, @top_down ],
+    [ map $_->addr, reverse @bottom_up ],
+    '... top-down <-> bottom_up works'
+);
 
 done_testing;

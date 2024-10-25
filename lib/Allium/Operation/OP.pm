@@ -34,4 +34,14 @@ class Allium::Operation::OP {
         return 0 unless $parent;
         return 1 + $parent->depth;
     }
+
+    method accept ($v) {
+        my @children;
+        if ($self->has_descendents) {
+            for (my $child = $self->first; $child; $child = $child->sibling) {
+                push @children => $child->accept($v);
+            }
+        }
+        $v->visit($self, @children);
+    }
 }
