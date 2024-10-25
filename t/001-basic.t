@@ -31,11 +31,6 @@ my $tree = A->new->disassemble(\&foo);
 ┈ ┊
 =cut
 
-sub format_reset               { "\e[0m" }
-sub format_bg_color ($color)   { sprintf "\e[48;2;%d;%d;%d;m" => @$color }
-sub format_fg_color ($color)   { sprintf "\e[38;2;%d;%d;%d;m" => @$color }
-sub format_color    ($fg, $bg) { sprintf "\e[38;2;%d;%d;%d;48;2;%d;%d;%d;m"  => @$fg, @$bg }
-
 sub format_address ($addr) {
     state %colors;
     my @rgb = @{ $colors{$addr} //= [ map { (int(rand(64)) * 4) - 1  } qw[ r g b ] ] };
@@ -45,12 +40,11 @@ sub format_address ($addr) {
 my @headers = qw[ opcode operation public-flags private-flags next-opcode ];
 my @widths  = (45, 10, 20, 15, 12);
 
-
 say('╭─',('─' x 45),'─┬─',('─' x 10),'─┬─',('─' x 20),'─┬─',('─' x 15),'─┬─',('─' x 12),'─╮',);
 say((sprintf '│ %-45s │ %-10s │ %-20s │ %-15s │ %12s │', @headers));
 say('├─',('─' x 45),'─┼─',('─' x 10),'─┼─',('─' x 20),'─┼─',('─' x 15),'─┼─',('─' x 12),'─┤',);
 
-$tree->walk(top_down => sub ($op) {
+$tree->walk(bottom_up => sub ($op) {
     say('│ ',format_address($op->addr),
         (sprintf ' ┊ %-30s │ %10s │ %-20s │ %-15s │ ',
             (sprintf '%s(%s)%s' =>
