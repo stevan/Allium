@@ -9,12 +9,13 @@
     - but it has to be represented in Allium too
     - keep it simple, B::MOP is good enough
 
-- Value and Container types
-    - B::MOP::Opcode::Value
-    - B::MOP::Opcode::Container
-
-
-
+- handle the bitflags more elegantly
+    - currently we force them into a very verbose HASH
+        - this is not sustainable (especially for private flags)
+    - would be better to store the bits
+        - and replicate the flags
+    - perhaps the B::Op_private bitdef can be made into an object
+        - and them we can write one to describe the public flags
 
 <!----------------------------------------------------------------------------->
 ## Misc.
