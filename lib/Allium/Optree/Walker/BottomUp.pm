@@ -7,9 +7,11 @@ class Allium::Optree::Walker::BottomUp :isa(Allium::Optree::Walker) {
 
     method walk ($op) {
         if ($op->has_descendents) {
+            my @children;
             for (my $child = $op->first; $child; $child = $child->sibling) {
-                $self->walk($child);
+                push @children => $child;
             }
+            $self->walk($_) foreach reverse @children;
         }
         $f->($op);
     }

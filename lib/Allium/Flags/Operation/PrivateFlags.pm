@@ -9,8 +9,16 @@ use experimental qw[ class ];
 class Allium::Flags::Operation::PrivateFlags {
     field $bits :param :reader;
 
-    field $introduces_lexical :param :reader;
-    field $has_pad_target     :param :reader;
+    field $introduces_lexical :param :reader = false;
+    field $has_pad_target     :param :reader = false;
+
+    method dump_flags {
+        return +{
+            bits => $bits,
+            ($introduces_lexical ? (introduces_lexical => true) : ()),
+            ($has_pad_target     ? (has_pad_target     => true) : ()),
+        }
+    }
 
     method to_string (%opts) {
         my $seperator = $opts{seperator} // ', ';
