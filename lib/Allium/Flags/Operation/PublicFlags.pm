@@ -18,6 +18,9 @@ class Allium::Flags::Operation::PublicFlags {
     field $is_special         :param :reader = false;
 
     method dump_flags {
+        # FIXME: do this better ... we should be able to read
+        # the bits if we want to, but that means we need to
+        # copy those bits into Allium.
         return +{
             bits => $bits,
             ($wants_void         ? (wants_void         => true) : ()),

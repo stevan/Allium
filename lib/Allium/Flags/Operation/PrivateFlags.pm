@@ -13,6 +13,9 @@ class Allium::Flags::Operation::PrivateFlags {
     field $has_pad_target     :param :reader = false;
 
     method dump_flags {
+        # FIXME: do this better ... we should be able to read
+        # the bits if we want to, but that means we need to
+        # copy those bits into Allium.
         return +{
             bits => $bits,
             ($introduces_lexical ? (introduces_lexical => true) : ()),
