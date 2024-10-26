@@ -8,6 +8,8 @@ use Allium::Optree;
 use Allium::Operations;
 
 class A::OP::Builder {
+    field $instruction_set :param :reader;
+
     field %built;
 
     method build ($code) {
@@ -26,9 +28,33 @@ class A::OP::Builder {
 
         my $is_null = $b->name eq 'null';
         my $name    = $is_null ? substr(B::ppname( $b->targ ), 3) : $b->name;
+        my $opcode  = $instruction_set->get($name);
+
+        my $operation = B::class($b);
+
+        # FIXME:
+        # This is all a bit hacky, should be
+        # cleaned up and moved to a method
+        if ($is_null && $name ne 'null') {
+            my @operations = $opcode->operation_types->@*;
+            #say "Checking for type for NULLified op($name) - got($operation) have(".(join ', ' => @operations).")";
+            if ((scalar @operations) == 1) {
+                if ($operation ne $operations[0]) {
+                    #say "($operation) ne (".($operations[0]).")";
+                    $operation = $operations[0];
+                }
+            }
+            else {
+                # NOTE:
+                # this is likely inadequate, but we will see
+                # if it every becomes an issue.
+                die "unable to find a match for ($operation) in (".(join ', ' => @operations).")"
+                    unless scalar grep { $operation eq $_ } @operations;
+            }
+        }
 
         my $op = Allium::Operations->build(
-            B::class($b), (
+            $operation => (
                 name          => $name,
                 addr          => ${ $b },
                 is_nullified  => $is_null,

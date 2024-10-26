@@ -2,9 +2,30 @@
 use v5.40;
 use experimental qw[ class ];
 
+# TODO: remove this dependency
+use importer 'Path::Tiny' => qw[ path ];
+
+use JSON;
 use Allium::InstructionSet;
 
 class Allium::InstructionSet::Loader {
+    field $decoder :param :reader = undef;
+
+    ADJUST {
+        $decoder //= JSON->new;
+    }
+
+    method load_file ($filename) {
+        my $file = path($filename);
+        my $json = $file->slurp;
+        return $self->load_json($json);
+    }
+
+    method load_json ($json) {
+        my $raw = $decoder->decode($json);
+        return $self->load($raw);
+    }
+
     method load ($raw) {
         my @opcodes;
         foreach my $c (@$raw) {

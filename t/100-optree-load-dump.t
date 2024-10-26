@@ -1,9 +1,7 @@
 #!perl
 
 use v5.40;
-use utf8;
 use experimental qw[ class ];
-use open         qw[ :std :encoding(UTF-8) ];
 
 use Test::More;
 use Test::Differences;

@@ -8,8 +8,10 @@ use open         qw[ :std :encoding(UTF-8) ];
 use A;
 
 sub foo {
-    my $x = 0;
-    foreach my $y (0 .. 10) {
+    my $x     = 0;
+    my @array = (1 .. 10);
+
+    foreach my $y (@array) {
         $x += $y;
     }
 }
