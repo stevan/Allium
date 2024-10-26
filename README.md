@@ -150,13 +150,14 @@ for the future.
 
 - Constructing custom instruction sets
     - can be used to limit the set of allowed opcodes, etc.
-- Construction instruction sets for other versions of Perl
+- Constructing instruction sets for different versions of Perl
+    - allowing comparison and change tracking, etc.
 
 ### Optrees
 
 - Load Allium::Optree into `perl` using `B::Generate`
     - Round trip from `perl` to `B` to `Allium` to `B` finally back to `perl`
-    - This should allow us to use `perl` opcodes as a compiler target
+    - This should allow us to use an `Allium` optree as a compiler target
         - and open up the possibility for a new `Perl` parser (see more below)
 
 ### Syntax Trees
@@ -206,6 +207,29 @@ so that signatures do not need to be recompiled every time.
 
 Ususally these are done at the source code level, which may be good enough, but
 this could do it at the opcode level instead. Not terribly sure this is useful.
+
+### Improved Debugger
+
+The `perl` debugger kinda sucks, using this toolset it is possible to make a
+very full featured debugger.
+
+### Code Inspector
+
+Since you have access to all the "compiled" stages of the code (AST, Optree, etc.)
+and they can all be serialized, you can inspect it all without having to run any
+of it. This allows these things to be done at a much larger scale since they
+essentially become offline text processing (with JSON). And using things like
+Hash Consing and Merkle Trees (blame Yuval) this could even be done at a very
+large scale.
+
+- finding duplicated code that has been slightly modified
+    - can be done by matching AST nodes and ignoring variable and function names
+- code complexity counts
+    - this is a simple traversal of the AST and some counters
+- dependency tracing
+    - it would be possible to build the whole graph actually
+
+
 
 
 
