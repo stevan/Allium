@@ -6,29 +6,24 @@ use experimental qw[ class ];
 use Test::More;
 use Test::Differences;
 
-use YAML qw[ Dump ];
-
 use A;
-use Allium::Optree::Dumper;
 
-sub foo {
-    say 10, 20, 30, 40;
+sub foo ($x) {
+    if ($x > 5) {
+        my $y = 1000;
+    }
+    else {
+        my $y = 1300;
+        my $z = cos($y + $x);
+        my @test = (1 .. 100);
+    }
 }
 
-sub pprint ($op) { say($op->addr,('  ' x $op->depth),join ':' => $op->type, $op->name) }
-
-CHECK {
-    my $A    = A->new;
-    my $orig = $A->disassemble(\&foo);
-    $orig->walk(top_down => \&pprint);
-    my $foo2 = $A->assemble($orig);
-    *main::foo2 = $foo2;
+sub pprint ($op) {
+    say($op->addr,'->',('  ' x $op->depth),join ':' => $op->type, $op->name)
 }
 
-say "... foo";
-foo();
-say "... foo2";
-foo2();
-say "... ";
+my $orig = A->new->disassemble(\&foo);
+$orig->walk(top_down => \&pprint);
 
 done_testing;
