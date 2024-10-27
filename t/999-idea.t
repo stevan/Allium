@@ -86,7 +86,6 @@ class Allium::ObjectSpace::ScalarValue :isa(Allium::ObjectSpace::Value) {
     }
 }
 
-
 class Allium::ObjectSpace::ArrayValue :isa(Allium::ObjectSpace::Value) {}
 class Allium::ObjectSpace::HashValue :isa(Allium::ObjectSpace::Value) {}
 class Allium::ObjectSpace::GlobValue :isa(Allium::ObjectSpace::Value) {}
@@ -106,9 +105,7 @@ class Allium::ObjectSpace {
 
     ## ....
 
-    my sub is_valid_scalar_type ($type_name) {
-        $type_name =~ /Null|Boolean|String|Numeric|Float|Integer|Reference/;
-    }
+    my sub is_valid_scalar_type ($type_name) { $type_name =~ /Null|Bool|Str|Num|Int|Ref/ }
 
     ## ....
 
