@@ -2,17 +2,17 @@
 # TODO
 <!----------------------------------------------------------------------------->
 
+- write better README.md
 
+- figure out the "Object Space"
+    - this includes the package/symbol table
+    - native types: Scalar, Array, Hash, etc.
+    - pads, and other stuff
+    - also needs tooling:
+        - loader/dumper for JSON
+        - assembler/disassembler for B/Perl
 
-<!----------------------------------------------------------------------------->
-
-
-- write README.md
-
-- figure out the symbol tables
-    - A::MOP will crawl the Perl
-    - but it has to be represented in Allium too
-    - keep it simple, B::MOP is good enough
+## Operations
 
 - handle the bitflags more elegantly
     - currently we force them into a very verbose HASH
@@ -21,6 +21,12 @@
         - and replicate the flags
     - perhaps the B::Op_private bitdef can be made into an object
         - and them we can write one to describe the public flags
+
+## Runtime
+
+- spend some time reading up on Truffle
+    - https://www.graalvm.org/latest/graalvm-as-a-platform/language-implementation-framework/
+
 
 <!----------------------------------------------------------------------------->
 ## Misc.
