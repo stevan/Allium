@@ -16,6 +16,10 @@ class A {
         $instruction_set = $self->load_default_instruction_set;
     }
 
+    method assemble ($optree) {
+        return A::OP::Builder->new->build($code);
+    }
+
     method disassemble ($code) {
         return A::OP::Builder->new( instruction_set => $instruction_set )->build($code);
     }
