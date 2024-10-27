@@ -19,18 +19,17 @@ class Allium::ObjectSpace::Type {
     }
 }
 
-class Allium::ObjectSpace::Type::Any       :isa(Allium::ObjectSpace::Type) {}
-class Allium::ObjectSpace::Type::Null      :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Boolean   :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::String    :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Numeric   :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Float     :isa(Allium::ObjectSpace::Type::Numeric) {}
-class Allium::ObjectSpace::Type::Integer   :isa(Allium::ObjectSpace::Type::Numeric) {}
-class Allium::ObjectSpace::Type::Reference :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Array     :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Hash      :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Code      :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Glob      :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Any   :isa(Allium::ObjectSpace::Type) {}
+class Allium::ObjectSpace::Type::Null  :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Bool  :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Str   :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Num   :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Int   :isa(Allium::ObjectSpace::Type::Num) {}
+class Allium::ObjectSpace::Type::Ref   :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Array :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Hash  :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Code  :isa(Allium::ObjectSpace::Type::Any) {}
+class Allium::ObjectSpace::Type::Glob  :isa(Allium::ObjectSpace::Type::Any) {}
 
 class Allium::ObjectSpace::TypeVar {
     use overload '""' => 'to_string';
@@ -128,12 +127,11 @@ my $os = Allium::ObjectSpace->new;
 
 my @svs = map { $os->new_scalar_value($_) } qw(
     Null
-    Boolean
-    String
-    Numeric
-    Float
-    Integer
-    Reference
+    Bool
+    Str
+    Num
+    Int
+    Ref
 );
 
 say join "\n" => @svs;
