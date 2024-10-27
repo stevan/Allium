@@ -7,12 +7,12 @@ use B ();
 use Allium::Optree;
 use Allium::Operations;
 
-class A::OP::Builder {
+class A::OP::Disassembler {
     field $instruction_set :param :reader;
 
     field %built;
 
-    method build ($code) {
+    method disassemble ($code) {
         my $cv = B::svref_2object($code);
 
         my $root  = $self->get($cv->ROOT);

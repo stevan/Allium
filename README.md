@@ -132,6 +132,11 @@ is very unrefined.
     - dump/load the optree as JSON
         - retaining all the connections, flags, etc.
 
+- Load Allium::Optree into `perl` using `B::Generate`
+    - Round trip from `perl` to `B` to `Allium` to `B` finally back to `perl`
+    - This should allow us to use an `Allium` optree as a compiler target
+        - and open up the possibility for a new `Perl` parser (see more below)
+
 ### Syntax Trees
 
 - An Allium::Optree can be used to create an Allium::SyntaxTree
@@ -152,13 +157,6 @@ for the future.
     - can be used to limit the set of allowed opcodes, etc.
 - Constructing instruction sets for different versions of Perl
     - allowing comparison and change tracking, etc.
-
-### Optrees
-
-- Load Allium::Optree into `perl` using `B::Generate`
-    - Round trip from `perl` to `B` to `Allium` to `B` finally back to `perl`
-    - This should allow us to use an `Allium` optree as a compiler target
-        - and open up the possibility for a new `Perl` parser (see more below)
 
 ### Syntax Trees
 

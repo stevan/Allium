@@ -5,7 +5,8 @@ use experimental qw[ class ];
 # TODO: remove this dependency
 use importer 'Path::Tiny' => qw[ path ];
 
-use A::OP::Builder;
+use A::OP::Assembler;
+use A::OP::Disassembler;
 
 use Allium::InstructionSet::Loader;
 
@@ -17,11 +18,15 @@ class A {
     }
 
     method assemble ($optree) {
-        return A::OP::Builder->new->build($code);
+        return A::OP::Assembler
+                ->new( instruction_set => $instruction_set )
+                ->assemble($optree);
     }
 
     method disassemble ($code) {
-        return A::OP::Builder->new( instruction_set => $instruction_set )->build($code);
+        return A::OP::Disassembler
+                ->new( instruction_set => $instruction_set )
+                ->disassemble($code);
     }
 
     method load_default_instruction_set {
