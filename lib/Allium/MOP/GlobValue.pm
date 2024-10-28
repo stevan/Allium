@@ -13,12 +13,8 @@ class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
     field $hash   :param = undef;
     field $code   :param = undef;
 
-    field $stash;
-
     ADJUST {
         $self->set_type(Allium::MOP::Value::Type::Glob->new);
-
-        $hash = Allium::MOP::Stash->new if $self->is_namespace;
     }
 
     method is_namespace { !! ($name =~ /\:\:$/) }

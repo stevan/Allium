@@ -9,29 +9,28 @@ use Test::Differences;
 use B;
 use YAML qw[ Dump ];
 
-use Allium::MOP;
 use A::MOP::Disassembler;
 
-my $d = A::MOP::Disassembler->new;
+package Foo {
+    our $BAR = 'bar';
 
-my $mop = $d->disassemble( *main:: );
-isa_ok($mop, 'Allium::MOP');
+    sub foo {
+        say 10, 20, 30, 40;
+    }
 
-#my %arena = $mop->dump_arena->%*;
-#foreach my ($id, $o) (map { $_, $arena{$_} } sort { $a <=> $b } keys %arena) {
-#    say "ID: $id OBJECT: ".$o->to_string;
-#}
-
-sub walk ($glob, $f, $depth=0) {
-    $f->($glob, $depth);
-    foreach my $g ($glob->stash->get_all_namespaces) {
-        walk($g, $f, $depth + 1);
+    sub bar {
+        $BAR
     }
 }
 
-walk($mop->main, sub ($glob, $depth) {
+my $d = A::MOP::Disassembler->new;
+
+my $mop = $d->disassemble( *Foo:: );
+isa_ok($mop, 'Allium::MOP');
+
+$mop->walk(sub ($glob, $depth) {
     say(('    ' x $depth),$glob);
-    foreach my $g ($glob->stash->get_all_globs) {
+    foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_globs) {
         say(('    ' x $depth),'  > ',$g);
     }
 });
