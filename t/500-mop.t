@@ -39,11 +39,18 @@ subtest '... testing autovivify' => sub {
 };
 
 subtest '... testing autovivify' => sub {
-    my $stash = $mop->autovivify('*Foo::Bar::Gorch::');
-    isa_ok($stash, 'Allium::MOP::GlobValue');
+    my $gv_stash = $mop->autovivify('*Foo::Bar::Gorch::');
+    isa_ok($gv_stash, 'Allium::MOP::GlobValue');
 
-    ok($stash->is_namespace, '... we are a namespace');
-    is($stash->name, 'Gorch::', '... got the right name');
+    ok($gv_stash->is_namespace, '... we are a namespace');
+    is($gv_stash->name, 'Gorch::', '... got the right name');
+
+    my $stash = $mop->autovivify('%Foo::Bar::Gorch::');
+    isa_ok($stash, 'Allium::MOP::Stash');
+    isa_ok($stash, 'Allium::MOP::HashValue');
+
+    is(refaddr $stash, refaddr $gv_stash->stash, '... it is the same as the gv->stash');
+    is(refaddr $stash, refaddr $gv_stash->hash, '... it is the same as the gv->hash');
 
     my $gv = $mop->autovivify('*Foo::Bar::Gorch');
     isa_ok($gv, 'Allium::MOP::GlobValue');

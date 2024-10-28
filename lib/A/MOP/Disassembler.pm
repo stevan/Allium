@@ -4,52 +4,62 @@ use experimental qw[ class ];
 
 use B ();
 
+use Allium::MOP;
+
 class A::MOP::Disassembler {
 
     field %seen;
 
-    method walk_namespace ($namespace) {
+    method disassemble ($namespace) {
+        my @symbols = $self->collect_all_symbols($namespace);
+        my $mop = Allium::MOP->new;
+        foreach my $symbol (@symbols) {
+            $mop->autovivify( $symbol );
+        }
+        return $mop;
+    }
+
+    method collect_all_symbols ($namespace) {
         no strict 'refs';
 
         my $ns = \%{ $namespace };
 
         my @symbols;
         foreach my $name ( sort { $a cmp $b } keys %$ns ) {
-            my $symbol = *{ $namespace . B::safename($name) };
+            my $glob = *{ $namespace . B::safename($name) };
 
             if ($name =~ /\:\:$/) {
-                next if exists $seen{ $symbol };
-                $seen{ $symbol }++;
-                push @symbols => $self->walk_namespace( $symbol );
+                next if exists $seen{ $glob };
+                $seen{ $glob }++;
+                push @symbols => $self->collect_all_symbols( $glob );
             }
             else {
-                push @symbols => $self->dump_symbol( $symbol );
+                push @symbols => $self->dump_glob_symbols( $glob );
             }
         }
 
         return @symbols;
     }
 
-    method dump_symbol ($symbol) {
-        my ($namespace, $name) = ($symbol =~ /^\*(.*)\:\:([A-Za-z_][A-Za-z0-9_]+)$/);
+    method dump_glob_symbols ($glob) {
+        my ($namespace, $name) = ($glob =~ /^\*(.*)\:\:([A-Za-z_][A-Za-z0-9_]+)$/);
         unless ($namespace && $name) {
-            ($namespace, $name) = ($symbol =~ /^\*(.*)\:\:(\(.+)$/);
+            ($namespace, $name) = ($glob =~ /^\*(.*)\:\:(\(.+)$/);
         }
 
         unless ($namespace && $name) {
-            die $symbol;
+            die "WTF! -> $glob";
         }
 
         my @symbols;
         foreach my ($sigil, $SLOT) ('$', 'SCALAR', '@', 'ARRAY', '%', 'HASH', '&', 'CODE') {
-            my $slot = *{ $symbol }{ $SLOT };
+            my $slot = *{ $glob }{ $SLOT };
             next unless defined $slot;
             next if $SLOT eq 'SCALAR' && not defined $$slot; # *sigh* Package::Stash flashbacks
             push @symbols => "${sigil}${namespace}::${name}";
         }
 
         return @symbols;
-
     }
 }
 

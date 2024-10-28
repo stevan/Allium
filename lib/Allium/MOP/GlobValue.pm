@@ -17,14 +17,15 @@ class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
 
     ADJUST {
         $self->set_type(Allium::MOP::Value::Type::Glob->new);
+
+        $hash = Allium::MOP::Stash->new if $self->is_namespace;
     }
 
     method is_namespace { !! ($name =~ /\:\:$/) }
-    method has_stash    { !! ($self->stash) }
 
     method stash {
         return unless $self->is_namespace;
-        return $stash //= Allium::MOP::Stash->new;
+        return $hash;
     }
 
     method has_scalar { defined $scalar }
@@ -38,9 +39,6 @@ class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
     method code   :lvalue { $code   }
 
     method to_string {
-        return sprintf '*STASH[%d](%s)={%s}' => $self->OID, $name,
-            (join ', ' => map { '*'.$_ } $self->stash->all_names)
-            if $self->is_namespace;
         return sprintf '*GV[%d](%s)=[%s]' => $self->OID, $name,
             (join ', ' => (
                 ($scalar ? $scalar->to_string : ()),

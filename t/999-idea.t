@@ -14,21 +14,13 @@ use A::MOP::Disassembler;
 
 my $d = A::MOP::Disassembler->new;
 
-my $mop = Allium::MOP->new;
+my $mop = $d->disassemble( *Allium::MOP:: );
 isa_ok($mop, 'Allium::MOP');
 
-my @all = $d->walk_namespace( *Allium::MOP:: );
-
-foreach my $symbol (@all) {
-    $mop->autovivify($symbol);
-}
-
-say Dump \@all;
-
-my %arena = $mop->dump_arena->%*;
-foreach my ($id, $o) (map { $_, $arena{$_} } sort { $a <=> $b } keys %arena) {
-    say "ID: $id OBJECT: ".$o->to_string;
-}
+#my %arena = $mop->dump_arena->%*;
+#foreach my ($id, $o) (map { $_, $arena{$_} } sort { $a <=> $b } keys %arena) {
+#    say "ID: $id OBJECT: ".$o->to_string;
+#}
 
 sub walk ($glob, $f, $depth=0) {
     $f->($glob, $depth);
@@ -47,26 +39,3 @@ walk($mop->main, sub ($glob, $depth) {
 
 done_testing;
 
-
-__END__
-
-sub walksymtable ($namespace, $f, $depth=0) {
-    state %seen;
-    no strict 'refs';
-
-    foreach my $name ( sort { $a cmp $b } keys %{ $namespace } ) {
-        my $symbol = *{ $namespace . B::safename($name) };
-
-        $f->($symbol, $depth);
-
-        if ($name =~ /\:\:$/) {
-            next if exists $seen{ $symbol };
-            $seen{ $symbol }++;
-            walksymtable( $symbol, $f, $depth + 1 );
-        }
-    }
-}
-
-walksymtable( *main:: => sub ($symbol, $depth) {
-    say(('  ' x $depth),join ', ' => $symbol);
-});

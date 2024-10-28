@@ -2,7 +2,7 @@
 use v5.40;
 use experimental qw[ class ];
 
-class Allium::MOP::Stash {
+class Allium::MOP::Stash :isa(Allium::MOP::HashValue) {
     field %namespace :reader;
 
     method all_names { keys %namespace }
@@ -15,4 +15,8 @@ class Allium::MOP::Stash {
     method get ($name) { $namespace{ $name } }
 
     method set ($glob) { $namespace{ $glob->name } = $glob }
+
+    method to_string {
+        sprintf 'STASH[%d]::{%s}' => $self->OID, (join ', ' => keys %namespace);
+    }
 }
