@@ -26,7 +26,7 @@ class Allium::MOP {
 
     my sub decompose_identifier ($identifier) {
         my ($sigil, $name) = ($identifier =~ /^([\$\@\%\&\*]?)(.*)$/);
-        my @parts = grep $_, split /([A-Za-z][A-Za-z0-9]+\:\:)/ => $name;
+        my @parts = grep $_, split /([A-Za-z_][A-Za-z0-9_]+\:\:)/ => $name;
         return $sigil, @parts;
     }
 
