@@ -14,7 +14,7 @@ use A::MOP::Disassembler;
 
 my $d = A::MOP::Disassembler->new;
 
-my $mop = $d->disassemble( *Allium::MOP:: );
+my $mop = $d->disassemble( *main:: );
 isa_ok($mop, 'Allium::MOP');
 
 #my %arena = $mop->dump_arena->%*;

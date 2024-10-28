@@ -17,6 +17,6 @@ class Allium::MOP::Stash :isa(Allium::MOP::HashValue) {
     method set ($glob) { $namespace{ $glob->name } = $glob }
 
     method to_string {
-        sprintf 'STASH[%d]::{%s}' => $self->OID, (join ', ' => keys %namespace);
+        sprintf '^STASH[%d]::{%d}' => $self->OID, (scalar keys %namespace);
     }
 }

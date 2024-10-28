@@ -14,7 +14,9 @@ class A::MOP::Disassembler {
         my @symbols = $self->collect_all_symbols($namespace);
         my $mop = Allium::MOP->new;
         foreach my $symbol (@symbols) {
-            $mop->autovivify( $symbol );
+            my ($name, $value) = %$symbol;
+            $mop->autovivify( $name );
+            #say YAML::Dump( $symbol );
         }
         return $mop;
     }
@@ -42,12 +44,14 @@ class A::MOP::Disassembler {
     }
 
     method dump_glob_symbols ($glob) {
-        my ($namespace, $name) = ($glob =~ /^\*(.*)\:\:([A-Za-z_][A-Za-z0-9_]+)$/);
-        unless ($namespace && $name) {
-            ($namespace, $name) = ($glob =~ /^\*(.*)\:\:(\(.+)$/);
+        my ($namespace, $name) = ($glob =~ /^\*(.*)\:\:([A-Za-z_][A-Za-z0-9_]*)$/);
+
+        # overloading ...
+        unless (defined $namespace && defined $name) {
+            ($namespace, $name) = ($glob =~ /^\*(.*)\:\:([^A-Za-z].*)$/);
         }
 
-        unless ($namespace && $name) {
+        unless (defined $namespace && defined $name) {
             die "WTF! -> $glob";
         }
 
@@ -56,7 +60,7 @@ class A::MOP::Disassembler {
             my $slot = *{ $glob }{ $SLOT };
             next unless defined $slot;
             next if $SLOT eq 'SCALAR' && not defined $$slot; # *sigh* Package::Stash flashbacks
-            push @symbols => "${sigil}${namespace}::${name}";
+            push @symbols => { "${sigil}${namespace}::${name}" => $slot };
         }
 
         return @symbols;
