@@ -30,6 +30,9 @@ will be an implementation of the ObjectSpace.
 <!----------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------->
 
+- assemblers/disassemblers need to know about global phas
+    - ${^GLOBAL_PHASE}
+
 - write better README.md
 
 - figure out the "Object Space"

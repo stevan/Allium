@@ -16,7 +16,7 @@ class A::MOP::Disassembler {
         foreach my $symbol (@symbols) {
             my ($name, $value) = %$symbol;
             $mop->autovivify( $name );
-            #say YAML::Dump( $symbol );
+            say YAML::Dump( $value );
         }
         return $mop;
     }
