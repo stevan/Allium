@@ -23,11 +23,15 @@ sub foo {
 }
 
 my $orig = A->new->disassemble(\&foo);
+isa_ok($orig, 'Allium::Optree');
 
 my $builder = Allium::SyntaxTree->new( optree => $orig );
+isa_ok($builder, 'Allium::SyntaxTree');
+
 my $root = $builder->build;
+isa_ok($root, 'Allium::SyntaxTree::UnOp');
+is($root->op->name, 'leavesub', '... got the expected root node');
 
-say $JSON->encode($root->to_JSON);
-
+pass $JSON->encode($root->to_JSON);
 
 done_testing;

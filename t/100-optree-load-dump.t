@@ -15,15 +15,15 @@ sub foo {
     my $y = $x + 100;
 }
 
-sub pprint ($op) {
-    say($op->addr,('  ' x $op->depth),join ':' => $op->type, $op->name)
-}
+
 my $orig = A->new->disassemble(\&foo);
-#$orig->walk(top_down => \&pprint);
+isa_ok($orig, 'Allium::Optree');
+
 my $dump1 = Allium::Optree::Dumper->new->dump($orig);
 my $copy  = Allium::Optree::Loader->new->load($dump1);
+isa_ok($copy, 'Allium::Optree');
+
 my $dump2 = Allium::Optree::Dumper->new->dump($copy);
-#$new->walk(top_down => \&pprint);
 
 isa_ok($orig, 'Allium::Optree');
 isa_ok($copy, 'Allium::Optree');

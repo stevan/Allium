@@ -6,147 +6,90 @@ use experimental qw[ class ];
 use Test::More;
 use Test::Differences;
 
-## -------------------------------------------------------------------------------------------------
-
-class Allium::ObjectSpace::Type {
-    field $name    :reader;
-    field @lineage :reader;
-
-    ADJUST {
-        $name    = (split '::' => __CLASS__)[-1];
-        @lineage = mro::get_linear_isa(__CLASS__)->@*;
-        shift @lineage; # shift this class off
-    }
-}
-
-class Allium::ObjectSpace::Type::Any   :isa(Allium::ObjectSpace::Type) {}
-class Allium::ObjectSpace::Type::Null  :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Bool  :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Str   :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Num   :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Int   :isa(Allium::ObjectSpace::Type::Num) {}
-class Allium::ObjectSpace::Type::Ref   :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Array :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Hash  :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Code  :isa(Allium::ObjectSpace::Type::Any) {}
-class Allium::ObjectSpace::Type::Glob  :isa(Allium::ObjectSpace::Type::Any) {}
-
-class Allium::ObjectSpace::TypeVar {
-    use overload '""' => 'to_string';
-
-    field $type :param :reader;
-
-    field $__tid :reader(TID);
-    our $TID_SEQ = 0;
-    ADJUST {
-        $__tid = ++$TID_SEQ;
-    }
-
-    method to_string {
-        sprintf '`T[%d](%s)' => $__tid, $type->name;
-    }
-}
-
-class Allium::ObjectSpace::TypeSpace {
-    field %types;
-    field %vars;
-
-    method get_type ($name) {
-        $types{ $name } //= ('Allium::ObjectSpace::Type::'.$name)->new;
-    }
-
-    method new_type_var ($name) {
-        my $tv = Allium::ObjectSpace::TypeVar->new( type => $self->get_type( $name ) );
-        $vars{ $tv->TID } = $tv;
-        return $tv;
-    }
-}
+use Allium::MOP;
 
 ## -------------------------------------------------------------------------------------------------
 
-class Allium::ObjectSpace::Value {
-    use overload '""' => 'to_string';
+my $mop = Allium::MOP->new;
+isa_ok($mop, 'Allium::MOP');
 
-    field $__oid :reader(OID);
-    our $OID_SEQ = 0;
-    ADJUST {
-        $__oid = ++$OID_SEQ;
-    }
+subtest '... testing autovivify' => sub {
+    my $sv = $mop->autovivify('$Foo::Bar::Baz');
+    isa_ok($sv, 'Allium::MOP::ScalarValue');
+    ok($sv->is_undefined, '... the scalar is undefined');
+    ok(!$sv->is_defined, '... the scalar is undefined');
+};
 
-    method to_string { ... }
-}
+subtest '... testing autovivify' => sub {
+    my $av1 = $mop->autovivify('@Foo::Bar');
+    my $av2 = $mop->autovivify('@Foo::Bar');
 
-## -------------------------------------------------------------------------------------------------
+    isa_ok($av1, 'Allium::MOP::ArrayValue');
+    isa_ok($av2, 'Allium::MOP::ArrayValue');
 
-class Allium::ObjectSpace::ScalarValue :isa(Allium::ObjectSpace::Value) {
-    field $type_var :param :reader;
+    is($av1->OID, $av2->OID, '... these are the same values');
+};
 
-    method to_string {
-        sprintf 'SV[%d]<%s>' => $self->OID, $type_var->type->name;
-    }
-}
+subtest '... testing autovivify' => sub {
+    my $gv = $mop->autovivify('*Foo');
+    isa_ok($gv, 'Allium::MOP::GlobValue');
 
-class Allium::ObjectSpace::ArrayValue :isa(Allium::ObjectSpace::Value) {}
-class Allium::ObjectSpace::HashValue :isa(Allium::ObjectSpace::Value) {}
-class Allium::ObjectSpace::GlobValue :isa(Allium::ObjectSpace::Value) {}
-class Allium::ObjectSpace::CodeValue :isa(Allium::ObjectSpace::Value) {}
+    ok(!$gv->is_namespace, '... we are not a namespace');
+    is($gv->name, 'Foo', '... got the right name');
+};
 
-## -------------------------------------------------------------------------------------------------
+subtest '... testing autovivify' => sub {
+    my $stash = $mop->autovivify('*Foo::Bar::Gorch::');
+    isa_ok($stash, 'Allium::MOP::GlobValue');
 
-class Allium::ObjectSpace {
-    field %arena;
+    ok($stash->is_namespace, '... we are a namespace');
+    is($stash->name, 'Gorch::', '... got the right name');
 
-    field $root_stash;
-    field $type_space;
+    my $gv = $mop->autovivify('*Foo::Bar::Gorch');
+    isa_ok($gv, 'Allium::MOP::GlobValue');
 
-    ADJUST {
-        $type_space = Allium::ObjectSpace::TypeSpace->new;
-    }
+    ok(!$gv->is_namespace, '... we are not a namespace');
+    is($gv->name, 'Gorch', '... got the right name');
 
-    ## ....
+    my $sv = $mop->autovivify('$Foo::Bar::Gorch');
+    isa_ok($sv, 'Allium::MOP::ScalarValue');
+    is($gv->scalar->OID, $sv->OID, '... this is the scalar we expect');
 
-    my sub is_valid_scalar_type ($type_name) { $type_name =~ /Null|Bool|Str|Num|Int|Ref/ }
+    my $av = $mop->autovivify('@Foo::Bar::Gorch');
+    isa_ok($av, 'Allium::MOP::ArrayValue');
+    is($gv->array->OID, $av->OID, '... this is the array we expect');
 
-    ## ....
+    my $hv = $mop->autovivify('%Foo::Bar::Gorch');
+    isa_ok($hv, 'Allium::MOP::HashValue');
+    is($gv->hash->OID, $hv->OID, '... this is the hash we expect');
 
-    method new_scalar_value ($type_name) {
-        is_valid_scalar_type($type_name)
-            || die "Could not create new Scalar Value of type($type_name) is not a valid Scalar type";
-        my $tv = $type_space->new_type_var( $type_name );
-        my $sv = Allium::ObjectSpace::ScalarValue->new( type_var => $tv );
-        $arena{ $sv->OID } = $sv;
-        return $sv;
-    }
-}
+    my $cv = $mop->autovivify('&Foo::Bar::Gorch');
+    isa_ok($cv, 'Allium::MOP::CodeValue');
+    is($gv->code->OID, $cv->OID, '... this is the code we expect');
+    is($cv->glob->OID, $gv->OID, '... check the connected glob');
 
-my $os = Allium::ObjectSpace->new;
+    is($cv->glob->name, 'Gorch', '... got the connected glob name');
+};
 
 
-my @svs = map { $os->new_scalar_value($_) } qw(
-    Null
-    Bool
-    Str
-    Num
-    Int
-    Ref
-);
+#my %arena = $mop->dump_arena->%*;
+#foreach my ($id, $o) (map { $_, $arena{$_} } sort { $a <=> $b } keys %arena) {
+#    say "ID: $id OBJECT: ".$o->to_string;
+#}
+#
+#sub walk ($glob, $f, $depth=0) {
+#    $f->($glob, $depth);
+#    foreach my $g ($glob->stash->get_all_namespaces) {
+#        walk($g, $f, $depth + 1);
+#    }
+#}
+#
+#walk($mop->main, sub ($glob, $depth) {
+#    say(('    ' x $depth),$glob);
+#    foreach my $g ($glob->stash->get_all_globs) {
+#        say(('    ' x $depth),'  > ',$g);
+#    }
+#});
 
-say join "\n" => @svs;
-
-## -------------------------------------------------------------------------------------------------
-
-# sv_undef  => ::Type::Null
-# sv_yes    => ::Type::Boolean
-# sv_no     => ::Type::Boolean
-# IV        => ::Type::Integer
-# NV        => ::Type::Numeric
-# PV        => ::Type::String
-# RV        => ::Type::Reference
-# AV        => ::Type::Array
-# HV        => ::Type::Hash
-# GV        => ::Type::Glob
-# CV        => ::Type::Null
-
-## -------------------------------------------------------------------------------------------------
 
 done_testing;

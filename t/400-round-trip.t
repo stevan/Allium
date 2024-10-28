@@ -25,10 +25,10 @@ CHECK {
     *main::foo2 = $foo2;
 }
 
-say "... foo";
+pass "... we passed CHECK and will try to call foo()";
 foo();
-say "... foo2";
+pass "... foo() still worked, so lets try our foo2()";
 foo2();
-say "... ";
+pass "... foo2() worked, so I guess we did it!";
 
 done_testing;

@@ -3,7 +3,6 @@ use v5.40;
 use experimental qw[ class ];
 
 use Allium::Opcode;
-use Allium::Types;
 
 class Allium::InstructionSet {
     field $opcodes :param :reader;

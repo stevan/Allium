@@ -20,6 +20,7 @@ sub foo ($x) {
 }
 
 my $tree = A->new->disassemble(\&foo);
+isa_ok($tree, 'Allium::Optree');
 
 my (@top_down, @bottom_up);
 $tree->walk(top_down  => sub ($op) { push @top_down  => $op });
