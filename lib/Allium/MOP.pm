@@ -13,6 +13,8 @@ use Allium::MOP::HashValue;
 use Allium::MOP::CodeValue;
 use Allium::MOP::GlobValue;
 
+use Allium::MOP::Symbol;
+
 class Allium::MOP {
     field @arena;
 
@@ -33,40 +35,38 @@ class Allium::MOP {
 
     ## ---------------------------------------------------------------------------------------------
 
-    my sub decompose_identifier ($identifier) {
-        my ($sigil, $name) = ($identifier =~ /^([\$\@\%\&\*]?)(.*)$/);
-        my @parts = grep $_, split /([A-Za-z_][A-Za-z0-9_]+\:\:)/ => $name;
-        return $sigil, @parts;
-    }
+    method new_symbol ($s) { Allium::MOP::Symbol->new( symbol => $s ) }
 
     ## ---------------------------------------------------------------------------------------------
 
-    method lookup ($identifier) {
-        my ($sigil, @parts) = decompose_identifier($identifier);
+    method lookup ($symbol) {
+        $symbol = $self->new_symbol($symbol) unless blessed $symbol;
+
+        my @path = $symbol->path;
 
         my $current = $main;
-        while (@parts) {
-            my $name = shift @parts;
+        while (@path) {
+            my $name = shift @path;
             return unless $current->stash->has( $name );
             $current = $current->stash->get( $name );
         }
 
-        return $current if $sigil eq '*';
+        return $current if $symbol->type eq $symbol->GLOB;
 
-        return $current->scalar if $sigil eq '$';
-        return $current->array  if $sigil eq '@';
-        return $current->hash   if $sigil eq '%';
-        return $current->code   if $sigil eq '&';
+        return $current->scalar if $symbol->type eq $symbol->SCALAR;
+        return $current->array  if $symbol->type eq $symbol->ARRAY;
+        return $current->hash   if $symbol->type eq $symbol->HASH;
+        return $current->code   if $symbol->type eq $symbol->CODE;
     }
 
-    method autovivify ($identifier) {
-        my ($sigil, @parts) = decompose_identifier($identifier);
+    method autovivify ($symbol) {
+        $symbol = $self->new_symbol($symbol) unless blessed $symbol;
 
-        #warn join ", " => $sigil, @parts;
+        my @path = $symbol->path;
 
         my $current = $main;
-        while (@parts) {
-            my $name = shift @parts;
+        while (@path) {
+            my $name = shift @path;
             if ($current->stash->has( $name )) {
                 $current = $current->stash->get( $name );
             }
@@ -75,12 +75,12 @@ class Allium::MOP {
             }
         }
 
-        return $current if $sigil eq '*';
+        return $current if $symbol->type eq $symbol->GLOB;
 
-        return $current->scalar //= $self->allocate_scalar           if $sigil eq '$';
-        return $current->array  //= $self->allocate_array            if $sigil eq '@';
-        return $current->hash   //= $self->allocate_hash             if $sigil eq '%';
-        return $current->code   //= $self->allocate_code( $current ) if $sigil eq '&';
+        return $current->scalar //= $self->allocate_scalar           if $symbol->type eq $symbol->SCALAR;
+        return $current->array  //= $self->allocate_array            if $symbol->type eq $symbol->ARRAY;
+        return $current->hash   //= $self->allocate_hash             if $symbol->type eq $symbol->HASH;
+        return $current->code   //= $self->allocate_code( $current ) if $symbol->type eq $symbol->CODE;
     }
 
     ## ---------------------------------------------------------------------------------------------

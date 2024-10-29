@@ -2,6 +2,40 @@
 # TODO
 <!----------------------------------------------------------------------------->
 
+- Need an `Allium::CompilerUnit` which should ...
+    - be specific to a given package/namespace
+    - it should contain ...
+        - information about when it was compiled
+            - what `Allium::InstructionSet` was used
+            - `perl` version was used
+            - date/time stamp
+            - etc.
+        - a serialized `Allium::MOP`
+            - meaning, all the globs in the stash
+        - a `$DATA` section
+            - an array of serialized compile time perl data
+                - each which is mapped to the OID of the `Allium::MOP::Value` object it belongs to
+        - a `@CODE` section
+            - a set of serialized `Allium::Optree` objects
+                - each which is mapped to the OID of the `Allium::MOP::Value` object it belongs to
+
+
+<!----------------------------------------------------------------------------->
+## B::Concise tricks
+<!----------------------------------------------------------------------------->
+
+Dump a package symbol table, and the %INC keys to see what is loaded
+```
+perl -MO=Concise,-stash=Foo -I t/ -MFoo -E 'BEGIN { say join "\n" => keys %INC }'
+```
+
+Dump all the BEGIN blocks as well as the above
+```
+perl -MO=Concise,-stash=Foo,BEGIN -I t/ -MFoo -E 'BEGIN { say join "\n" => keys %INC }'
+```
+
+<!----------------------------------------------------------------------------->
+
 Steps needed to improve the round-trip-ing process. A side effect of which
 will be an implementation of the ObjectSpace.
 

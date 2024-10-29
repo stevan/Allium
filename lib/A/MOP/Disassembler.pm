@@ -8,17 +8,26 @@ use Allium::MOP;
 
 class A::MOP::Disassembler {
 
-    field %seen;
+    field $mop :reader;
+
+    field %already_crawled;
+
+    ADJUST {
+        $mop = Allium::MOP->new;
+    }
 
     method disassemble ($namespace) {
         my @symbols = $self->collect_all_symbols($namespace);
-        my $mop = Allium::MOP->new;
-        foreach my $symbol (@symbols) {
-            my ($name, $value) = %$symbol;
-            $mop->autovivify( $name );
-            say YAML::Dump( $value );
+
+        my @data;
+        foreach my $pack (@symbols) {
+            my ($symbol, $data) = @$pack;
+
+            my $value = $mop->autovivify( $symbol );
+            push @data => +{ $value->OID, $data };
         }
-        return $mop;
+
+        return \@data, $mop;
     }
 
     method collect_all_symbols ($namespace) {
@@ -31,8 +40,8 @@ class A::MOP::Disassembler {
             my $glob = *{ $namespace . B::safename($name) };
 
             if ($name =~ /\:\:$/) {
-                next if exists $seen{ $glob };
-                $seen{ $glob }++;
+                next if exists $already_crawled{ $glob };
+                $already_crawled{ $glob }++;
                 push @symbols => $self->collect_all_symbols( $glob );
             }
             else {
@@ -44,23 +53,30 @@ class A::MOP::Disassembler {
     }
 
     method dump_glob_symbols ($glob) {
-        my ($namespace, $name) = ($glob =~ /^\*(.*)\:\:([A-Za-z_][A-Za-z0-9_]*)$/);
+        my $symbol = $mop->new_symbol( $glob );
 
-        # overloading ...
-        unless (defined $namespace && defined $name) {
-            ($namespace, $name) = ($glob =~ /^\*(.*)\:\:([^A-Za-z].*)$/);
-        }
-
-        unless (defined $namespace && defined $name) {
-            die "WTF! -> $glob";
-        }
+        #say "FOOO!!!! ", join ", " => $symbol->decompose;
 
         my @symbols;
-        foreach my ($sigil, $SLOT) ('$', 'SCALAR', '@', 'ARRAY', '%', 'HASH', '&', 'CODE') {
+        foreach my ($sigil, $SLOT) (%Allium::MOP::Symbol::SIGIL_TO_SLOT) {
             my $slot = *{ $glob }{ $SLOT };
             next unless defined $slot;
             next if $SLOT eq 'SCALAR' && not defined $$slot; # *sigh* Package::Stash flashbacks
-            push @symbols => { "${sigil}${namespace}::${name}" => $slot };
+            # FIXME:
+            # this ignores variables you declared but
+            # did not set yet, so we need to figure
+            # out how to handle that. In most cases
+            # `perl` will do the right thing anyway,
+            # but we are interested in compile time
+            # data, so need to check.
+            #
+            # NOTE:
+            # Package::Stash will know how to do it ;)
+
+            push @symbols => [
+                $symbol->copy_as($SLOT),
+                ($SLOT eq 'SCALAR' ? $$slot : $slot)
+            ];
         }
 
         return @symbols;

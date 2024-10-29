@@ -12,6 +12,8 @@ use YAML qw[ Dump ];
 use A::MOP::Disassembler;
 
 package Foo {
+    use v5.40;
+
     our $BAR = 'huh?';
     BEGIN { $BAR = 'BAR!!' }
 
@@ -20,15 +22,15 @@ package Foo {
     }
 
     sub bar {
-        $BAR
+        $BAR;
     }
 }
 
-INIT {
+
+CHECK {
     my $d = A::MOP::Disassembler->new;
 
-    my $mop = $d->disassemble( *Foo:: );
-    #isa_ok($mop, 'Allium::MOP');
+    my ($data, $mop) = $d->disassemble( *Foo:: );
 
     $mop->walk(sub ($glob, $depth) {
         say(('    ' x $depth),$glob);
@@ -37,20 +39,9 @@ INIT {
         }
     });
 
-    warn ${^GLOBAL_PHASE};
+    say Dump $data;
+
 }
-
-my $d = A::MOP::Disassembler->new;
-
-my $mop = $d->disassemble( *Foo:: );
-#isa_ok($mop, 'Allium::MOP');
-
-$mop->walk(sub ($glob, $depth) {
-    say(('    ' x $depth),$glob);
-    foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_globs) {
-        say(('    ' x $depth),'  > ',$g);
-    }
-});
 
 
 done_testing;
