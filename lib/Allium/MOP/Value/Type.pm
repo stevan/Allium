@@ -32,3 +32,9 @@ class Allium::MOP::Value::Type::Num   :isa(Allium::MOP::Value::Type::Scalar) {} 
 class Allium::MOP::Value::Type::Str   :isa(Allium::MOP::Value::Type::Scalar) {} # PV
 class Allium::MOP::Value::Type::Ref   :isa(Allium::MOP::Value::Type::Scalar) {} # RV
 
+class Allium::MOP::Value::Type::Ref::Scalar :isa(Allium::MOP::Value::Type::Ref) {} # RV<SV>
+class Allium::MOP::Value::Type::Ref::Array  :isa(Allium::MOP::Value::Type::Ref) {} # RV<AV>
+class Allium::MOP::Value::Type::Ref::Hash   :isa(Allium::MOP::Value::Type::Ref) {} # RV<HV>
+class Allium::MOP::Value::Type::Ref::Code   :isa(Allium::MOP::Value::Type::Ref) {} # RV<CV>
+class Allium::MOP::Value::Type::Ref::Glob   :isa(Allium::MOP::Value::Type::Ref) {} # RV<GV>
+

@@ -21,6 +21,8 @@ class Allium::MOP {
     field $root;
     field $main :reader;
 
+    field %symbol_table;
+
     ADJUST {
         $root = $self->allocate(Allium::MOP::Stash::);
         $main = $root->set( $self->allocate_glob( 'main::' ) );
@@ -35,7 +37,7 @@ class Allium::MOP {
 
     ## ---------------------------------------------------------------------------------------------
 
-    method new_symbol ($s) { Allium::MOP::Symbol->new( symbol => $s ) }
+    method new_symbol ($name) { Allium::MOP::Symbol->new( symbol => $name ) }
 
     ## ---------------------------------------------------------------------------------------------
 
