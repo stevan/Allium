@@ -27,7 +27,7 @@ isa_ok($disassembler, 'A::MOP::Disassembler');
 my $mop = $disassembler->disassemble('Foo::');
 isa_ok($mop, 'Allium::MOP');
 
-my $env = $mop->env;
+my $env = $mop->root_env;
 isa_ok($env, 'Allium::Environment');
 
 $mop->walk(sub ($glob, $depth) {

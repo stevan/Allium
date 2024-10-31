@@ -2,7 +2,7 @@
 use v5.40;
 use experimental qw[ class ];
 
-class Allium::MOP::CodeValue :isa(Allium::MOP::Value) {
+class Allium::MOP::CodeValue :isa(Allium::MOP::Abstract::Bindable) {
     field $optree :param = undef;
     field $glob   :param = undef;
 
@@ -19,6 +19,6 @@ class Allium::MOP::CodeValue :isa(Allium::MOP::Value) {
     method optree :lvalue { $optree }
 
     method to_string {
-        sprintf '&CV[%d](*%s)' => $self->OID, (defined $glob ? $glob->name : '__ANON__');
+        sprintf '&CV[%d](*%s)' => $self->oid, (defined $glob ? $glob->name : '__ANON__');
     }
 }

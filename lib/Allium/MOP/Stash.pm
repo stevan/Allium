@@ -17,6 +17,11 @@ class Allium::MOP::Stash :isa(Allium::MOP::HashValue) {
     method set ($glob) { $namespace{ $glob->name } = $glob }
 
     method to_string {
-        sprintf '^STASH[%d]::{%d}' => $self->OID, (scalar keys %namespace);
+        sprintf '^STASH[%d]::{%d}' => $self->oid, (scalar keys %namespace);
     }
+
+    # YUK: override the Bindable methods from HashValue
+    method has_binding     { die 'Stashes do not support bindings' }
+    method get_binding     { die 'Stashes do not support bindings' }
+    method add_binding ($) { die 'Stashes do not support bindings' }
 }

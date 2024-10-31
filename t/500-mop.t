@@ -27,7 +27,7 @@ subtest '... testing autovivify' => sub {
     isa_ok($av1, 'Allium::MOP::ArrayValue');
     isa_ok($av2, 'Allium::MOP::ArrayValue');
 
-    is($av1->OID, $av2->OID, '... these are the same values');
+    is($av1->oid, $av2->oid, '... these are the same values');
 };
 
 subtest '... testing autovivify' => sub {
@@ -60,20 +60,20 @@ subtest '... testing autovivify' => sub {
 
     my $sv = $mop->autovivify('$Foo::Bar::Gorch');
     isa_ok($sv, 'Allium::MOP::ScalarValue');
-    is($gv->scalar->OID, $sv->OID, '... this is the scalar we expect');
+    is($gv->scalar->oid, $sv->oid, '... this is the scalar we expect');
 
     my $av = $mop->autovivify('@Foo::Bar::Gorch');
     isa_ok($av, 'Allium::MOP::ArrayValue');
-    is($gv->array->OID, $av->OID, '... this is the array we expect');
+    is($gv->array->oid, $av->oid, '... this is the array we expect');
 
     my $hv = $mop->autovivify('%Foo::Bar::Gorch');
     isa_ok($hv, 'Allium::MOP::HashValue');
-    is($gv->hash->OID, $hv->OID, '... this is the hash we expect');
+    is($gv->hash->oid, $hv->oid, '... this is the hash we expect');
 
     my $cv = $mop->autovivify('&Foo::Bar::Gorch');
     isa_ok($cv, 'Allium::MOP::CodeValue');
-    is($gv->code->OID, $cv->OID, '... this is the code we expect');
-    is($cv->glob->OID, $gv->OID, '... check the connected glob');
+    is($gv->code->oid, $cv->oid, '... this is the code we expect');
+    is($cv->glob->oid, $gv->oid, '... check the connected glob');
 
     is($cv->glob->name, 'Gorch', '... got the connected glob name');
 };

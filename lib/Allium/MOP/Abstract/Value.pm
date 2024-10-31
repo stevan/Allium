@@ -2,10 +2,10 @@
 use v5.40;
 use experimental qw[ class ];
 
-class Allium::MOP::Value {
+class Allium::MOP::Abstract::Value {
     use overload '""' => 'to_string';
 
-    field $__oid  :param :reader(OID);
+    field $oid :param :reader;
 
     method to_string { ... }
 }

@@ -4,7 +4,7 @@ use experimental qw[ class ];
 
 use Allium::MOP::Stash;
 
-class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
+class Allium::MOP::GlobValue :isa(Allium::MOP::Abstract::Value) {
     field $name   :param :reader;
 
     field $scalar :param = undef;
@@ -30,7 +30,7 @@ class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
     method code   :lvalue { $code   }
 
     method to_string {
-        return sprintf '*GV[%d](%s)=[%s]' => $self->OID, $name,
+        return sprintf '*GV[%d](%s)=[%s]' => $self->oid, $name,
             (join ', ' => (
                 ($scalar ? $scalar->to_string : ()),
                 ($array  ? $array ->to_string : ()),

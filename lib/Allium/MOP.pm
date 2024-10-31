@@ -19,24 +19,30 @@ class Allium::MOP {
 
     field $root;
     field $main :reader;
-    field $env  :reader;
+    field $root_env  :reader;
 
     field %symbol_table;
 
     ADJUST {
-        $root = $self->allocate(Allium::MOP::Stash::);
-        $main = $root->set( $self->allocate_glob( 'main::' ) );
-        $env  = Allium::Environment->new;
+        $root_env = Allium::Environment->new;
+        $root     = $self->allocate(Allium::MOP::Stash::);
+        $main     = $root->set( $self->allocate_glob( 'main::' ) );
     }
 
     ## ---------------------------------------------------------------------------------------------
 
     method load_environment ($e) {
         foreach my $binding ($e->bindings) {
-            $env->add_binding( $binding );
-            $self->autovivify( $binding->symbol );
+            $self->bind( $binding );
         }
         $self;
+    }
+
+    method bind ($binding) {
+        $root_env->add_binding( $binding );
+        my $val = $self->autovivify( $binding->symbol );
+        $val->add_binding( $binding );
+        return $val;
     }
 
     ## ---------------------------------------------------------------------------------------------
@@ -98,7 +104,7 @@ class Allium::MOP {
 
     method walk_globs ($f) {
         $self->walk(sub ($glob, $depth) {
-            foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_globs) {
+            foreach my $g (sort { $a->oid <=> $b->oid } $glob->stash->get_all_globs) {
                 $f->($g);
             }
         })
@@ -106,7 +112,7 @@ class Allium::MOP {
 
     method walk_namespace ($glob, $f, $depth=0) {
         $f->($glob, $depth);
-        foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_namespaces) {
+        foreach my $g (sort { $a->oid <=> $b->oid } $glob->stash->get_all_namespaces) {
             $self->walk_namespace($g, $f, $depth + 1);
         }
     }
@@ -125,7 +131,7 @@ class Allium::MOP {
 
     method allocate ($class, %args) {
         my $next_OID = next_OID;
-        $arena[ $next_OID ] = $class->new( __oid => $next_OID, %args );
+        $arena[ $next_OID ] = $class->new( oid => $next_OID, %args );
     }
 
     method allocate_scalar {

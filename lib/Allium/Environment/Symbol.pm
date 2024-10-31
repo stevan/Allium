@@ -24,8 +24,8 @@ class Allium::Environment::Symbol {
 
     method sigil;
 
-    method name  :lvalue { $name  }
-    method stash :lvalue { $stash }
+    method name  { $name  }
+    method stash { $stash }
 
     method stash_name { join '' => @$stash }
     method local_name { join '' => $self->sigil, $name }

@@ -4,7 +4,7 @@ use experimental qw[ class ];
 
 use Allium::Type::ValueType;
 
-class Allium::MOP::ScalarValue :isa(Allium::MOP::Value) {
+class Allium::MOP::ScalarValue :isa(Allium::MOP::Abstract::Bindable) {
     field $value_type :param :reader = undef;
 
     ADJUST {
@@ -21,6 +21,6 @@ class Allium::MOP::ScalarValue :isa(Allium::MOP::Value) {
     method is_defined   { ! $self->is_undefined }
 
     method to_string {
-        sprintf '$SV[%d]<%s>' => $self->OID, $value_type->name;
+        sprintf '$SV[%d]<%s>' => $self->oid, $value_type->name;
     }
 }
