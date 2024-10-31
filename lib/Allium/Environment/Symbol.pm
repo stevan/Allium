@@ -3,7 +3,7 @@ use v5.40;
 use experimental qw[ class ];
 
 class Allium::Environment::Symbol {
-    field $name      :param :reader;
+    field $name  :param;
     field $stash :param;
 
     sub parse ($, $string) {
@@ -24,8 +24,10 @@ class Allium::Environment::Symbol {
 
     method sigil;
 
-    method stash { join '' => @$stash }
+    method name  :lvalue { $name  }
+    method stash :lvalue { $stash }
 
+    method stash_name { join '' => @$stash }
     method local_name { join '' => $self->sigil, $name }
     method full_name  { join '' => $self->decompose    }
 

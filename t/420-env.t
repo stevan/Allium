@@ -18,7 +18,7 @@ subtest '... testing scalar symbol' => sub {
 
     is($symbol->sigil, '$', '... got the expected sigil');
     is($symbol->name, 'BAZ', '... got the expected name');
-    is($symbol->stash, 'Foo::Bar::', '... got the expected stash');
+    is($symbol->stash_name, 'Foo::Bar::', '... got the expected stash');
 };
 
 subtest '... testing array symbol' => sub {
@@ -28,7 +28,7 @@ subtest '... testing array symbol' => sub {
 
     is($symbol->sigil, '@', '... got the expected sigil');
     is($symbol->name, 'BAZ', '... got the expected name');
-    is($symbol->stash, 'Foo::Bar::', '... got the expected stash');
+    is($symbol->stash_name, 'Foo::Bar::', '... got the expected stash');
 };
 
 subtest '... testing hash symbol' => sub {
@@ -38,7 +38,7 @@ subtest '... testing hash symbol' => sub {
 
     is($symbol->sigil, '%', '... got the expected sigil');
     is($symbol->name, 'BAZ', '... got the expected name');
-    is($symbol->stash, 'Foo::Bar::', '... got the expected stash');
+    is($symbol->stash_name, 'Foo::Bar::', '... got the expected stash');
 };
 
 subtest '... testing code symbol' => sub {
@@ -48,7 +48,7 @@ subtest '... testing code symbol' => sub {
 
     is($symbol->sigil, '&', '... got the expected sigil');
     is($symbol->name, 'BAZ', '... got the expected name');
-    is($symbol->stash, 'Foo::Bar::', '... got the expected stash');
+    is($symbol->stash_name, 'Foo::Bar::', '... got the expected stash');
 };
 
 subtest '... testing glob symbol' => sub {
@@ -58,7 +58,7 @@ subtest '... testing glob symbol' => sub {
 
     is($symbol->sigil, '*', '... got the expected sigil');
     is($symbol->name, 'BAZ', '... got the expected name');
-    is($symbol->stash, 'Foo::Bar::', '... got the expected stash');
+    is($symbol->stash_name, 'Foo::Bar::', '... got the expected stash');
 };
 
 subtest '... testing glob (stash) symbol' => sub {
@@ -68,7 +68,7 @@ subtest '... testing glob (stash) symbol' => sub {
 
     is($symbol->sigil, '*', '... got the expected sigil');
     is($symbol->name, 'Bar::', '... got the expected name');
-    is($symbol->stash, 'Foo::', '... got the expected stash');
+    is($symbol->stash_name, 'Foo::', '... got the expected stash');
 
     ok($symbol->is_stash, '... this is a stash symbol')
 };
