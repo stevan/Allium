@@ -27,6 +27,9 @@ class Allium::Environment::Symbol {
     method name  { $name  }
     method stash { $stash }
 
+    method rename   ($n) { __CLASS__->new( name => $n,    stash => $stash ) }
+    method relocate ($s) { __CLASS__->new( name => $name, stash => $s     ) }
+
     method stash_name { join '' => @$stash }
     method local_name { join '' => $self->sigil, $name }
     method full_name  { join '' => $self->decompose    }

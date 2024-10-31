@@ -33,34 +33,28 @@ isa_ok($bar, 'Allium::Optree');
 
 my $env = Allium::Environment->new;
 isa_ok($env, 'Allium::Environment');
+$env->bind( $env->parse_symbol('$Foo::BAR'), $env->wrap_literal('BAR!!') );
+$env->bind( $env->parse_symbol('&Foo::foo'), $env->wrap_optree($foo) );
+$env->bind( $env->parse_symbol('&Foo::bar'), $env->wrap_optree($bar) );
 
-my $symbol1 = $env->parse_symbol('$Foo::BAR');
-my $symbol2 = $env->parse_symbol('&Foo::foo');
-my $symbol3 = $env->parse_symbol('&Foo::bar');
+my $new_env = $env->relocate([ 'Bar::' ]);
 
-my $bind1 = $env->bind( $symbol1, $env->wrap_literal('BAR!!') );
-my $bind2 = $env->bind( $symbol2, $env->wrap_optree($foo) );
-my $bind3 = $env->bind( $symbol3, $env->wrap_optree($bar) );
+my @binds = $new_env->bindings;
+isa_ok($_, 'Allium::Environment::Binding') foreach @binds;
 
-isa_ok($bind1, 'Allium::Environment::Binding');
-isa_ok($bind2, 'Allium::Environment::Binding');
-isa_ok($bind3, 'Allium::Environment::Binding');
+my @symbols = map $_->symbol, $env->bindings;
+my @values  = ('BAR!!', $foo, $bar);
 
-my @binds  = ($bind1, $bind2, $bind3);
-my @symbols = ($symbol1, $symbol2, $symbol3);
-my @values = ('BAR!!', $foo, $bar);
-
-my @bindings = $env->bindings;
-is(scalar(@bindings), 3, '... we got 3 bindings');
-
-foreach my ($i, $b) (indexed @bindings) {
+foreach my ($i, $b) (indexed $new_env->bindings) {
     isa_ok($b, 'Allium::Environment::Binding');
     is(refaddr $b, refaddr $binds[$i], '... got the expected binding');
 
     my $symbol = $b->symbol;
     isa_ok($symbol, 'Allium::Environment::Symbol');
 
-    is(refaddr $symbol, refaddr $symbols[$i], '... got the expected symbol');
+    isnt(refaddr $symbol, refaddr $symbols[$i], '... got the expected (not) symbol');
+    is($symbol->name, $symbols[$i]->name, '... got the expected matching symbol name');
+    is($symbol->stash_name, 'Bar::', '... got the expected (new) stash name');
 
     my $value = $b->value;
     isa_ok($value, 'Allium::Environment::Value');

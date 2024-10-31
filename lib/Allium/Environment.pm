@@ -27,20 +27,28 @@ class Allium::Environment {
     ## ---------------------------------------------------------------------------------------------
 
     method bind ($symbol, $value) {
-        $self->add_binding(
-            Allium::Environment::Binding->new(
-                symbol => $symbol,
-                value  => $value,
-            )
-        )
-    }
-
-    method add_binding ($binding) {
-        push @bindings => $binding;
+        my $binding = Allium::Environment::Binding->new(
+            symbol => $symbol,
+            value  => $value,
+        );
+        $self->add_bindings( $binding );
         return $binding;
     }
 
+    method add_bindings (@binds) {
+        push @bindings => @binds;
+        return $self;
+    }
+
     ## ---------------------------------------------------------------------------------------------
+
+    method relocate ($new_stash) {
+        Allium::Environment->new->add_bindings(
+            map {
+                $_->copy( symbol => $_->symbol->relocate($new_stash) )
+            } @bindings
+        );
+    }
 }
 
 
