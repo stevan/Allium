@@ -2,6 +2,19 @@
 # TODO
 <!----------------------------------------------------------------------------->
 
+- Handle the special numeric strings for Perl
+    - +inf, -inf, nan
+    - and their numerical equivalents
+        - perl -E 'say 1e9999'         # Int
+        - perl -E 'say -1e9999'        # -Inf
+        - perl -E 'say 1e9999/-1e9999' # NaN
+    - and how does B see them??
+
+
+- Type Inference explained
+    - https://bernsteinbear.com/blog/type-inference/
+
+
 - Need an `Allium::CompilerUnit` which should ...
     - be specific to a given package/namespace
     - it should contain ...

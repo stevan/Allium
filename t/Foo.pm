@@ -1,5 +1,6 @@
+use v5.40;
+
 package Foo {
-    use v5.40;
 
     our $BAR = 'huh?';
     BEGIN { $BAR = 'BAR!!' }

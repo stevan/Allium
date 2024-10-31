@@ -3,7 +3,6 @@ use v5.40;
 use experimental qw[ class ];
 
 use Allium::MOP::Stash;
-use Allium::MOP::Value::Type;
 
 class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
     field $name   :param :reader;
@@ -12,10 +11,6 @@ class Allium::MOP::GlobValue :isa(Allium::MOP::Value) {
     field $array  :param = undef;
     field $hash   :param = undef;
     field $code   :param = undef;
-
-    ADJUST {
-        $self->set_type(Allium::MOP::Value::Type::Glob->new);
-    }
 
     method is_namespace { !! ($name =~ /\:\:$/) }
 

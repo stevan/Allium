@@ -5,15 +5,14 @@ use experimental qw[ class ];
 use Allium::MOP::Stash;
 use Allium::MOP::Pad;
 
-use Allium::MOP::Value::Type;
-
 use Allium::MOP::ScalarValue;
 use Allium::MOP::ArrayValue;
 use Allium::MOP::HashValue;
 use Allium::MOP::CodeValue;
 use Allium::MOP::GlobValue;
 
-use Allium::MOP::Symbol;
+use Allium::Environment;
+use Allium::Environment::Symbol;
 
 class Allium::MOP {
     field @arena;
@@ -30,21 +29,10 @@ class Allium::MOP {
 
     ## ---------------------------------------------------------------------------------------------
 
-    our $OID_SEQ = 0;
-
-    my sub next_OID { ++$OID_SEQ }
-    my sub last_OID {   $OID_SEQ }
-
-    ## ---------------------------------------------------------------------------------------------
-
-    method new_symbol ($name) { Allium::MOP::Symbol->new( symbol => $name ) }
-
-    ## ---------------------------------------------------------------------------------------------
-
     method lookup ($symbol) {
-        $symbol = $self->new_symbol($symbol) unless blessed $symbol;
+        $symbol = Allium::Environment::Symbol->parse($symbol) unless blessed $symbol;
 
-        my @path = $symbol->path;
+        my ($sigil, @path) = $symbol->decompose;
 
         my $current = $main;
         while (@path) {
@@ -53,18 +41,17 @@ class Allium::MOP {
             $current = $current->stash->get( $name );
         }
 
-        return $current if $symbol->type eq $symbol->GLOB;
-
-        return $current->scalar if $symbol->type eq $symbol->SCALAR;
-        return $current->array  if $symbol->type eq $symbol->ARRAY;
-        return $current->hash   if $symbol->type eq $symbol->HASH;
-        return $current->code   if $symbol->type eq $symbol->CODE;
+        return $current         if $symbol isa Allium::Environment::Symbol::Glob;
+        return $current->scalar if $symbol isa Allium::Environment::Symbol::Scalar;
+        return $current->array  if $symbol isa Allium::Environment::Symbol::Array;
+        return $current->hash   if $symbol isa Allium::Environment::Symbol::Hash;
+        return $current->code   if $symbol isa Allium::Environment::Symbol::Code;
     }
 
     method autovivify ($symbol) {
-        $symbol = $self->new_symbol($symbol) unless blessed $symbol;
+        $symbol = Allium::Environment::Symbol->parse($symbol) unless blessed $symbol;
 
-        my @path = $symbol->path;
+        my ($sigil, @path) = $symbol->decompose;
 
         my $current = $main;
         while (@path) {
@@ -77,13 +64,19 @@ class Allium::MOP {
             }
         }
 
-        return $current if $symbol->type eq $symbol->GLOB;
-
-        return $current->scalar //= $self->allocate_scalar           if $symbol->type eq $symbol->SCALAR;
-        return $current->array  //= $self->allocate_array            if $symbol->type eq $symbol->ARRAY;
-        return $current->hash   //= $self->allocate_hash             if $symbol->type eq $symbol->HASH;
-        return $current->code   //= $self->allocate_code( $current ) if $symbol->type eq $symbol->CODE;
+        return $current                                              if $symbol isa Allium::Environment::Symbol::Glob;
+        return $current->scalar //= $self->allocate_scalar           if $symbol isa Allium::Environment::Symbol::Scalar;
+        return $current->array  //= $self->allocate_array            if $symbol isa Allium::Environment::Symbol::Array;
+        return $current->hash   //= $self->allocate_hash             if $symbol isa Allium::Environment::Symbol::Hash;
+        return $current->code   //= $self->allocate_code( $current ) if $symbol isa Allium::Environment::Symbol::Code;
     }
+
+    ## ---------------------------------------------------------------------------------------------
+
+    our $OID_SEQ = 0;
+
+    my sub next_OID { ++$OID_SEQ }
+    my sub last_OID {   $OID_SEQ }
 
     ## ---------------------------------------------------------------------------------------------
 
