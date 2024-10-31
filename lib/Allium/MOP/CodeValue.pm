@@ -19,6 +19,9 @@ class Allium::MOP::CodeValue :isa(Allium::MOP::Abstract::Bindable) {
     method optree :lvalue { $optree }
 
     method to_string {
-        sprintf '&CV[%d](*%s)' => $self->oid, (defined $glob ? $glob->name : '__ANON__');
+        my $name = defined $glob ? $glob->name : '__ANON__';
+        return sprintf '&CV[%d](*%s):=%s' => $self->oid, $name, $self->get_binding->value
+            if $self->has_binding;
+        return sprintf '&CV[%d](*%s)' => $self->oid, $name;
     }
 }

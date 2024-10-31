@@ -21,6 +21,8 @@ class Allium::MOP::ScalarValue :isa(Allium::MOP::Abstract::Bindable) {
     method is_defined   { ! $self->is_undefined }
 
     method to_string {
-        sprintf '$SV[%d]<%s>' => $self->oid, $value_type->name;
+        return sprintf '$SV[%d]<%s>:=%s' => $self->oid, $value_type->name, $self->get_binding->value
+            if $self->has_binding;
+        return sprintf '$SV[%d]<%s>' => $self->oid, $value_type->name;
     }
 }

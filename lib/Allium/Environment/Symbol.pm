@@ -22,7 +22,7 @@ class Allium::Environment::Symbol {
         die "Unknown Sigil ($sigil)";
     }
 
-    method sigil;
+    method sigil { ... }
 
     method name  { $name  }
     method stash { $stash }
