@@ -42,6 +42,12 @@ class Allium::MOP::Symbol {
 
     method equal_to ($s) { $s->symbol eq $symbol }
 
+    # TODO:
+    # add more methods here to navigate the symbol
+    # table, such as as_scalar, as_hash, etc. as
+    # well as as_parent_glob, to navigate upwards
+    # in the tree.
+
     method copy_as ($type) {
         Allium::MOP::Symbol->new( symbol => join '', $SLOT_TO_SIGIL{ $type }, @path )
     }

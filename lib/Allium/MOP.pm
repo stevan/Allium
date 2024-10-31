@@ -91,6 +91,14 @@ class Allium::MOP {
         $self->walk_namespace($main, $f, $depth);
     }
 
+    method walk_globs ($f) {
+        $self->walk(sub ($glob, $depth) {
+            foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_globs) {
+                $f->($g);
+            }
+        })
+    }
+
     method walk_namespace ($glob, $f, $depth=0) {
         $f->($glob, $depth);
         foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_namespaces) {

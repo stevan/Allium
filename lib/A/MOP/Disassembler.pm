@@ -19,15 +19,11 @@ class A::MOP::Disassembler {
     method disassemble ($namespace) {
         my @symbols = $self->collect_all_symbols($namespace);
 
-        my @data;
-        foreach my $pack (@symbols) {
-            my ($symbol, $data) = @$pack;
-
-            my $value = $mop->autovivify( $symbol );
-            push @data => +{ $value->OID, $data };
+        foreach my $symbol (@symbols) {
+            $mop->autovivify( $symbol );
         }
 
-        return \@data, $mop;
+        return $mop;
     }
 
     method collect_all_symbols ($namespace) {
@@ -55,8 +51,6 @@ class A::MOP::Disassembler {
     method dump_glob_symbols ($glob) {
         my $symbol = $mop->new_symbol( $glob );
 
-        #say "FOOO!!!! ", join ", " => $symbol->decompose;
-
         my @symbols;
         foreach my ($sigil, $SLOT) (%Allium::MOP::Symbol::SIGIL_TO_SLOT) {
             my $slot = *{ $glob }{ $SLOT };
@@ -73,10 +67,7 @@ class A::MOP::Disassembler {
             # NOTE:
             # Package::Stash will know how to do it ;)
 
-            push @symbols => [
-                $symbol->copy_as($SLOT),
-                ($SLOT eq 'SCALAR' ? $$slot : $slot)
-            ];
+            push @symbols => $symbol->copy_as($SLOT),
         }
 
         return @symbols;

@@ -12,10 +12,7 @@ use YAML qw[ Dump ];
 use A::MOP::Disassembler;
 
 package Foo {
-    use v5.40;
-
-    our $BAR = 'huh?';
-    BEGIN { $BAR = 'BAR!!' }
+    our $BAR = 'BAZ!';
 
     sub foo {
         say 10, 20, 30, 40;
@@ -30,16 +27,17 @@ package Foo {
 CHECK {
     my $d = A::MOP::Disassembler->new;
 
-    my ($data, $mop) = $d->disassemble( *Foo:: );
+    my $mop = $d->disassemble( *Foo:: );
 
-    $mop->walk(sub ($glob, $depth) {
-        say(('    ' x $depth),$glob);
-        foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_globs) {
-            say(('    ' x $depth),'  > ',$g);
-        }
-    });
+    #$mop->walk(sub ($glob, $depth) {
+    #    say(('    ' x $depth),$glob);
+    #    foreach my $g (sort { $a->OID <=> $b->OID } $glob->stash->get_all_globs) {
+    #        say(('    ' x $depth),'  > ',$g);
+    #    }
+    #});
 
-    say Dump $data;
+    $mop->walk_globs(sub ($glob) { say $glob });
+
 
 }
 
