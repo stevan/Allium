@@ -9,7 +9,7 @@ class Allium::Environment::Value {
 
 class Allium::Environment::Value::Literal :isa(Allium::Environment::Value) {
     field $literal :param :reader;
-    method to_string { quotemeta("".$literal) }
+    method to_string { '`'.quotemeta($literal).'`' }
 }
 
 class Allium::Environment::Value::Optree :isa(Allium::Environment::Value) {

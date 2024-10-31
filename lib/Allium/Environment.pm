@@ -31,9 +31,11 @@ class Allium::Environment {
             symbol => $symbol,
             value  => $value,
         );
-        $self->add_bindings( $binding );
+        $self->add_binding( $binding );
         return $binding;
     }
+
+    method add_binding ($binding) { $self->add_bindings($binding) }
 
     method add_bindings (@binds) {
         push @bindings => @binds;
