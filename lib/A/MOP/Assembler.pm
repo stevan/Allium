@@ -6,4 +6,10 @@ use B ();
 
 class A::MOP::Assembler {
     field $op_assembler :param :reader;
+
+    method assemble ($mop) {
+        return false;
+
+        return true;
+    }
 }
