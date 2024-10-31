@@ -4,7 +4,7 @@ use experimental qw[ class ];
 
 class Allium::Environment::Symbol {
     field $name      :param :reader;
-    field $namespace :param;
+    field $stash :param;
 
     sub parse ($, $string) {
         my ($sigil, @path) = grep $_, split /(\$|\@|\%|\&|\*|[A-Za-z][A-Za-z0-9]+\:\:)/ => $string;
@@ -12,7 +12,7 @@ class Allium::Environment::Symbol {
             unless $sigil && @path;
 
         my $name = pop @path;
-        my %args = ( name => $name, namespace => \@path );
+        my %args = ( name => $name, stash => \@path );
         return Allium::Environment::Symbol::Scalar ->new( %args ) if $sigil eq '$';
         return Allium::Environment::Symbol::Array  ->new( %args ) if $sigil eq '@';
         return Allium::Environment::Symbol::Hash   ->new( %args ) if $sigil eq '%';
@@ -24,12 +24,12 @@ class Allium::Environment::Symbol {
 
     method sigil;
 
-    method namespace { join '' => @$namespace }
+    method stash { join '' => @$stash }
 
     method local_name { join '' => $self->sigil, $name }
     method full_name  { join '' => $self->decompose    }
 
-    method decompose { $self->sigil, @$namespace, $name }
+    method decompose { $self->sigil, @$stash, $name }
 
     method is_same_as ($symbol) {
         $self->full_name eq $symbol->full_name
