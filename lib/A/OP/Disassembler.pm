@@ -13,6 +13,8 @@ class A::OP::Disassembler {
     field %built;
 
     method disassemble ($code) {
+        %built = (); # clear any previous cache
+
         my $cv = B::svref_2object($code);
 
         my $root  = $self->get($cv->ROOT);

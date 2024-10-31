@@ -22,7 +22,7 @@ sub foo {
     }
 }
 
-my $orig = A->new->disassemble(\&foo);
+my $orig = A->new->op_disassembler->disassemble(\&foo);
 isa_ok($orig, 'Allium::Optree');
 
 my $builder = Allium::SyntaxTree->new( optree => $orig );

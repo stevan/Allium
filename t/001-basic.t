@@ -19,7 +19,7 @@ sub foo ($x) {
     }
 }
 
-my $tree = A->new->disassemble(\&foo);
+my $tree = A->new->op_disassembler->disassemble(\&foo);
 isa_ok($tree, 'Allium::Optree');
 
 my (@top_down, @bottom_up);

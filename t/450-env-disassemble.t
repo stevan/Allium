@@ -8,11 +8,6 @@ use Test::Differences;
 
 use A;
 
-use Allium::MOP;
-
-use A::OP::Disassembler;
-use A::MOP::Disassembler;
-
 package Foo {
     our $BAZ;
     BEGIN { $BAZ = 'BAZ!!' }
@@ -26,22 +21,14 @@ package Foo {
     }
 }
 
-my $disassembler = A::MOP::Disassembler->new(
-    op_disassembler => A::OP::Disassembler->new(
-        instruction_set => A->new->instruction_set
-    )
-);
+my $disassembler = A->new->mop_disassembler;
+isa_ok($disassembler, 'A::MOP::Disassembler');
 
-my $mop = Allium::MOP->new;
+my $mop = $disassembler->disassemble('Foo::');
+isa_ok($mop, 'Allium::MOP');
 
-my $env = $disassembler->disassemble('Foo::');
+my $env = $mop->env;
 isa_ok($env, 'Allium::Environment');
-
-my ($BAZ, $bar, $foo) = sort { $a->symbol->name cmp $b->symbol->name } $env->bindings;
-
-my $BAZ_sv = $mop->autovivify( $BAZ->symbol );
-my $bar_cv = $mop->autovivify( $bar->symbol );
-my $foo_cv = $mop->autovivify( $foo->symbol );
 
 $mop->walk(sub ($glob, $depth) {
     say(('    ' x $depth),$glob);
@@ -50,7 +37,7 @@ $mop->walk(sub ($glob, $depth) {
     }
 });
 
-#warn join ', ' => map $_->value, $bar, $BAZ, $foo;
+my ($BAZ, $bar, $foo) = sort { $a->symbol->name cmp $b->symbol->name } $env->bindings;
 
 isa_ok($BAZ, 'Allium::Environment::Binding');
 isa_ok($BAZ->value, 'Allium::Environment::Value::Literal');

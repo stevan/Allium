@@ -30,6 +30,10 @@ class Allium::Environment::Symbol {
     method full_name  { join '' => $self->decompose    }
 
     method decompose { $self->sigil, @$namespace, $name }
+
+    method is_same_as ($symbol) {
+        $self->full_name eq $symbol->full_name
+    }
 }
 
 class Allium::Environment::Symbol::Scalar :isa(Allium::Environment::Symbol) {

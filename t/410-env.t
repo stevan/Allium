@@ -25,10 +25,10 @@ package Foo {
 
 my $A = A->new;
 
-my $foo = $A->disassemble(\&Foo::foo);
+my $foo = $A->op_disassembler->disassemble(\&Foo::foo);
 isa_ok($foo, 'Allium::Optree');
 
-my $bar = $A->disassemble(\&Foo::bar);
+my $bar = $A->op_disassembler->disassemble(\&Foo::bar);
 isa_ok($bar, 'Allium::Optree');
 
 my $env = Allium::Environment->new;

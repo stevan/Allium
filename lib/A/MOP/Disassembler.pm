@@ -5,19 +5,12 @@ use experimental qw[ class ];
 use B ();
 
 use Allium::Environment;
-
-use A::OP::Disassembler;
+use Allium::MOP;
 
 class A::MOP::Disassembler {
     field $op_disassembler :param :reader;
 
-    field $env :reader;
-
     field %already_crawled;
-
-    ADJUST {
-        $env = Allium::Environment->new;
-    }
 
     my %SIGIL_TO_SLOT = (
         '$' => 'SCALAR',
@@ -29,6 +22,17 @@ class A::MOP::Disassembler {
     );
 
     method disassemble ($namespace) {
+        %already_crawled = (); # clear any previous cache
+
+        my $env = $self->collect_all_symbols(
+            Allium::Environment->new,
+            $namespace
+        );
+
+        return Allium::MOP->new->load_environment( $env );
+    }
+
+    method collect_all_symbols ($env, $namespace) {
         no strict 'refs';
 
         my $ns = \%{ $namespace };
@@ -46,17 +50,17 @@ class A::MOP::Disassembler {
             if ($name =~ /\:\:$/) {
                 next if exists $already_crawled{ $glob };
                 $already_crawled{ $glob }++;
-                $self->collect_all_symbols( $glob );
+                $self->collect_all_symbols( $env, $glob );
             }
             else {
-                $self->process_glob_symbols( $glob );
+                $self->process_glob_symbols( $env, $glob );
             }
         }
 
         return $env;
     }
 
-    method process_glob_symbols ($glob) {
+    method process_glob_symbols ($env, $glob) {
         #say "processing ... $glob";
 
         foreach my ($sigil, $SLOT) (%SIGIL_TO_SLOT) {

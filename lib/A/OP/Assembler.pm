@@ -13,6 +13,8 @@ class A::OP::Assembler {
     sub __empty_sub_to_clone {}
 
     method assemble ($optree) {
+        %built = (); # clear any previous cache
+
         # build all the ops ...
         my @ops;
         $optree->walk(top_down => sub ($op) {

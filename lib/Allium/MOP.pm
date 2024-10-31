@@ -19,12 +19,24 @@ class Allium::MOP {
 
     field $root;
     field $main :reader;
+    field $env  :reader;
 
     field %symbol_table;
 
     ADJUST {
         $root = $self->allocate(Allium::MOP::Stash::);
         $main = $root->set( $self->allocate_glob( 'main::' ) );
+        $env  = Allium::Environment->new;
+    }
+
+    ## ---------------------------------------------------------------------------------------------
+
+    method load_environment ($e) {
+        foreach my $binding ($e->bindings) {
+            $env->add_binding( $binding );
+            $self->autovivify( $binding->symbol );
+        }
+        $self;
     }
 
     ## ---------------------------------------------------------------------------------------------

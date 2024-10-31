@@ -19,9 +19,9 @@ sub pprint ($op) { say($op->addr,('  ' x $op->depth),join ':' => $op->type, $op-
 
 CHECK {
     my $A    = A->new;
-    my $orig = $A->disassemble(\&foo);
+    my $orig = $A->op_disassembler->disassemble(\&foo);
     $orig->walk(top_down => \&pprint);
-    my $foo2 = $A->assemble($orig);
+    my $foo2 = $A->op_assembler->assemble($orig);
     *main::foo2 = $foo2;
 }
 
