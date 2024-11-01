@@ -30,12 +30,12 @@ isa_ok($mop, 'Allium::MOP');
 my $env = $mop->root_env;
 isa_ok($env, 'Allium::Environment');
 
-$mop->walk(sub ($glob, $depth) {
-    diag(('    ' x $depth),$glob);
-    foreach my $g ($glob->stash->get_all_globs) {
-        diag(('    ' x $depth),'  > ',$g);
-    }
-});
+#$mop->walk(sub ($glob, $depth) {
+#    diag(('    ' x $depth),$glob);
+#    foreach my $g ($glob->stash->get_all_globs) {
+#        diag(('    ' x $depth),'  > ',$g);
+#    }
+#});
 
 my ($BAZ, $bar, $foo) = sort { $a->symbol->name cmp $b->symbol->name } $env->bindings;
 

@@ -33,6 +33,7 @@ class Allium::Environment::Symbol {
     method stash_name { join '' => @$stash }
     method local_name { join '' => $self->sigil, $name }
     method full_name  { join '' => $self->decompose    }
+    method glob_name  { join '' => @$stash, $name      }
 
     method decompose { $self->sigil, @$stash, $name }
 
