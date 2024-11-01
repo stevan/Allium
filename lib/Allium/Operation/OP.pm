@@ -6,7 +6,10 @@ class Allium::Operation::OP {
     field $name :param :reader;
     field $addr :param :reader;
 
-    field $is_nullified  :param :reader;
+    field $is_optimized :param :reader;
+    field $is_nullified :param :reader;
+
+    field $pad_target    :param :reader;
     field $public_flags  :param :reader;
     field $private_flags :param :reader;
 

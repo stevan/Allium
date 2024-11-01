@@ -69,13 +69,35 @@ class A::OP::Assembler {
                     $self->get( $op->other )
                 );
             }
+            # HACK!!!
             elsif ($opclass eq 'B::SVOP' && $op->name eq 'const') {
                 push @args => ( int(rand(10)) );
             }
+            #elsif ($opclass eq 'B::SVOP') {
+            #    # handle sv, and gv
+            #}
+            #elsif ($opclass eq 'B::PADOP') {
+            #    # handle padix
+            #}
+            #elsif ($opclass eq 'B::PVOP') {
+            #    # handle pv
+            #}
+            #elsif ($opclass eq 'B::LOOP') {
+            #    # handle redoop, nextop, lastop
+            #}
+            #elsif ($opclass eq 'B::METHOP') {
+            #    # handle meth_sv
+            #}
+            #elsif ($opclass eq 'B::COP') {
+            #    # handle
+            #    # - label, stash, stashpv, file, cop_seq,
+            #    #   line, warnings, op, hints, hints_hash
+            #}
         }
 
         my $b_op = $opclass->new( @args );
         $b_op->private( $op->private_flags->bits );
+        $b_op->targ( $op->pad_target );
 
         $built{ $op->addr } = $b_op;
         #say join ', ' => $op->type, $op->name, ${ $op }, $op;

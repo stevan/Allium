@@ -60,6 +60,8 @@ class A::OP::Disassembler {
                 name          => $name,
                 addr          => ${ $b },
                 is_nullified  => $is_null,
+                is_optimized  => ($b->opt ? true : false),
+                pad_target    => $b->targ,
                 public_flags  => $self->build_public_flags($b),
                 private_flags => $self->build_private_flags($b),
             )
@@ -76,7 +78,13 @@ class A::OP::Disassembler {
 
         $op->parent = $self->get($b->parent);
 
+        $self->process_op_specific_data( $b, $op );
+
         return $op;
+    }
+
+    method process_op_specific_data ($b, $op) {
+
     }
 
     method build_public_flags ($b) {

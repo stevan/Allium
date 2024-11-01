@@ -28,7 +28,9 @@ class Allium::Optree::Dumper {
         $op{type} = $op->type;
 
         $op{is_nullified}  = $op->is_nullified;
+        $op{is_optimized}  = $op->is_optimized;
 
+        $op{pad_target}    = $op->pad_target;
         $op{public_flags}  = $self->dump_flags($op->public_flags);
         $op{private_flags} = $self->dump_flags($op->private_flags);
 

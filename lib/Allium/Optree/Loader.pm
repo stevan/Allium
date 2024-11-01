@@ -17,6 +17,8 @@ class Allium::Optree::Loader {
                     name          => $raw_op->{name},
                     addr          => $raw_op->{addr},
                     is_nullified  => !!($raw_op->{is_nullified}),
+                    is_optimized  => !!($raw_op->{is_optimized}),
+                    pad_target    => $raw_op->{pad_target},
                     public_flags  => $self->build_public_flags($raw_op->{public_flags}),
                     private_flags => $self->build_private_flags($raw_op->{private_flags}),
                 )
