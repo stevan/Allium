@@ -6,6 +6,30 @@ This document contains links to things I have found while researching which may
 be usedful in the future stages of this langauge.
 
 <!----------------------------------------------------------------------------->
+## Ouroboros
+<!----------------------------------------------------------------------------->
+
+- https://github.com/vickenty/ouroboros
+
+- Talks about this
+    - https://github.com/vickenty/talk-jit-perl/blob/master/talk.org
+    - https://github.com/vickenty/talk-perl-xs-rs/tree/master
+        - https://vickenty.github.io/talk-perl-xs-rs/#/slide-orgheadline1
+
+- Perl XS and proper APIs
+    - https://github.com/vickenty/perl-sys
+    - https://github.com/vickenty/perl-xs
+    - https://github.com/vickenty/perl-xs-demo
+
+- Perl JIT
+    - https://github.com/vickenty/gccjit-perl
+
+- Other Stuff
+    - https://github.com/vickenty
+    - https://github.com/vickenty/orr  -> looks very interesting!
+
+
+<!----------------------------------------------------------------------------->
 ## PyPy
 <!----------------------------------------------------------------------------->
 
