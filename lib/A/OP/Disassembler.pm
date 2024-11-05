@@ -187,7 +187,7 @@ class A::OP::Disassembler {
     method build_svop ($b, $op) {
         my $sv = $b->sv;
         if ($sv isa B::GV) {
-            say '!!!!!!!!!!!', join '::' => $sv->STASH->NAME, $sv->NAME;
+            #say '!!!!!!!!!!!', join '::' => $sv->STASH->NAME, $sv->NAME;
         }
     }
 

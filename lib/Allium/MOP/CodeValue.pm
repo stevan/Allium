@@ -3,14 +3,7 @@ use v5.40;
 use experimental qw[ class ];
 
 class Allium::MOP::CodeValue :isa(Allium::MOP::Abstract::Bindable) {
-    field $optree :param = undef;
-    field $glob   :param = undef;
-
-    method has_glob   { defined $glob   }
-    method has_optree { defined $optree }
-
-    method glob   :lvalue { $glob   }
-    method optree :lvalue { $optree }
+    field $glob :param :reader = undef;
 
     method to_string {
         my $name = defined $glob ? $glob->name : '__ANON__';

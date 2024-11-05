@@ -31,8 +31,10 @@ class Allium::MOP {
     ## ---------------------------------------------------------------------------------------------
 
     method load_environment ($e) {
+        my @todo;
         foreach my $binding ($e->bindings) {
             my $val = $self->bind( $binding );
+            push @todo => $val if $val isa Allium::MOP::CodeValue;
         }
         $self;
     }

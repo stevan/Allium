@@ -57,6 +57,12 @@ subtest '... check the bar binding' => sub {
     isa_ok($bar->value, 'Allium::Environment::Value::Optree');
     isa_ok($bar->value->optree, 'Allium::Optree');
 
+    #use Allium::Optree::Dumper;
+    #my $dump = Allium::Optree::Dumper->new->dump($bar->value->optree);
+
+    #use YAML qw[ Dump ];
+    #warn Dump $dump->{pad};
+
     subtest '... check the bar CV in the MOP' => sub {
         my $bar_cv = $mop->lookup( $bar->symbol );
         isa_ok($bar_cv, 'Allium::MOP::CodeValue');
