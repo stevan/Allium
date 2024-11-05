@@ -4,23 +4,23 @@ use experimental qw[ class ];
 
 use B ();
 
-use Allium::Environment;
 use Allium::Optree;
 use Allium::Operations;
+use Allium::Pad;
 
 class A::OP::Disassembler {
     field $instruction_set :param :reader;
 
     field %built;
-    field $env;
+    field $pad;
     field $cv;
 
     method disassemble ($code) {
         # ... clear any previous cache (just in case)
         %built = ();
         # ... and create a new environment and CV
-        $env = Allium::Environment->new;
         $cv  = B::svref_2object($code);
+        $pad = $self->get_pad( $cv );
 
         my $root  = $self->get($cv->ROOT);
         my $start = $self->get($cv->START);
@@ -28,16 +28,31 @@ class A::OP::Disassembler {
         my $optree = Allium::Optree->new(
             root  => $root,
             start => $start,
-            env   => $env,
+            pad   => $pad,
         );
 
         # ... clear any accumulated cache
         %built = ();
-        $env   = undef;
+        $pad   = undef;
         $cv    = undef;
         # end clearing of accumulated cache ...
 
         return $optree;
+    }
+
+    method get_pad ($cv) {
+        my $pad = Allium::Pad->new;
+        foreach my $entry ($cv->PADLIST->NAMES->ARRAY) {
+            $pad->add_entry(
+                Allium::Pad::Entry->new(
+                    name      => $entry->PVX,
+                    stash     => ($entry->FLAGS & B::PADNAMEf_OUR ? $entry->OURSTASH->NAME : undef),
+                    flags     => $self->build_pad_flags( $entry ),
+                    cop_range => [ $entry->COP_SEQ_RANGE_LOW, $entry->COP_SEQ_RANGE_HIGH ]
+                )
+            );
+        }
+        return $pad;
     }
 
     method get ($b) {
@@ -95,9 +110,18 @@ class A::OP::Disassembler {
 
         $op->parent = $self->get($b->parent);
 
-        $self->process_op_specific_data( $b, $op ) unless $op->is_nullified;
+        return $op if $op->is_nullified;
+
+        $self->process_op_specific_data( $b, $op );
+        $self->process_pad_target( $b->targ, $op );
 
         return $op;
+    }
+
+    method process_pad_target ($targ, $op) {
+        return if $targ > 0;
+
+        my $pad_target = ($cv->PADLIST->NAMES)[$targ];
     }
 
     method process_op_specific_data ($b, $op) {
@@ -137,7 +161,6 @@ class A::OP::Disassembler {
             $self->build_svop($b, $op);
         }
 
-
         if ($op isa Allium::Operation::UNOP_AUX) {
             $self->build_unop_aux($b, $op);
         }
@@ -148,32 +171,35 @@ class A::OP::Disassembler {
         $op->aux_list = [ @aux_list ];
     }
 
+    method convert_special ($sv) {
+        my $idx = ${$sv};          # @B::specialsv_name[$$idx]
+        return undef if $idx == 0; # Nullsv
+        return undef if $idx == 1; # &PL_sv_undef
+        return true  if $idx == 2; # &PL_sv_yes
+        return false if $idx == 3; # &PL_sv_no
+        return die "Cannot convert special (SV*)pWARN_ALL"  if $idx == 4; # (SV*)pWARN_ALL
+        return die "Cannot convert special (SV*)pWARN_NONE" if $idx == 5; # (SV*)pWARN_NONE
+        return die "Cannot convert special (SV*)pWARN_STD"  if $idx == 6; # (SV*)pWARN_STD
+        return 0     if $idx == 7; # &PL_sv_zero
+        die "Unknown SPECIAL($idx)";
+    }
+
     method build_svop ($b, $op) {
         my $sv = $b->sv;
-        my $gv = $b->gv;
+        if ($sv isa B::GV) {
+            say '!!!!!!!!!!!', join '::' => $sv->STASH->NAME, $sv->NAME;
+        }
+    }
 
-        if (${${sv}} == ${${gv}}) {
-            if ($sv isa 'B::GV') {
-                $op->binding = $env->bind_symbol(
-                    $env->parse_symbol(
-                        '*'.(join '::' => $sv->STASH->NAME, $sv->NAME)
-                    )
-                );
-            }
-            else {
-                $op->binding = $env->bind_value(
-                    $env->wrap_literal(
-                        $sv isa B::IV ? $sv->int_value :
-                        $sv isa B::NV ? $sv->NV        :
-                        $sv isa B::PV ? $sv->PV        :
-                            die "Currently unable to handle sv($sv)"
-                    )
-                );
-            }
-        }
-        else {
-            die "SV and GV are different: ${${sv}} != ${${gv}}";
-        }
+    method build_pad_flags ($entry) {
+        Allium::Flags::Pad::Flags->new( bits => $entry->FLAGS,
+            is_outer  => !! ($entry->FLAGS & B::PADNAMEf_OUTER),
+            is_state  => !! ($entry->FLAGS & B::PADNAMEf_STATE),
+            is_lvalue => !! ($entry->FLAGS & B::PADNAMEf_LVALUE),
+            is_our    => !! ($entry->FLAGS & B::PADNAMEf_OUR),
+            is_field  => !! ($entry->FLAGS & B::PADNAMEf_FIELD),
+            is_temp   => !! ($entry->IsUndef),
+        )
     }
 
     method build_public_flags ($b) {

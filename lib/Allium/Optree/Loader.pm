@@ -10,7 +10,7 @@ class Allium::Optree::Loader {
 
     method load ($raw) {
 
-        my $env = $self->build_env($raw);
+        my $pad = $self->build_pad($raw);
 
         my @ops;
         my %op_index;
@@ -39,30 +39,31 @@ class Allium::Optree::Loader {
             $op->last    = $op_index{ $raw_op->{last}    } if exists $raw_op->{last};
             $op->other   = $op_index{ $raw_op->{other}   } if exists $raw_op->{other};
 
-            $self->build_op_specific_data($raw_op, $op, \%op_index, $env);
+            $self->build_op_specific_data($raw_op, $op, \%op_index, $pad);
         }
 
         my $root  = $op_index{ $raw->{root}  } // die "Could not find(root) addr=".$raw->{root};
         my $start = $op_index{ $raw->{start} } // die "Could not find(start) addr=".$raw->{start};
 
-        return Allium::Optree->new( root => $root, start => $start, env => $env );
+        return Allium::Optree->new( root => $root, start => $start, pad => $pad );
     }
 
-    method build_env ($raw) {
-        my $env = Allium::Environment->new;
-        foreach my $binding ($raw->{env}->@*) {
-            $env->add_binding(
-                Allium::Environment::Binding->new(
-                    uid    => $binding->{uid},
-                    symbol => (defined $binding->{symbol} ? $env->parse_symbol($binding->{symbol}) : undef),
-                    value  => (defined $binding->{value}  ? $env->wrap_literal($binding->{value})  : undef),
+    method build_pad ($raw) {
+        my $pad = Allium::Pad->new;
+        foreach my $entry ($raw->{pad}->@*) {
+            $pad->add_entry(
+                Allium::Pad::Entry->new(
+                    name      => $entry->{name},
+                    stash     => $entry->{stash},
+                    flags     => $self->build_pad_flags( $entry->{flags} ),
+                    cop_range => [ $entry->{cop_range}->@* ]
                 )
             );
         }
-        return $env;
+        return $pad;
     }
 
-    method build_op_specific_data ($raw, $op, $op_index, $env) {
+    method build_op_specific_data ($raw, $op, $op_index, $pad) {
         if ($op isa Allium::Operation::LISTOP) {
             $op->num_children = $raw->{num_children};
         }
@@ -94,13 +95,17 @@ class Allium::Optree::Loader {
         }
 
         if ($op isa Allium::Operation::SVOP) {
-            $op->binding = $env->lookup_binding( $raw->{binding} );
+            ; # no-op for now
         }
 
         if ($op isa Allium::Operation::UNOP_AUX) {
             $op->aux_list = $raw->{aux_list};
         }
 
+    }
+
+    method build_pad_flags ($flags) {
+        Allium::Flags::Pad::Flags->new( %$flags );
     }
 
     method build_public_flags ($flags) {

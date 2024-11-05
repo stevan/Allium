@@ -3,7 +3,6 @@ use v5.40;
 use experimental qw[ class ];
 
 use Allium::MOP::Stash;
-use Allium::MOP::Pad;
 
 use Allium::MOP::ScalarValue;
 use Allium::MOP::ArrayValue;
@@ -33,7 +32,7 @@ class Allium::MOP {
 
     method load_environment ($e) {
         foreach my $binding ($e->bindings) {
-            $self->bind( $binding );
+            my $val = $self->bind( $binding );
         }
         $self;
     }

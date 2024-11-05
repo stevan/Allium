@@ -16,22 +16,22 @@ class Allium::Optree::Dumper {
         return +{
             root  => $optree->root->addr,
             start => $optree->start->addr,
-            env   => $self->dump_env( $optree->env ),
+            pad   => $self->dump_pad( $optree->pad ),
             ops   => \@ops,
         };
     }
 
-    method dump_env ($env) {
-        #warn join "\n" => map { sprintf '%s = %s' => $_->value, $_->symbol } $env->bindings;
-        my @env;
-        foreach my $binding ($env->bindings) {
-            push @env => +{
-                uid    => $binding->uid,
-                symbol => ($binding->has_symbol ? $binding->symbol->full_name : undef),
-                value  => ($binding->has_value  ? $binding->value->literal    : undef),
+    method dump_pad ($pad) {
+        my @pad;
+        foreach my $entry ($pad->entries) {
+            push @pad => +{
+                name      => $entry->name,
+                stash     => $entry->stash,
+                flags     => $self->dump_flags($entry->flags),
+                cop_range => $entry->cop_range,
             };
         }
-        return \@env;
+        return \@pad;
     }
 
     method dump_op ($op) {
@@ -96,7 +96,7 @@ class Allium::Optree::Dumper {
         }
 
         if ($op isa Allium::Operation::SVOP) {
-            $raw->{binding} = $op->binding->uid if $op->has_binding;
+            #$raw->{binding} = $op->get_binding->uid if $op->has_binding;
         }
 
         if ($op isa Allium::Operation::UNOP_AUX) {

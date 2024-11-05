@@ -11,6 +11,8 @@ class Allium::Environment::Binding {
         $uid //= refaddr $self;
     }
 
+    method set_uid ($id) { $uid = $id }
+
     method has_symbol { defined $symbol }
     method has_value  { defined $value  }
 

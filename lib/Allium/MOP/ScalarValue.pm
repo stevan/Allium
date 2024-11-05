@@ -4,7 +4,7 @@ use experimental qw[ class ];
 
 use Allium::Type::ValueType;
 
-class Allium::MOP::ScalarValue :isa(Allium::MOP::Abstract::Bindable) {
+class Allium::MOP::ScalarValue :isa(Allium::MOP::Abstract::Value) {
     field $value_type :param :reader = undef;
 
     ADJUST {

@@ -31,6 +31,8 @@ class Allium::Operation::OP {
     method has_next    { defined $next    }
     method has_sibling { defined $sibling }
 
+    method has_pad_target { $pad_target > 0 }
+
     method has_descendents { $public_flags->has_descendents }
 
     method depth {

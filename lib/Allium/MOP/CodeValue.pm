@@ -2,15 +2,9 @@
 use v5.40;
 use experimental qw[ class ];
 
-class Allium::MOP::CodeValue :isa(Allium::MOP::Abstract::Bindable) {
+class Allium::MOP::CodeValue :isa(Allium::MOP::Abstract::Value) {
     field $optree :param = undef;
     field $glob   :param = undef;
-
-    field $pad :reader;
-
-    ADJUST {
-        $pad = Allium::MOP::Pad->new;
-    }
 
     method has_glob   { defined $glob   }
     method has_optree { defined $optree }
