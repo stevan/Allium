@@ -4,6 +4,7 @@ use experimental qw[ class ];
 
 use B ();
 
+use Allium::Environment;
 use Allium::Optree;
 use Allium::Operations;
 
@@ -11,16 +12,31 @@ class A::OP::Disassembler {
     field $instruction_set :param :reader;
 
     field %built;
+    field $env;
 
     method disassemble ($code) {
-        %built = (); # clear any previous cache
+        # ... clear any previous cache (just in case)
+        %built = ();
+        # ... and create a new environment ...
+        $env   = Allium::Environment->new;
 
         my $cv = B::svref_2object($code);
 
         my $root  = $self->get($cv->ROOT);
         my $start = $self->get($cv->START);
 
-        return Allium::Optree->new( root => $root, start => $start );
+        my $optree = Allium::Optree->new(
+            root  => $root,
+            start => $start,
+            env   => $env,
+        );
+
+        # ... clear any accumulated cache
+        %built = ();
+        $env   = undef;
+        # end clearing of accumulated cache ...
+
+        return $optree;
     }
 
     method get ($b) {
@@ -42,7 +58,7 @@ class A::OP::Disassembler {
             #say "Checking for type for NULLified op($name) - got($operation) have(".(join ', ' => @operations).")";
             if ((scalar @operations) == 1) {
                 if ($operation ne $operations[0]) {
-                    #say "($operation) ne (".($operations[0]).")";
+                    #say ";;;; ($operation) ne (".($operations[0]).")";
                     $operation = $operations[0];
                 }
             }
@@ -50,8 +66,8 @@ class A::OP::Disassembler {
                 # NOTE:
                 # this is likely inadequate, but we will see
                 # if it every becomes an issue.
-                die "unable to find a match for ($operation) in (".(join ', ' => @operations).")"
-                    unless scalar grep { $operation eq $_ } @operations;
+                #die "unable to find a match for ($operation) in (".(join ', ' => @operations).")"
+                #    unless scalar grep { $operation eq $_ } @operations;
             }
         }
 
@@ -78,13 +94,75 @@ class A::OP::Disassembler {
 
         $op->parent = $self->get($b->parent);
 
-        $self->process_op_specific_data( $b, $op );
+        $self->process_op_specific_data( $b, $op ) unless $op->is_nullified;
 
         return $op;
     }
 
     method process_op_specific_data ($b, $op) {
+        if ($op isa Allium::Operation::LISTOP) {
+            $op->num_children = $b->children if $b->can('children');
+        }
 
+        if ($op isa Allium::Operation::LOOP) {
+            $op->redo_op = $self->get( $b->redoop );
+            $op->next_op = $self->get( $b->nextop );
+            $op->last_op = $self->get( $b->lastop );
+        }
+
+        if ($op isa Allium::Operation::PVOP) {
+            $op->pv = B::perlstring($b->pv);
+        }
+
+        if ($op isa Allium::Operation::COP) {
+            $op->label      = $b->label;            # string
+            $op->stash      = $b->stash->NAME;      # STASH
+            $op->file       = $b->file;             # string
+            $op->cop_seq    = $b->cop_seq;          # number
+            $op->line       = $b->line;             # number
+            $op->warnings   = $b->warnings->PV;     # B::PV
+            $op->hints      = $b->hints;            # number
+            $op->hints_hash = $b->hints_hash->HASH; # B::RHE
+            # XXX : ignore this for now
+            #$op->io         = $b->io;              # B::SPECIAL
+        }
+
+        # XXX : padops seem to only be used in threads??
+        if ($op isa Allium::Operation::PADOP) {
+            $op->pad_index = $b->padix;
+        }
+
+        if ($op isa Allium::Operation::SVOP) {
+            $self->build_svop($b, $op);
+        }
+    }
+
+    method build_svop ($b, $op) {
+        my $sv = $b->sv;
+        my $gv = $b->gv;
+
+        if (${${sv}} == ${${gv}}) {
+            if ($sv isa 'B::GV') {
+                $op->binding = $env->bind_symbol(
+                    $env->parse_symbol(
+                        '*'.(join '::' => $sv->STASH->NAME, $sv->NAME)
+                    )
+                );
+            }
+            else {
+                $op->binding = $env->bind_value(
+                    $env->wrap_literal(
+                        $sv isa B::IV ? $sv->int_value :
+                        $sv isa B::NV ? $sv->NV        :
+                        $sv isa B::PV ? $sv->PV        :
+                            die "Currently unable to handle sv($sv)"
+                    )
+                );
+            }
+        }
+        else {
+            die "SV and GV are different: ${${sv}} != ${${gv}}";
+        }
     }
 
     method build_public_flags ($b) {
@@ -108,4 +186,5 @@ class A::OP::Disassembler {
             has_pad_target     => !! ($b->private & B::OPpTARGET_MY),
         );
     }
+
 }

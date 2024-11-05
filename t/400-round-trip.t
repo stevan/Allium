@@ -15,6 +15,12 @@ sub foo {
     say 10, 20, 30, 40;
 }
 
+sub __foo {
+    foreach (0 .. 10) {
+        say 10;
+    }
+}
+
 sub pprint ($op) { say($op->addr,('  ' x $op->depth),join ':' => $op->type, $op->name) }
 
 CHECK {

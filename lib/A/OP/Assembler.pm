@@ -25,6 +25,13 @@ class A::OP::Assembler {
         foreach my ($old, $new) (@ops) {
             $new->next    ( $self->get( $old->next    )) if $old->has_next;
             $new->sibling ( $self->get( $old->sibling )) if $old->has_sibling;
+
+            #warn join ', ' => $old->name, $old, $new;
+            if ($old isa Allium::Operation::LOOP) {
+                $new->redoop( $self->get( $old->redo_op ) );
+                $new->nextop( $self->get( $old->next_op ) );
+                $new->lastop( $self->get( $old->last_op ) );
+            }
         }
 
         # now extract the root & start
@@ -43,7 +50,7 @@ class A::OP::Assembler {
         return $built{ $op->addr } if exists $built{ $op->addr };
 
         my $opclass = 'B::'.$op->type;
-        my $op_num  = B::opnumber($op->name);
+        my $op_num  = B::opnumber($op->is_nullified ? 'null' : $op->name);
 
         my @args;
         if ($opclass eq 'B::COP') {
@@ -55,23 +62,39 @@ class A::OP::Assembler {
             @args = ( $op_num, $op->public_flags->bits );
 
             if ($opclass eq 'B::UNOP') {
-                push @args => ( $self->get( $op->first ) );
-            }
-            elsif ($opclass eq 'B::BINOP' || $opclass eq 'B::LISTOP') {
                 push @args => (
-                    $self->get( $op->first ),
-                    $self->get( $op->last )
+                    ($op->has_first ? $self->get( $op->first ) : undef)
+                );
+            }
+            elsif ($opclass eq 'B::BINOP'  ||
+                   $opclass eq 'B::LISTOP' ||
+                   $opclass eq 'B::LOOP'   ){
+                push @args => (
+                    ($op->has_first ? $self->get( $op->first ) : undef),
+                    ($op->has_last  ? $self->get( $op->last  ) : undef),
                 );
             }
             elsif ($opclass eq 'B::LOGOP') {
                 push @args => (
-                    $self->get( $op->first ),
-                    $self->get( $op->other )
+                    ($op->has_first ? $self->get( $op->first ) : undef),
+                    ($op->has_other ? $self->get( $op->other ) : undef),
                 );
             }
             # HACK!!!
             elsif ($opclass eq 'B::SVOP' && $op->name eq 'const') {
                 push @args => ( int(rand(10)) );
+            }
+            elsif ($opclass eq 'B::SVOP' && $op->name eq 'gv') {
+                #my $gv = B::svref_2object(\*main::_);
+                #die ">>>>".join '::' => $gv->STASH->NAME, $gv->NAME;
+                push @args => ( B::svref_2object(\*main::_) );
+                #push @args => ( '*_' );
+            }
+            elsif ($opclass eq 'B::SVOP' && $op->name eq 'gvsv') {
+                push @args => ( '$_' );
+            }
+            else {
+                #warn "GOT: $opclass for ",$op->name;
             }
             #elsif ($opclass eq 'B::SVOP') {
             #    # handle sv, and gv
@@ -81,9 +104,6 @@ class A::OP::Assembler {
             #}
             #elsif ($opclass eq 'B::PVOP') {
             #    # handle pv
-            #}
-            #elsif ($opclass eq 'B::LOOP') {
-            #    # handle redoop, nextop, lastop
             #}
             #elsif ($opclass eq 'B::METHOP') {
             #    # handle meth_sv
@@ -95,9 +115,21 @@ class A::OP::Assembler {
             #}
         }
 
+        #warn join ", " => $opclass, @args;
+
         my $b_op = $opclass->new( @args );
         $b_op->private( $op->private_flags->bits );
         $b_op->targ( $op->pad_target );
+
+        # XXX:
+        # B::Generate is kinda trash, it creates LISTOP
+        # classes when it is support to be create LOOP
+        # classes, because the constructor doesn't check
+        # for the inheritance. Probably doesn't matter
+        # to the internals of perl, but it does to me
+        # (and for completeness).
+        bless $b_op => $opclass
+            unless blessed $b_op eq $opclass;
 
         $built{ $op->addr } = $b_op;
         #say join ', ' => $op->type, $op->name, ${ $op }, $op;

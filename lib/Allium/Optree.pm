@@ -2,6 +2,7 @@
 use v5.40;
 use experimental qw[ class ];
 
+use Allium::Environment;
 use Allium::Optree::Walker::TopDown;
 use Allium::Optree::Walker::BottomUp;
 use Allium::Optree::Walker::ExecOrder;
@@ -9,6 +10,7 @@ use Allium::Optree::Walker::ExecOrder;
 class Allium::Optree {
     field $root  :param :reader;
     field $start :param :reader;
+    field $env   :param :reader;
 
     method walk ($mode, $f) {
         return Allium::Optree::Walker::TopDown   ->new( f => $f )->walk( $root  ) if $mode eq 'top_down';

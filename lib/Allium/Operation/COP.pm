@@ -13,13 +13,13 @@ class Allium::Operation::COP :isa(Allium::Operation::OP) {
     field $hints;
     field $hints_hash;
 
-    method label      :lvalue { $label      }
-    method stash      :lvalue { $stash      }
-    method file       :lvalue { $file       }
-    method cop_seq    :lvalue { $cop_seq    }
-    method line       :lvalue { $line       }
-    method warnings   :lvalue { $warnings   }
-    method io         :lvalue { $io         }
-    method hints      :lvalue { $hints      }
-    method hints_hash :lvalue { $hints_hash }
+    method label      :lvalue { $label      } # string
+    method stash      :lvalue { $stash      } # STASH->NAME
+    method file       :lvalue { $file       } # string
+    method cop_seq    :lvalue { $cop_seq    } # number
+    method line       :lvalue { $line       } # number
+    method warnings   :lvalue { $warnings   } # B::PV->PV
+    method io         :lvalue { $io         } # B::SPECIAL #IGNORED
+    method hints      :lvalue { $hints      } # number
+    method hints_hash :lvalue { $hints_hash } # B::RHE->HASH
 }

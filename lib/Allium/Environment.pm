@@ -9,6 +9,11 @@ use Allium::Environment::Value;
 class Allium::Environment {
     field @bindings :reader;
 
+    method lookup_binding ($uid) {
+        my ($binding) = grep { $_->uid == $uid } @bindings;
+        return $binding;
+    }
+
     ## ---------------------------------------------------------------------------------------------
 
     method parse_symbol ($string) { Allium::Environment::Symbol->parse($string) }
@@ -25,6 +30,9 @@ class Allium::Environment {
     }
 
     ## ---------------------------------------------------------------------------------------------
+
+    method bind_value  ($value)  { $self->bind(undef,  $value) }
+    method bind_symbol ($symbol) { $self->bind($symbol, undef) }
 
     method bind ($symbol, $value) {
         my $binding = Allium::Environment::Binding->new(
