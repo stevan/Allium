@@ -97,6 +97,10 @@ class Allium::Optree::Loader {
             $op->binding = $env->lookup_binding( $raw->{binding} );
         }
 
+        if ($op isa Allium::Operation::UNOP_AUX) {
+            $op->aux_list = $raw->{aux_list};
+        }
+
     }
 
     method build_public_flags ($flags) {

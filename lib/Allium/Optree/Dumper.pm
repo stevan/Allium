@@ -22,9 +22,7 @@ class Allium::Optree::Dumper {
     }
 
     method dump_env ($env) {
-
         #warn join "\n" => map { sprintf '%s = %s' => $_->value, $_->symbol } $env->bindings;
-
         my @env;
         foreach my $binding ($env->bindings) {
             push @env => +{
@@ -99,6 +97,10 @@ class Allium::Optree::Dumper {
 
         if ($op isa Allium::Operation::SVOP) {
             $raw->{binding} = $op->binding->uid if $op->has_binding;
+        }
+
+        if ($op isa Allium::Operation::UNOP_AUX) {
+            $raw->{aux_list} = $op->aux_list;
         }
 
     }

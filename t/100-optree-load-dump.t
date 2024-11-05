@@ -24,13 +24,28 @@ sub bar {
     return $x;
 }
 
-foreach my $code (\&foo, \&bar) {
+sub baz ($x, $y) {
+    return "~~~ $x" . $y . " hello";
+}
+
+sub gorch ($x) {
+    if ($x > 5) {
+        my $y = 1000;
+    }
+    else {
+        my $y = 1300;
+        my $z = cos($y + $x);
+        my @test = (1 .. 100);
+    }
+}
+
+foreach my $code (\&foo, \&bar, \&baz, \&gorch) {
     my $name = Sub::Util::subname($code);
     subtest "... testing load/dump for code($name)[".(refaddr $code)."]" => sub {
         my $orig = A->new->op_disassembler->disassemble($code);
         isa_ok($orig, 'Allium::Optree');
 
-        $orig->walk(top_down  => sub ($op) { say $op->type });
+        #$orig->walk(top_down  => sub ($op) { say sprintf '%s(%s)' => $op->type, $op->name });
 
         my $dump1 = Allium::Optree::Dumper->new->dump($orig);
 

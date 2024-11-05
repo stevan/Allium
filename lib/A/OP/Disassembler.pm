@@ -13,14 +13,14 @@ class A::OP::Disassembler {
 
     field %built;
     field $env;
+    field $cv;
 
     method disassemble ($code) {
         # ... clear any previous cache (just in case)
         %built = ();
-        # ... and create a new environment ...
-        $env   = Allium::Environment->new;
-
-        my $cv = B::svref_2object($code);
+        # ... and create a new environment and CV
+        $env = Allium::Environment->new;
+        $cv  = B::svref_2object($code);
 
         my $root  = $self->get($cv->ROOT);
         my $start = $self->get($cv->START);
@@ -34,6 +34,7 @@ class A::OP::Disassembler {
         # ... clear any accumulated cache
         %built = ();
         $env   = undef;
+        $cv    = undef;
         # end clearing of accumulated cache ...
 
         return $optree;
@@ -135,6 +136,16 @@ class A::OP::Disassembler {
         if ($op isa Allium::Operation::SVOP) {
             $self->build_svop($b, $op);
         }
+
+
+        if ($op isa Allium::Operation::UNOP_AUX) {
+            $self->build_unop_aux($b, $op);
+        }
+    }
+
+    method build_unop_aux ($b, $op) {
+        my @aux_list = $b->aux_list($cv);
+        $op->aux_list = [ @aux_list ];
     }
 
     method build_svop ($b, $op) {
