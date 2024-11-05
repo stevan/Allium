@@ -2,8 +2,6 @@
 use v5.40;
 use experimental qw[ class ];
 
-use constant ();
-
 class Allium::Flags::Pad::Flags {
     field $bits :param :reader;
 

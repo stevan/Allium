@@ -51,16 +51,20 @@ class Allium::Optree::Loader {
     method build_pad ($raw) {
         my $pad = Allium::Pad->new;
         foreach my $entry ($raw->{pad}->@*) {
-            $pad->add_entry(
-                Allium::Pad::Entry->new(
-                    name      => $entry->{name},
-                    stash     => $entry->{stash},
-                    flags     => $self->build_pad_flags( $entry->{flags} ),
-                    cop_range => [ $entry->{cop_range}->@* ]
-                )
-            );
+            $pad->add_entry( $self->build_pad_entry( $entry ) );
         }
         return $pad;
+    }
+
+    method build_pad_entry ($raw) {
+        my %args = %$raw;
+        $args{flags} = $self->build_pad_flags( $args{flags} );
+
+        $args{parent_lex_flags} = $self->build_pad_parent_flags( $args{parent_lex_flags} )
+            if exists $args{parent_lex_flags};
+
+        my $entry_class = sprintf 'Allium::Pad::Entry::%s' => delete $args{type};
+        return $entry_class->new( %args );
     }
 
     method build_op_specific_data ($raw, $op, $op_index, $pad) {
@@ -102,6 +106,10 @@ class Allium::Optree::Loader {
             $op->aux_list = $raw->{aux_list};
         }
 
+    }
+
+    method build_pad_parent_flags ($flags) {
+        Allium::Flags::Pad::ParentFlags->new( %$flags );
     }
 
     method build_pad_flags ($flags) {

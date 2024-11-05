@@ -43,16 +43,51 @@ class A::OP::Disassembler {
     method get_pad ($cv) {
         my $pad = Allium::Pad->new;
         foreach my $entry ($cv->PADLIST->NAMES->ARRAY) {
-            $pad->add_entry(
-                Allium::Pad::Entry->new(
-                    name      => $entry->PVX,
-                    stash     => ($entry->FLAGS & B::PADNAMEf_OUR ? $entry->OURSTASH->NAME : undef),
-                    flags     => $self->build_pad_flags( $entry ),
-                    cop_range => [ $entry->COP_SEQ_RANGE_LOW, $entry->COP_SEQ_RANGE_HIGH ]
-                )
-            );
+            $pad->add_entry( $self->process_pad_entry( $entry ) );
         }
         return $pad;
+    }
+
+    method process_pad_entry ($entry) {
+        my $flags = $self->build_pad_flags( $entry );
+
+        my %args = (
+            name      => $entry->PVX,
+            flags     => $flags,
+            cop_range => [ $entry->COP_SEQ_RANGE_LOW, $entry->COP_SEQ_RANGE_HIGH ]
+        );
+
+        my $entry_class = 'Allium::Pad::Entry::';
+        if ($flags->is_our) {
+            $entry_class .= 'Our';
+            $args{stash_name} = $entry->OURSTASH->NAME;
+        }
+        elsif ($flags->is_outer) {
+            $entry_class .= 'Outer';
+            $args{parent_pad_index} = $entry->PARENT_PAD_INDEX;
+            $args{parent_lex_flags} = $self->build_parent_lex_flags( $entry->PARENT_FAKELEX_FLAGS );
+        }
+        elsif ($flags->is_state) {
+            $entry_class .= 'State';
+        }
+        elsif ($flags->is_lvalue) {
+            $entry_class .= 'LValue';
+        }
+        elsif ($flags->is_field) {
+            $entry_class .= 'Field';
+        }
+        elsif ($flags->is_temp) {
+            $entry_class .= 'Temp';
+        }
+        elsif ($flags->bits == 0) {
+            $entry_class .= 'Local';
+        }
+        else {
+            use Data::Dumper;
+            die "WTF! ". Dumper([ $entry->PVX, $flags->dump_flags ]);
+        }
+
+        return $entry_class->new( %args );
     }
 
     method get ($b) {
@@ -189,6 +224,13 @@ class A::OP::Disassembler {
         if ($sv isa B::GV) {
             #say '!!!!!!!!!!!', join '::' => $sv->STASH->NAME, $sv->NAME;
         }
+    }
+
+    method build_parent_lex_flags ($bits) {
+        Allium::Flags::Pad::ParentFlags->new( bits => $bits,
+            is_anon  => !! ($bits & B::PAD_FAKELEX_ANON),
+            is_multi => !! ($bits & B::PAD_FAKELEX_MULTI),
+        )
     }
 
     method build_pad_flags ($entry) {

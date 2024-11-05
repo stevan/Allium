@@ -24,14 +24,28 @@ class Allium::Optree::Dumper {
     method dump_pad ($pad) {
         my @pad;
         foreach my $entry ($pad->entries) {
-            push @pad => +{
-                name      => $entry->name,
-                stash     => $entry->stash,
-                flags     => $self->dump_flags($entry->flags),
-                cop_range => $entry->cop_range,
-            };
+            push @pad => $self->dump_pad_entry($entry);
         }
         return \@pad;
+    }
+
+    method dump_pad_entry ($entry) {
+        my %entry = (
+            type      => $entry->type,
+            name      => $entry->name,
+            flags     => $self->dump_flags($entry->flags),
+            cop_range => [ $entry->cop_range->@* ]
+        );
+
+        if ($entry->flags->is_our) {
+            $entry{stash_name} = $entry->stash_name;
+        }
+        elsif ($entry->flags->is_outer) {
+            $entry{parent_pad_index} = $entry->parent_pad_index;
+            $entry{parent_lex_flags} = $self->dump_flags($entry->parent_lex_flags);
+        }
+
+        return \%entry;
     }
 
     method dump_op ($op) {

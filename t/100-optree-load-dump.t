@@ -41,14 +41,18 @@ sub gorch ($x) {
 
 our $SCALAR;
 our @ARRAY;
-our %HASH;
+state %HASH = (x => 1);
 
 sub bling {
     return $SCALAR, @ARRAY, %HASH;
 }
 
+sub fling {
+    state $x = 10;
+    my $z = $x + 10;
+}
 
-foreach my $code (\&foo, \&bar, \&baz, \&gorch, \&bling) {
+foreach my $code (\&foo, \&bar, \&baz, \&gorch, \&bling, \&fling) {
     my $name = Sub::Util::subname($code);
     subtest "... testing load/dump for code($name)[".(refaddr $code)."]" => sub {
         my $orig = A->new->op_disassembler->disassemble($code);
@@ -58,8 +62,8 @@ foreach my $code (\&foo, \&bar, \&baz, \&gorch, \&bling) {
 
         my $dump1 = Allium::Optree::Dumper->new->dump($orig);
 
-        #use YAML qw[ Dump ];
-        #warn Dump $dump1->{pad};
+        use YAML qw[ Dump ];
+        warn Dump $dump1->{pad};
 
         my $copy  = Allium::Optree::Loader->new->load($dump1);
         isa_ok($copy, 'Allium::Optree');
