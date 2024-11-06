@@ -1,0 +1,638 @@
+{
+   "ops" : [
+      {
+         "addr" : 5642772472,
+         "first" : 5642764896,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "leavesub",
+         "next" : 0,
+         "pad_target" : 1,
+         "parent" : 0,
+         "private_flags" : {
+            "bits" : 65
+         },
+         "public_flags" : {
+            "bits" : 4,
+            "has_descendents" : true
+         },
+         "sibling" : 0,
+         "type" : "UNOP"
+      },
+      {
+         "addr" : 5642764896,
+         "first" : 5496098720,
+         "is_nullified" : false,
+         "is_optimized" : false,
+         "last" : 5642765056,
+         "name" : "lineseq",
+         "next" : 5642772472,
+         "num_children" : 3,
+         "pad_target" : 0,
+         "parent" : 5642772472,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 12,
+            "has_descendents" : true,
+            "was_parenthesized" : true
+         },
+         "sibling" : 0,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5496098720,
+         "aux_list" : null,
+         "first" : 5496099008,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "name" : "argcheck",
+         "next" : 5642764960,
+         "pad_target" : 189,
+         "parent" : 5642764896,
+         "private_flags" : {
+            "bits" : 1
+         },
+         "public_flags" : {
+            "bits" : 5,
+            "has_descendents" : true,
+            "wants_void" : true
+         },
+         "sibling" : 5642764960,
+         "type" : "UNOP_AUX"
+      },
+      {
+         "addr" : 5496099008,
+         "first" : 5642765776,
+         "is_nullified" : false,
+         "is_optimized" : false,
+         "last" : 5642765680,
+         "name" : "lineseq",
+         "next" : 5496098720,
+         "num_children" : 7,
+         "pad_target" : 0,
+         "parent" : 5496098720,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 5,
+            "has_descendents" : true,
+            "wants_void" : true
+         },
+         "sibling" : 0,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5642765776,
+         "cop_seq" : 8509,
+         "file" : "(eval 49)",
+         "hints" : 537005570,
+         "hints_hash" : {
+            "feature___SUB__" : 1,
+            "feature_bitwise" : 1,
+            "feature_class" : 1,
+            "feature_evalbytes" : 1,
+            "feature_fc" : 1,
+            "feature_isa" : 1,
+            "feature_module_true" : 1,
+            "feature_postderef_qq" : 1,
+            "feature_say" : 1,
+            "feature_signatures" : 1,
+            "feature_state" : 1,
+            "feature_try" : 1,
+            "feature_unicode" : 1,
+            "feature_unieval" : 1
+         },
+         "io" : null,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : 5,
+         "name" : "nextstate",
+         "next" : 5496098784,
+         "pad_target" : 0,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5496098784,
+         "stash" : "Test::Allium::DataLoader::Code",
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5496098784,
+         "aux_list" : [
+            2,
+            0,
+            false
+         ],
+         "first" : 0,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "argcheck",
+         "next" : 5496099072,
+         "pad_target" : 0,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5496099072,
+         "type" : "UNOP_AUX"
+      },
+      {
+         "addr" : 5496099072,
+         "cop_seq" : 8507,
+         "file" : "(eval 49)",
+         "hints" : 537005570,
+         "hints_hash" : {
+            "feature___SUB__" : 1,
+            "feature_bitwise" : 1,
+            "feature_class" : 1,
+            "feature_evalbytes" : 1,
+            "feature_fc" : 1,
+            "feature_isa" : 1,
+            "feature_module_true" : 1,
+            "feature_postderef_qq" : 1,
+            "feature_say" : 1,
+            "feature_signatures" : 1,
+            "feature_state" : 1,
+            "feature_try" : 1,
+            "feature_unicode" : 1,
+            "feature_unieval" : 1
+         },
+         "io" : null,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : 5,
+         "name" : "nextstate",
+         "next" : 5496099168,
+         "pad_target" : 0,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5496099168,
+         "stash" : "Test::Allium::DataLoader::Code",
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5496099168,
+         "aux_list" : [
+            0
+         ],
+         "first" : 0,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "argelem",
+         "next" : 5496098848,
+         "pad_target" : 1,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5496098848,
+         "type" : "UNOP_AUX"
+      },
+      {
+         "addr" : 5496098848,
+         "cop_seq" : 8508,
+         "file" : "(eval 49)",
+         "hints" : 537005570,
+         "hints_hash" : {
+            "feature___SUB__" : 1,
+            "feature_bitwise" : 1,
+            "feature_class" : 1,
+            "feature_evalbytes" : 1,
+            "feature_fc" : 1,
+            "feature_isa" : 1,
+            "feature_module_true" : 1,
+            "feature_postderef_qq" : 1,
+            "feature_say" : 1,
+            "feature_signatures" : 1,
+            "feature_state" : 1,
+            "feature_try" : 1,
+            "feature_unicode" : 1,
+            "feature_unieval" : 1
+         },
+         "io" : null,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : 5,
+         "name" : "nextstate",
+         "next" : 5496098944,
+         "pad_target" : 0,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5496098944,
+         "stash" : "Test::Allium::DataLoader::Code",
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5496098944,
+         "aux_list" : [
+            1
+         ],
+         "first" : 0,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "argelem",
+         "next" : 5642764960,
+         "pad_target" : 2,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5642765680,
+         "type" : "UNOP_AUX"
+      },
+      {
+         "addr" : 5642765680,
+         "cop_seq" : null,
+         "file" : null,
+         "hints" : null,
+         "hints_hash" : null,
+         "io" : null,
+         "is_nullified" : true,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : null,
+         "name" : "nextstate",
+         "next" : 5496099008,
+         "pad_target" : 197,
+         "parent" : 5496099008,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 0,
+         "stash" : null,
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5642764960,
+         "cop_seq" : 8509,
+         "file" : "(eval 49)",
+         "hints" : 537005570,
+         "hints_hash" : {
+            "feature___SUB__" : 1,
+            "feature_bitwise" : 1,
+            "feature_class" : 1,
+            "feature_evalbytes" : 1,
+            "feature_fc" : 1,
+            "feature_isa" : 1,
+            "feature_module_true" : 1,
+            "feature_postderef_qq" : 1,
+            "feature_say" : 1,
+            "feature_signatures" : 1,
+            "feature_state" : 1,
+            "feature_try" : 1,
+            "feature_unicode" : 1,
+            "feature_unieval" : 1
+         },
+         "io" : null,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : 6,
+         "name" : "nextstate",
+         "next" : 5642765576,
+         "pad_target" : 0,
+         "parent" : 5642764896,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5642765056,
+         "stash" : "Test::Allium::DataLoader::Code",
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5642765056,
+         "first" : 5642765120,
+         "is_nullified" : false,
+         "is_optimized" : false,
+         "last" : 5642765168,
+         "name" : "return",
+         "next" : 5642764896,
+         "num_children" : 2,
+         "pad_target" : 0,
+         "parent" : 5642764896,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 132,
+            "has_descendents" : true,
+            "is_special" : true
+         },
+         "sibling" : 0,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5642765120,
+         "is_nullified" : false,
+         "is_optimized" : false,
+         "name" : "pushmark",
+         "next" : 5642765464,
+         "pad_target" : 0,
+         "parent" : 5642765056,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642765168,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642765168,
+         "aux_list" : [
+            2,
+            " hello",
+            -1,
+            -1,
+            6
+         ],
+         "first" : 5642765400,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "multiconcat",
+         "next" : 5642772472,
+         "pad_target" : 6,
+         "parent" : 5642765056,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 6,
+            "has_descendents" : true,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "UNOP_AUX"
+      },
+      {
+         "addr" : 5642765400,
+         "aux_list" : [
+            1,
+            "~~~ ",
+            4,
+            -1
+         ],
+         "first" : 5642765464,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "multiconcat",
+         "next" : 5642765352,
+         "pad_target" : 4,
+         "parent" : 5642765168,
+         "private_flags" : {
+            "bits" : 8
+         },
+         "public_flags" : {
+            "bits" : 6,
+            "has_descendents" : true,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642765352,
+         "type" : "UNOP_AUX"
+      },
+      {
+         "addr" : 5642765464,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "name" : "pushmark",
+         "next" : 5642765624,
+         "pad_target" : 3,
+         "parent" : 5642765400,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642765624,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642765624,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "name" : "const",
+         "next" : 5642765576,
+         "pad_target" : 5,
+         "parent" : 5642765400,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642765576,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642765576,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "padsv",
+         "next" : 5642765400,
+         "pad_target" : 1,
+         "parent" : 5642765400,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642765352,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "padsv",
+         "next" : 5642765168,
+         "pad_target" : 2,
+         "parent" : 5642765168,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "OP"
+      }
+   ],
+   "pad" : [
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            8507,
+            8509
+         ],
+         "flags" : {
+            "bits" : 0
+         },
+         "name" : "$x",
+         "type" : "Local"
+      },
+      {
+         "cop_range" : [
+            8508,
+            8509
+         ],
+         "flags" : {
+            "bits" : 0
+         },
+         "name" : "$y",
+         "type" : "Local"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      }
+   ],
+   "root" : 5642772472,
+   "start" : 5642765776
+}

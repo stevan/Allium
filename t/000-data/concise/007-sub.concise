@@ -1,0 +1,32 @@
+main::sub_007:
+n  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->n
+1        <;> nextstate(main 4 007-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,11] vKS/LVINTRO ->4
+2           <$> const(IV 0) s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 007-sub.pl:7) v:us,*,&,$,fea=8 ->5
+a        <2> aassign[t5] vKS/COM_AGG ->b
+-           <1> ex-list lK ->8
+5              <0> pushmark s ->6
+7              <1> rv2av lKP/1 ->8
+6                 <$> const(AV ARRAY) s ->7
+-           <1> ex-list lK ->a
+8              <0> pushmark s ->9
+9              <0> padav[@array:5,11] lRM*/LVINTRO ->a
+b        <;> nextstate(main 6 007-sub.pl:9) v:us,*,&,{,$,fea=8 ->c
+m        <2> leaveloop K/2 ->n
+e           <{> enteriter(next->j last->m redo->f)[$y:7,10] KS/LVINTRO ->k
+-              <0> ex-pushmark s ->c
+-              <1> ex-list lKM ->e
+c                 <0> pushmark sM ->d
+d                 <0> padav[@array:5,11] sRM ->e
+-           <1> null K/1 ->m
+l              <|> and(other->f) K/1 ->m
+k                 <0> iter s ->l
+-                 <@> lineseq sK ->-
+f                    <;> nextstate(main 9 007-sub.pl:10) v:us,*,&,$,fea=8 ->g
+i                    <2> add[t7] vKS/2 ->j
+g                       <0> padsv[$x:4,11] sRM ->h
+h                       <0> padsv[$y:7,10] s ->i
+j                    <0> unstack s ->k

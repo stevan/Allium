@@ -1,0 +1,21 @@
+main::sub_003:
+c  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->c
+-        <1> ex-argcheck vK/1 ->7
+-           <@> lineseq vK ->-
+1              <;> nextstate(main 6 003-sub.pl:5) v:us,*,&,$,fea=8 ->2
+2              <+> argcheck(2,0) v ->3
+3              <;> nextstate(main 4 003-sub.pl:5) v:us,*,&,$,fea=8 ->4
+4              <+> argelem(0)[$x:4,6] v/SV ->5
+5              <;> nextstate(main 5 003-sub.pl:5) v:us,*,&,$,fea=8 ->6
+6              <+> argelem(1)[$y:5,6] v/SV ->7
+-              <;> ex-nextstate(main 6 003-sub.pl:5) v:us,*,&,$,fea=8 ->-
+7        <;> nextstate(main 6 003-sub.pl:6) v:us,*,&,$,fea=8 ->8
+-        <@> return K* ->-
+-           <0> pushmark s ->-
+b           <+> multiconcat(" hello",-1,-1,6)[t6] sK ->c
+9              <+> multiconcat(" ",4,-1)[t4] sK/STRINGIFY ->a
+-                 <0> ex-pushmark s ->-
+-                 <0> ex-const s ->8
+8                 <0> padsv[$x:4,6] s ->9
+a              <0> padsv[$y:5,6] s ->b

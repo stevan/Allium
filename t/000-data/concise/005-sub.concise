@@ -1,0 +1,11 @@
+main::sub_005:
+6  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->6
+1        <;> nextstate(main 7 005-sub.pl:10) v:us,*,&,$,fea=8 ->2
+-        <@> return K* ->-
+-           <0> pushmark s ->2
+-           <1> ex-rv2sv sK/STRICT,1 ->3
+2              <$> gvsv(*SCALAR) s ->3
+4           <1> rv2av[t3] K/STRICT,1 ->5
+3              <$> gv(*ARRAY) s ->4
+5           <0> padhv[%HASH:FAKE:] ->6

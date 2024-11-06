@@ -36,6 +36,9 @@ class Allium::MOP {
             my $val = $self->bind( $binding );
             push @todo => $val if $val isa Allium::MOP::CodeValue;
         }
+
+
+
         $self;
     }
 

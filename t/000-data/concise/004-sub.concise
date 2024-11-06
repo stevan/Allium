@@ -1,0 +1,43 @@
+main::sub_004:
+d  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->d
+-        <1> ex-argcheck vK/1 ->5
+-           <@> lineseq vK ->-
+1              <;> nextstate(main 5 004-sub.pl:5) v:us,*,&,$,fea=8 ->2
+2              <+> argcheck(1,0) v ->3
+3              <;> nextstate(main 4 004-sub.pl:5) v:us,*,&,$,fea=8 ->4
+4              <+> argelem(0)[$x:4,15] v/SV ->5
+-              <;> ex-nextstate(main 5 004-sub.pl:5) v:us,*,&,$,fea=8 ->-
+5        <;> nextstate(main 5 004-sub.pl:6) v:us,*,&,{,$,fea=8 ->6
+-        <1> null KP/1 ->-
+9           <|> cond_expr(other->a) K/1 ->e
+8              <2> gt sK/2 ->9
+6                 <0> padsv[$x:4,15] s ->7
+7                 <$> const(IV 5) s ->8
+-              <@> scope K ->-
+-                 <;> ex-nextstate(main 7 004-sub.pl:7) v:us,*,&,$,fea=8 ->a
+c                 <2> sassign sKS/2 ->d
+a                    <$> const(IV 1000) s ->b
+b                    <0> padsv[$y:7,8] sRM*/LVINTRO ->c
+v              <@> leave KP ->d
+e                 <0> enter ->f
+f                 <;> nextstate(main 10 004-sub.pl:10) v:us,*,&,$,fea=8 ->g
+h                 <1> padsv_store[$y:10,13] vKS/LVINTRO ->i
+g                    <$> const(IV 1300) s ->h
+-                    <0> ex-padsv sRM*/LVINTRO ->h
+i                 <;> nextstate(main 11 004-sub.pl:11) v:us,*,&,$,fea=8 ->j
+n                 <1> padsv_store[$z:11,13] vKS/LVINTRO ->o
+m                    <1> cos[t6] sK/1 ->n
+l                       <2> add[t5] sK/2 ->m
+j                          <0> padsv[$y:10,13] s ->k
+k                          <0> padsv[$x:4,15] s ->l
+-                    <0> ex-padsv sRM*/LVINTRO ->n
+o                 <;> nextstate(main 12 004-sub.pl:12) v:us,*,&,{,$,fea=8 ->p
+u                 <2> aassign[t10] KS/COM_AGG ->v
+-                    <1> ex-list lK ->s
+p                       <0> pushmark s ->q
+r                       <1> rv2av lKP/1 ->s
+q                          <$> const(AV ARRAY) s ->r
+-                    <1> ex-list lK ->u
+s                       <0> pushmark s ->t
+t                       <0> padav[@test:12,13] lRM*/LVINTRO ->u

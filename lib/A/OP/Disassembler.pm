@@ -180,7 +180,7 @@ class A::OP::Disassembler {
             $op->file       = $b->file;             # string
             $op->cop_seq    = $b->cop_seq;          # number
             $op->line       = $b->line;             # number
-            $op->warnings   = $b->warnings->PV;     # B::PV
+            $op->warnings   = $b->warnings->PV if $b->warnings isa B::PV;  # B::PV
             $op->hints      = $b->hints;            # number
             $op->hints_hash = $b->hints_hash->HASH; # B::RHE
             # XXX : ignore this for now

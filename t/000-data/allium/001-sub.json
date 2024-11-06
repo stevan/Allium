@@ -1,0 +1,501 @@
+{
+   "ops" : [
+      {
+         "addr" : 5642763528,
+         "first" : 5642763584,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "leavesub",
+         "next" : 0,
+         "pad_target" : 1,
+         "parent" : 0,
+         "private_flags" : {
+            "bits" : 65
+         },
+         "public_flags" : {
+            "bits" : 4,
+            "has_descendents" : true
+         },
+         "sibling" : 0,
+         "type" : "UNOP"
+      },
+      {
+         "addr" : 5642763584,
+         "first" : 5642763648,
+         "is_nullified" : false,
+         "is_optimized" : false,
+         "last" : 5642763744,
+         "name" : "lineseq",
+         "next" : 5642763528,
+         "num_children" : 2,
+         "pad_target" : 0,
+         "parent" : 5642763528,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 12,
+            "has_descendents" : true,
+            "was_parenthesized" : true
+         },
+         "sibling" : 0,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5642763648,
+         "cop_seq" : 8514,
+         "file" : "(eval 50)",
+         "hints" : 537005570,
+         "hints_hash" : {
+            "feature___SUB__" : 1,
+            "feature_bitwise" : 1,
+            "feature_class" : 1,
+            "feature_evalbytes" : 1,
+            "feature_fc" : 1,
+            "feature_isa" : 1,
+            "feature_module_true" : 1,
+            "feature_postderef_qq" : 1,
+            "feature_say" : 1,
+            "feature_signatures" : 1,
+            "feature_state" : 1,
+            "feature_try" : 1,
+            "feature_unicode" : 1,
+            "feature_unieval" : 1
+         },
+         "io" : null,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : 6,
+         "name" : "nextstate",
+         "next" : 5642764016,
+         "pad_target" : 0,
+         "parent" : 5642763584,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5642763744,
+         "stash" : "Test::Allium::DataLoader::Code",
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5642763744,
+         "first" : 5642763864,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "last" : 5642763808,
+         "name" : "leaveloop",
+         "next" : 5642763528,
+         "pad_target" : 0,
+         "parent" : 5642763584,
+         "private_flags" : {
+            "bits" : 2
+         },
+         "public_flags" : {
+            "bits" : 4,
+            "has_descendents" : true
+         },
+         "sibling" : 0,
+         "type" : "BINOP"
+      },
+      {
+         "addr" : 5642763864,
+         "first" : 5496114632,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "last" : 5642764064,
+         "last_op" : 5642763744,
+         "name" : "enteriter",
+         "next" : 5496114688,
+         "next_op" : 5496114744,
+         "num_children" : 3,
+         "pad_target" : 0,
+         "parent" : 5642763744,
+         "private_flags" : {
+            "bits" : 8
+         },
+         "public_flags" : {
+            "bits" : 68,
+            "has_descendents" : true,
+            "is_mutator_varient" : true
+         },
+         "redo_op" : 5642764184,
+         "sibling" : 5642763808,
+         "type" : "LOOP"
+      },
+      {
+         "addr" : 5496114632,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "name" : "pushmark",
+         "next" : 5642764016,
+         "pad_target" : 3,
+         "parent" : 5642763864,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642763952,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642763952,
+         "first" : 5642764016,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "last" : 0,
+         "name" : "list",
+         "next" : 5642764064,
+         "num_children" : null,
+         "pad_target" : 159,
+         "parent" : 5642763864,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 7,
+            "has_descendents" : true,
+            "wants_list" : true
+         },
+         "sibling" : 5642764064,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5642764016,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "pushmark",
+         "next" : 5496114920,
+         "pad_target" : 0,
+         "parent" : 5642763952,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5496114920,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5496114920,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "const",
+         "next" : 5496114864,
+         "pad_target" : 0,
+         "parent" : 5642763952,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5496114864,
+         "type" : "SVOP"
+      },
+      {
+         "addr" : 5496114864,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "const",
+         "next" : 5642764064,
+         "pad_target" : 0,
+         "parent" : 5642763952,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "SVOP"
+      },
+      {
+         "addr" : 5642764064,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "gv",
+         "next" : 5642763864,
+         "pad_target" : 0,
+         "parent" : 5642763864,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "SVOP"
+      },
+      {
+         "addr" : 5642763808,
+         "first" : 5496114800,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "name" : "null",
+         "next" : 5642763744,
+         "pad_target" : 0,
+         "parent" : 5642763744,
+         "private_flags" : {
+            "bits" : 1
+         },
+         "public_flags" : {
+            "bits" : 4,
+            "has_descendents" : true
+         },
+         "sibling" : 0,
+         "type" : "UNOP"
+      },
+      {
+         "addr" : 5496114800,
+         "first" : 5496114688,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "and",
+         "next" : 5642763744,
+         "other" : 5642764184,
+         "pad_target" : 0,
+         "parent" : 5642763808,
+         "private_flags" : {
+            "bits" : 1
+         },
+         "public_flags" : {
+            "bits" : 4,
+            "has_descendents" : true
+         },
+         "sibling" : 0,
+         "type" : "LOGOP"
+      },
+      {
+         "addr" : 5496114688,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "iter",
+         "next" : 5496114800,
+         "pad_target" : 0,
+         "parent" : 5496114800,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642764120,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642764120,
+         "first" : 5642764184,
+         "is_nullified" : false,
+         "is_optimized" : false,
+         "last" : 5496114744,
+         "name" : "lineseq",
+         "next" : 5642763808,
+         "num_children" : 3,
+         "pad_target" : 0,
+         "parent" : 5496114800,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 6,
+            "has_descendents" : true,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5642764184,
+         "cop_seq" : 8517,
+         "file" : "(eval 50)",
+         "hints" : 537005570,
+         "hints_hash" : {
+            "feature___SUB__" : 1,
+            "feature_bitwise" : 1,
+            "feature_class" : 1,
+            "feature_evalbytes" : 1,
+            "feature_fc" : 1,
+            "feature_isa" : 1,
+            "feature_module_true" : 1,
+            "feature_postderef_qq" : 1,
+            "feature_say" : 1,
+            "feature_signatures" : 1,
+            "feature_state" : 1,
+            "feature_try" : 1,
+            "feature_unicode" : 1,
+            "feature_unieval" : 1
+         },
+         "io" : null,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "label" : null,
+         "line" : 7,
+         "name" : "nextstate",
+         "next" : 5496114584,
+         "pad_target" : 0,
+         "parent" : 5642764120,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 1,
+            "wants_void" : true
+         },
+         "sibling" : 5496114520,
+         "stash" : "Test::Allium::DataLoader::Code",
+         "type" : "COP",
+         "warnings" : null
+      },
+      {
+         "addr" : 5496114520,
+         "first" : 5496114584,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "last" : 5642764280,
+         "name" : "say",
+         "next" : 5496114744,
+         "num_children" : 2,
+         "pad_target" : 0,
+         "parent" : 5642764120,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 5,
+            "has_descendents" : true,
+            "wants_void" : true
+         },
+         "sibling" : 5496114744,
+         "type" : "LISTOP"
+      },
+      {
+         "addr" : 5496114584,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "pushmark",
+         "next" : 5496114464,
+         "pad_target" : 0,
+         "parent" : 5496114520,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 5642764280,
+         "type" : "OP"
+      },
+      {
+         "addr" : 5642764280,
+         "first" : 5496114464,
+         "is_nullified" : true,
+         "is_optimized" : false,
+         "name" : "rv2sv",
+         "next" : 5496114520,
+         "pad_target" : 15,
+         "parent" : 5496114520,
+         "private_flags" : {
+            "bits" : 3
+         },
+         "public_flags" : {
+            "bits" : 6,
+            "has_descendents" : true,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "UNOP"
+      },
+      {
+         "addr" : 5496114464,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "gvsv",
+         "next" : 5496114520,
+         "pad_target" : 0,
+         "parent" : 5642764280,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "SVOP"
+      },
+      {
+         "addr" : 5496114744,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "unstack",
+         "next" : 5496114688,
+         "pad_target" : 0,
+         "parent" : 5642764120,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "OP"
+      }
+   ],
+   "pad" : [
+      {
+         "cop_range" : [
+            0,
+            0
+         ],
+         "flags" : {
+            "bits" : 0,
+            "is_temp" : true
+         },
+         "name" : null,
+         "type" : "Temp"
+      },
+      {
+         "cop_range" : [
+            8515,
+            8518
+         ],
+         "flags" : {
+            "bits" : 2,
+            "is_state" : true
+         },
+         "name" : "$",
+         "type" : "State"
+      },
+      {
+         "cop_range" : [
+            8515,
+            8518
+         ],
+         "flags" : {
+            "bits" : 2,
+            "is_state" : true
+         },
+         "name" : "$",
+         "type" : "State"
+      }
+   ],
+   "root" : 5642763528,
+   "start" : 5642763648
+}

@@ -1,0 +1,22 @@
+main::sub_001:
+f  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->f
+1        <;> nextstate(main 4 001-sub.pl:6) v:us,*,&,$,fea=8 ->2
+e        <2> leaveloop K/2 ->f
+6           <{> enteriter(next->b last->e redo->7) KS/DEF ->c
+-              <0> ex-pushmark s ->2
+-              <1> ex-list lK ->5
+2                 <0> pushmark s ->3
+3                 <$> const(IV 0) s ->4
+4                 <$> const(IV 10) s ->5
+5              <$> gv(*_) s ->6
+-           <1> null K/1 ->e
+d              <|> and(other->7) K/1 ->e
+c                 <0> iter s ->d
+-                 <@> lineseq sK ->-
+7                    <;> nextstate(main 7 001-sub.pl:7) v:us,*,&,$,fea=8 ->8
+a                    <@> say vK ->b
+8                       <0> pushmark s ->9
+-                       <1> ex-rv2sv sK/STRICT,1 ->a
+9                          <$> gvsv(*_) s ->a
+b                    <0> unstack s ->c

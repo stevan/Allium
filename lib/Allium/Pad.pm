@@ -8,10 +8,6 @@ class Allium::Pad {
     field @entries :reader;
 
     method add_entry ($entry) { push @entries => $entry }
-
-    method our_entries   { grep $_->flags->is_our,   @entries }
-    method state_entries { grep $_->flags->is_state, @entries }
-    method non_temps     { grep !$_->flags->is_temp, @entries }
 }
 
 
