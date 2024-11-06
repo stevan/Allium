@@ -20,6 +20,7 @@ use Allium::Flags::Operation::PublicFlags;
 use Allium::Flags::Operation::PrivateFlags;
 
 package Allium::Operations {
+    use v5.40;
 
     sub build($, $type, %args) {
         my $class = sprintf 'Allium::Operation::%s' => $type;

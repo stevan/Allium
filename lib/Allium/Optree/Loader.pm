@@ -5,6 +5,7 @@ use experimental qw[ class ];
 use Allium::Environment;
 use Allium::Optree;
 use Allium::Operations;
+use Allium::Sequence;
 
 class Allium::Optree::Loader {
 
@@ -58,7 +59,8 @@ class Allium::Optree::Loader {
 
     method build_pad_entry ($raw) {
         my %args = %$raw;
-        $args{flags} = $self->build_pad_flags( $args{flags} );
+        $args{flags}   = $self->build_pad_flags( $args{flags} );
+        $args{cop_seq} = Allium::Sequence::Range->new( $args{cop_seq}->%* );
 
         $args{parent_lex_flags} = $self->build_pad_parent_flags( $args{parent_lex_flags} )
             if exists $args{parent_lex_flags};

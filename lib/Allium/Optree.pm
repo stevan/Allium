@@ -8,9 +8,11 @@ use Allium::Optree::Walker::BottomUp;
 use Allium::Optree::Walker::ExecOrder;
 
 class Allium::Optree {
-    field $root  :param :reader;
-    field $start :param :reader;
-    field $pad   :param :reader;
+    field $root   :param :reader;
+    field $start  :param :reader;
+    field $pad    :param :reader;
+    field $op_seq :param :reader;
+    field $st_seq :param :reader;
 
     method walk ($mode, $f) {
         return Allium::Optree::Walker::TopDown   ->new( f => $f )->walk( $root  ) if $mode eq 'top_down';

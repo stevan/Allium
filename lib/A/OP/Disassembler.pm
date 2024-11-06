@@ -7,34 +7,43 @@ use B ();
 use Allium::Optree;
 use Allium::Operations;
 use Allium::Pad;
+use Allium::Sequence;
 
 class A::OP::Disassembler {
     field $instruction_set :param :reader;
 
     field %built;
-    field $pad;
+
     field $cv;
+
+    field $op_seq;
+    field $st_seq;
 
     method disassemble ($code) {
         # ... clear any previous cache (just in case)
         %built = ();
         # ... and create a new environment and CV
-        $cv  = B::svref_2object($code);
-        $pad = $self->get_pad( $cv );
+        $cv = B::svref_2object($code);
+
+        $op_seq = Allium::Sequence::Translation->new( sequence => Allium::Sequence::OpAddress->new );
+        $st_seq = Allium::Sequence::Translation->new( sequence => Allium::Sequence::Statement->new );
 
         my $root  = $self->get($cv->ROOT);
         my $start = $self->get($cv->START);
 
         my $optree = Allium::Optree->new(
-            root  => $root,
-            start => $start,
-            pad   => $pad,
+            root   => $root,
+            start  => $start,
+            pad    => $self->get_pad( $cv ),
+            op_seq => $op_seq,
+            st_seq => $st_seq,
         );
 
         # ... clear any accumulated cache
-        %built = ();
-        $pad   = undef;
-        $cv    = undef;
+        %built  = ();
+        $cv     = undef;
+        $op_seq = undef;
+        $st_seq = undef;
         # end clearing of accumulated cache ...
 
         return $optree;
@@ -54,7 +63,10 @@ class A::OP::Disassembler {
         my %args = (
             name      => $entry->PVX,
             flags     => $flags,
-            cop_range => [ $entry->COP_SEQ_RANGE_LOW, $entry->COP_SEQ_RANGE_HIGH ]
+            cop_range => $st_seq->translate_range(
+                $entry->COP_SEQ_RANGE_HIGH  || 0,
+                $entry->COP_SEQ_RANGE_LOW   || 0,
+            )
         );
 
         my $entry_class = 'Allium::Pad::Entry::';
@@ -125,7 +137,7 @@ class A::OP::Disassembler {
         my $op = Allium::Operations->build(
             $operation => (
                 name          => $name,
-                addr          => ${ $b },
+                addr          => $op_seq->translate( ${$b} ),
                 is_nullified  => $is_null,
                 is_optimized  => ($b->opt ? true : false),
                 pad_target    => $b->targ,
@@ -148,15 +160,8 @@ class A::OP::Disassembler {
         return $op if $op->is_nullified;
 
         $self->process_op_specific_data( $b, $op );
-        $self->process_pad_target( $b->targ, $op );
 
         return $op;
-    }
-
-    method process_pad_target ($targ, $op) {
-        return if $targ > 0;
-
-        my $pad_target = ($cv->PADLIST->NAMES)[$targ];
     }
 
     method process_op_specific_data ($b, $op) {
@@ -175,10 +180,16 @@ class A::OP::Disassembler {
         }
 
         if ($op isa Allium::Operation::COP) {
+            $op->cop_seq    = $st_seq->translate($b->cop_seq);
+            # and the other stuff ...
             $op->label      = $b->label;            # string
             $op->stash      = $b->stash->NAME;      # STASH
-            $op->file       = $b->file;             # string
-            $op->cop_seq    = $b->cop_seq;          # number
+            if ( $b->file =~ /^\(eval \d+\)/) {
+                $op->file = '(eval)';
+            }
+            else {
+                $op->file   = $b->file              # string
+            }
             $op->line       = $b->line;             # number
             $op->warnings   = $b->warnings->PV if $b->warnings isa B::PV;  # B::PV
             $op->hints      = $b->hints;            # number

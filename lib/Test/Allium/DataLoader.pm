@@ -89,7 +89,7 @@ class Test::Allium::DataLoader::Code {
     }
 
     method dump_concise {
-        my $cmd = sprintf 'perl -MO=Concise,%s -I lib %s' => $subname, $code_file;
+        my $cmd = sprintf 'perl -MO=Concise,%s -I lib %s 2> /dev/null' => $subname, $code_file;
         my $out = `$cmd`;
         return $out;
     }

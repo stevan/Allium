@@ -34,7 +34,11 @@ class Allium::Optree::Dumper {
             type      => $entry->type,
             name      => $entry->name,
             flags     => $self->dump_flags($entry->flags),
-            cop_range => [ $entry->cop_range->@* ]
+            cop_range => {
+                type  => $entry->cop_range->type,
+                start => $entry->cop_range->start,
+                end   => $entry->cop_range->end,
+            }
         );
 
         if ($entry->flags->is_our) {
