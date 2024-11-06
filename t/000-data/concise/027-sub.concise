@@ -1,0 +1,29 @@
+main::sub_027:
+n  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->n
+1        <;> nextstate(main 4 027-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,9] vKS/LVINTRO ->4
+2           <$> const(IV 10) s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 027-sub.pl:8) v:us,*,&,{,$,fea=8 ->5
+i        <2> leaveloop vK/2 ->j
+5           <{> enterloop(next->i last->i redo->6) v ->6
+-           <@> lineseq vKP ->i
+6              <;> nextstate(main 6 027-sub.pl:8) v:us,*,&,$,fea=8 ->7
+a              <1> padsv_store[$x:6,8] vKS/LVINTRO ->b
+9                 <2> add[t3] sK/2 ->a
+7                    <$> const(NV 100.5) s ->8
+8                    <0> padsv[$x:4,9] s ->9
+-                 <0> ex-padsv sRM*/LVINTRO ->a
+b              <;> nextstate(main 7 027-sub.pl:9) v:us,*,&,$,fea=8 ->c
+d              <1> padsv_store[$y:7,8] vKS/LVINTRO ->e
+c                 <$> const(IV 1000) s ->d
+-                 <0> ex-padsv sRM*/LVINTRO ->d
+e              <;> nextstate(main 8 027-sub.pl:10) v:us,*,&,{,$,fea=8 ->f
+h              <2> add[t5] vKS/2 ->i
+f                 <0> padsv[$x:6,8] sRM ->g
+g                 <0> padsv[$y:7,8] s ->h
+j        <;> nextstate(main 9 027-sub.pl:12) v:us,*,&,{,$,fea=8 ->k
+m        <2> add[t6] sK/2 ->n
+k           <0> padsv[$x:4,9] s ->l
+l           <$> const(IV 5) s ->m

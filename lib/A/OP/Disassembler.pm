@@ -31,12 +31,19 @@ class A::OP::Disassembler {
         my $root  = $self->get($cv->ROOT);
         my $start = $self->get($cv->START);
 
+        # connect all the next pointers ...
+        foreach my $built (values %built) {
+            my ($b, $op) = @$built;
+            next if $b->next isa B::NULL;
+            $op->next = $self->get($b->next);
+        }
+
         my $optree = Allium::Optree->new(
             root   => $root,
             start  => $start,
             pad    => $self->get_pad( $cv ),
-            op_seq => $op_seq,
-            st_seq => $st_seq,
+            op_seq => $op_seq->sequence,
+            st_seq => $st_seq->sequence,
         );
 
         # ... clear any accumulated cache
@@ -105,7 +112,7 @@ class A::OP::Disassembler {
     method get ($b) {
         return undef if $b isa B::NULL;
 
-        return $built{ ${$b} } if exists $built{ ${$b} };
+        return $built{ ${$b} }->[1] if exists $built{ ${$b} };
 
         my $is_null = $b->name eq 'null';
         my $name    = $is_null ? substr(B::ppname( $b->targ ), 3) : $b->name;
@@ -146,9 +153,8 @@ class A::OP::Disassembler {
             )
         );
 
-        $built{ ${$b} } = $op;
+        $built{ ${$b} } = [ $b, $op ];
 
-        $op->next    = $self->get($b->next)    unless $b->next    isa B::NULL;
         $op->sibling = $self->get($b->sibling) unless $b->sibling isa B::NULL;
 
         $op->first = $self->get($b->first) if $b isa B::UNOP;

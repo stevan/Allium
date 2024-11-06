@@ -1,0 +1,41 @@
+main::sub_029:
+x  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->x
+1        <;> nextstate(main 4 029-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,9] vKS/LVINTRO ->4
+2           <$> const(IV 100) s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 029-sub.pl:7) v:us,*,&,$,fea=8 ->5
+7        <1> padsv_store[$y:5,9] vKS/LVINTRO ->8
+6           <1> srefgen sK/1 ->7
+-              <1> ex-list lKRM ->6
+5                 <0> padsv[$x:4,9] sRM ->6
+-           <0> ex-padsv sRM*/LVINTRO ->7
+8        <;> nextstate(main 6 029-sub.pl:8) v:us,*,&,{,$,fea=8 ->9
+b        <1> padsv_store[$z:6,9] vKS/LVINTRO ->c
+a           <1> rv2sv sK/STRICT,1 ->b
+9              <0> padsv[$y:5,9] s ->a
+-           <0> ex-padsv sRM*/LVINTRO ->b
+c        <;> nextstate(main 7 029-sub.pl:9) v:us,*,&,{,$,fea=8 ->d
+f        <1> padsv_store[$p:7,9] vKS/LVINTRO ->g
+e           <1> rv2sv sK/STRICT,1 ->f
+d              <0> padsv[$y:5,9] s ->e
+-           <0> ex-padsv sRM*/LVINTRO ->f
+g        <;> nextstate(main 8 029-sub.pl:10) v:us,*,&,{,$,fea=8 ->h
+k        <2> sassign vKS/2 ->l
+h           <$> const(IV 200) s ->i
+j           <1> rv2sv sKRM*/STRICT,1 ->k
+i              <0> padsv[$y:5,9] sM/DREFSV ->j
+l        <;> nextstate(main 8 029-sub.pl:11) v:us,*,&,{,$,fea=8 ->m
+r        <1> padsv_store[$q:8,9] vKS/LVINTRO ->s
+q           <2> add[t6] sK/2 ->r
+n              <1> rv2sv sK/STRICT,1 ->o
+m                 <0> padsv[$y:5,9] s ->n
+p              <1> rv2sv sK/STRICT,1 ->q
+o                 <0> padsv[$y:5,9] s ->p
+-           <0> ex-padsv sRM*/LVINTRO ->r
+s        <;> nextstate(main 9 029-sub.pl:12) v:us,*,&,{,$,fea=8 ->t
+w        <2> sassign sKS/2 ->x
+t           <$> const(PV "foo") s ->u
+v           <1> rv2sv sKRM*/STRICT,1 ->w
+u              <0> padsv[$y:5,9] sM/DREFSV ->v

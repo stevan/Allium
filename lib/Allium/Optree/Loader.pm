@@ -46,7 +46,22 @@ class Allium::Optree::Loader {
         my $root  = $op_index{ $raw->{root}  } // die "Could not find(root) addr=".$raw->{root};
         my $start = $op_index{ $raw->{start} } // die "Could not find(start) addr=".$raw->{start};
 
-        return Allium::Optree->new( root => $root, start => $start, pad => $pad );
+        my $op_seq = $self->build_sequence( $raw->{op_seq}->%* );
+        my $st_seq = $self->build_sequence( $raw->{st_seq}->%* );
+
+        return Allium::Optree->new(
+            root   => $root,
+            start  => $start,
+            pad    => $pad,
+            op_seq => $op_seq,
+            st_seq => $st_seq,
+        );
+    }
+
+    method build_sequence (%seq) {
+        my $seq_type  = delete $seq{type};
+        my $seq_class = sprintf 'Allium::Sequence::%s' => $seq_type;
+        return $seq_class->new( %seq );
     }
 
     method build_pad ($raw) {
@@ -59,8 +74,8 @@ class Allium::Optree::Loader {
 
     method build_pad_entry ($raw) {
         my %args = %$raw;
-        $args{flags}   = $self->build_pad_flags( $args{flags} );
-        $args{cop_seq} = Allium::Sequence::Range->new( $args{cop_seq}->%* );
+        $args{flags}      = $self->build_pad_flags( $args{flags} );
+        $args{cop_range} = Allium::Sequence::Range->new( $args{cop_range}->%* );
 
         $args{parent_lex_flags} = $self->build_pad_parent_flags( $args{parent_lex_flags} )
             if exists $args{parent_lex_flags};

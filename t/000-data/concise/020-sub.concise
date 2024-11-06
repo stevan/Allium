@@ -1,0 +1,49 @@
+main::sub_020:
+14 <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->14
+1        <;> nextstate(main 4 020-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,7] vKS/LVINTRO ->4
+2           <$> const(PV "foo") s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 020-sub.pl:7) v:us,*,&,$,fea=8 ->5
+6        <1> padsv_store[$y:5,7] vKS/LVINTRO ->7
+5           <$> const(PV "bar") s ->6
+-           <0> ex-padsv sRM*/LVINTRO ->6
+7        <;> nextstate(main 6 020-sub.pl:8) v:us,*,&,{,$,fea=8 ->8
+8        <0> padsv[$z:6,7] vM/LVINTRO ->9
+9        <;> nextstate(main 7 020-sub.pl:9) v:us,*,&,{,$,fea=8 ->a
+d        <1> padsv_store[$z:6,7] vKS ->e
+c           <2> seq sK/2 ->d
+a              <0> padsv[$x:4,7] s ->b
+b              <0> padsv[$y:5,7] s ->c
+-           <0> ex-padsv sRM* ->d
+e        <;> nextstate(main 7 020-sub.pl:10) v:us,*,&,{,$,fea=8 ->f
+i        <1> padsv_store[$z:6,7] vKS ->j
+h           <2> sne sK/2 ->i
+f              <0> padsv[$x:4,7] s ->g
+g              <0> padsv[$y:5,7] s ->h
+-           <0> ex-padsv sRM* ->i
+j        <;> nextstate(main 7 020-sub.pl:11) v:us,*,&,{,$,fea=8 ->k
+n        <1> padsv_store[$z:6,7] vKS ->o
+m           <2> slt sK/2 ->n
+k              <0> padsv[$x:4,7] s ->l
+l              <0> padsv[$y:5,7] s ->m
+-           <0> ex-padsv sRM* ->n
+o        <;> nextstate(main 7 020-sub.pl:12) v:us,*,&,{,$,fea=8 ->p
+s        <1> padsv_store[$z:6,7] vKS ->t
+r           <2> sle sK/2 ->s
+p              <0> padsv[$x:4,7] s ->q
+q              <0> padsv[$y:5,7] s ->r
+-           <0> ex-padsv sRM* ->s
+t        <;> nextstate(main 7 020-sub.pl:13) v:us,*,&,{,$,fea=8 ->u
+x        <1> padsv_store[$z:6,7] vKS ->y
+w           <2> sgt sK/2 ->x
+u              <0> padsv[$x:4,7] s ->v
+v              <0> padsv[$y:5,7] s ->w
+-           <0> ex-padsv sRM* ->x
+y        <;> nextstate(main 7 020-sub.pl:14) v:us,*,&,{,$,fea=8 ->z
+13       <2> sassign sKS/2 ->14
+11          <2> sge sK/2 ->12
+z              <0> padsv[$x:4,7] s ->10
+10             <0> padsv[$y:5,7] s ->11
+12          <0> padsv[$z:6,7] sRM* ->13

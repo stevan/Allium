@@ -1,0 +1,19 @@
+main::sub_026:
+g  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->g
+1        <;> nextstate(main 4 026-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,5] vKS/LVINTRO ->4
+2           <$> const(IV 10) s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 026-sub.pl:7) v:us,*,&,$,fea=8 ->5
+6        <1> preinc[t2] vK/1 ->7
+5           <0> padsv[$x:4,5] sRM ->6
+7        <;> nextstate(main 5 026-sub.pl:8) v:us,*,&,{,$,fea=8 ->8
+9        <1> preinc vK/1 ->a
+8           <0> padsv[$x:4,5] sRM ->9
+a        <;> nextstate(main 5 026-sub.pl:9) v:us,*,&,{,$,fea=8 ->b
+c        <1> predec[t3] vK/1 ->d
+b           <0> padsv[$x:4,5] sRM ->c
+d        <;> nextstate(main 5 026-sub.pl:10) v:us,*,&,{,$,fea=8 ->e
+f        <1> predec sK/1 ->g
+e           <0> padsv[$x:4,5] sRM ->f

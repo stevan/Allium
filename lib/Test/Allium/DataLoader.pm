@@ -14,24 +14,49 @@ use Allium::Optree::Dumper;
 class Test::Allium::DataLoader {
     field $data_dir :param :reader;
 
+    field @code;
+
     ADJUST {
         $data_dir = path($data_dir) unless blessed $data_dir;
     }
 
+    method create_new_code_file {
+        my $next = $code[-1]->id + 1;
+        $data_dir->child('code')
+                 ->child(sprintf '%03d-sub.pl' => $next)
+                 ->spew(join "\n" => (
+                    '#!perl',
+                    '',
+                    'use v5.40;',
+                    '',
+                    (sprintf 'sub sub_%03d {' => $next),
+                    '',
+                    '}',
+                    '',
+                 ));
+    }
+
+    method shuffle_code { shuffle @code }
+
     method load_all_code {
+        return $self if scalar @code;
+
         my $disassembler = A->new->op_disassembler;
-        my @code = map {
+        @code = map {
+            #warn "Loading $_";
             Test::Allium::DataLoader::Code->new(
                 disassembler => $disassembler,
                 data_dir     => $data_dir,
                 code_file    => $_,
             )
-        } $data_dir->child('code')->children;
-        shuffle @code;
+        } sort { $a->basename cmp $b->basename }
+            $data_dir->child('code')->children( qr/\.pl$/ );
+
+        $self;
     }
 
     method write_initial_data_set {
-        $_->load_optree->write_initial_code_data foreach $self->load_all_code;
+        $_->load_optree->write_initial_code_data foreach @code;
         $self;
     }
 }
@@ -107,7 +132,9 @@ class Test::Allium::DataLoader::Code {
     method write_concise_file ($data) { $self->get_concise_file->spew($data) }
 
     method write_initial_code_data {
+        #warn "Writing ",$self->get_allium_file_name;
         $self->write_allium_file ( $JSON->encode( $self->dump_optree ) );
+        #warn "Writing ",$self->get_concise_file_name;
         $self->write_concise_file( $self->dump_concise );
         $self;
     }

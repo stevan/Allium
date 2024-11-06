@@ -1,0 +1,38 @@
+main::sub_034:
+q  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->q
+1        <;> nextstate(main 4 034-sub.pl:6) v:us,*,&,$,fea=8 ->2
+2        <0> padav[@array:4,7] vM/LVINTRO ->3
+3        <;> nextstate(main 5 034-sub.pl:7) v:us,*,&,$,fea=8 ->4
+a        <2> aassign[t2] vKS ->b
+-           <1> ex-list lKP ->8
+4              <0> pushmark s ->5
+5              <$> const(IV 10) s ->6
+6              <$> const(IV 20) s ->7
+7              <$> const(IV 30) s ->8
+-           <1> ex-list lK ->a
+8              <0> pushmark s ->9
+9              <0> padav[@array:4,7] lRM* ->a
+b        <;> nextstate(main 5 034-sub.pl:8) v:us,*,&,{,$,fea=8 ->c
+d        <1> aelemfastlex_store[@array:4,7] vKS/key=10 ->e
+c           <$> const(IV 300) s ->d
+-           <1> ex-aelem sKRM*/2 ->d
+-              <0> ex-aelemfast_lex sRM/key=10 ->d
+-              <0> ex-const s ->-
+e        <;> nextstate(main 5 034-sub.pl:9) v:us,*,&,{,$,fea=8 ->f
+g        <1> padsv_store[$x:5,7] vKS/LVINTRO ->h
+-           <1> ex-aelem sK/2 ->g
+f              <0> aelemfast_lex[@array:4,7] sR/key=3 ->g
+-              <0> ex-const s ->-
+-           <0> ex-padsv sRM*/LVINTRO ->g
+h        <;> nextstate(main 6 034-sub.pl:10) v:us,*,&,{,$,fea=8 ->i
+p        <2> aassign[t5] KS/COM_AGG ->q
+-           <1> ex-list lKP ->n
+i              <0> pushmark s ->j
+j              <$> const(IV 1) s ->k
+k              <0> padav[@array:4,7] l ->l
+l              <$> const(IV 10) s ->m
+m              <0> padsv[$x:5,7] s ->n
+-           <1> ex-list lK ->p
+n              <0> pushmark s ->o
+o              <0> padav[@foo:6,7] lRM*/LVINTRO ->p

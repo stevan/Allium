@@ -1,0 +1,26 @@
+main::sub_014:
+k  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->k
+-        <1> ex-argcheck vK/1 ->5
+-           <@> lineseq vK ->-
+1              <;> nextstate(main 5 014-sub.pl:5) v:us,*,&,$,fea=8 ->2
+2              <+> argcheck(1,0) v ->3
+3              <;> nextstate(main 4 014-sub.pl:5) v:us,*,&,$,fea=8 ->4
+4              <+> argelem(0)[$x:4,7] v/SV ->5
+-              <;> ex-nextstate(main 5 014-sub.pl:5) v:us,*,&,$,fea=8 ->-
+5        <;> nextstate(main 5 014-sub.pl:6) v:us,*,&,$,fea=8 ->6
+9        <1> padsv_store[$y:5,7] vKS/LVINTRO ->a
+8           <2> add[t3] sKP/2 ->9
+6              <0> padsv[$x:4,7] s ->7
+7              <0> padsv[$x:4,7] s ->8
+-           <0> ex-padsv sRM*/LVINTRO ->9
+a        <;> nextstate(main 6 014-sub.pl:7) v:us,*,&,$,fea=8 ->b
+j        <2> sassign sKS/2 ->k
+h           <2> add[t7] sK/2 ->i
+d              <2> subtract[t5] sKP/2 ->e
+b                 <0> padsv[$y:5,7] s ->c
+c                 <$> const(NV 20.3) s ->d
+g              <2> subtract[t6] sKP/2 ->h
+e                 <$> const(NV 12.5) s ->f
+f                 <0> padsv[$x:4,7] s ->g
+i           <0> padsv[$z:6,7] sRM*/LVINTRO ->j

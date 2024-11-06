@@ -1,4 +1,10 @@
 {
+   "op_seq" : {
+      "current" : 14,
+      "start" : 0,
+      "step" : 1,
+      "type" : "OpAddress"
+   },
    "ops" : [
       {
          "addr" : 1,
@@ -24,7 +30,7 @@
          "first" : 3,
          "is_nullified" : false,
          "is_optimized" : false,
-         "last" : 12,
+         "last" : 8,
          "name" : "lineseq",
          "next" : 1,
          "num_children" : 6,
@@ -68,7 +74,7 @@
          "label" : null,
          "line" : 6,
          "name" : "nextstate",
-         "next" : 4,
+         "next" : 13,
          "pad_target" : 0,
          "parent" : 2,
          "private_flags" : {
@@ -78,18 +84,18 @@
             "bits" : 1,
             "wants_void" : true
          },
-         "sibling" : 5,
+         "sibling" : 4,
          "stash" : "Test::Allium::DataLoader::Code",
          "type" : "COP",
          "warnings" : null
       },
       {
-         "addr" : 5,
-         "first" : 4,
+         "addr" : 4,
+         "first" : 13,
          "is_nullified" : false,
          "is_optimized" : true,
          "name" : "padsv_store",
-         "next" : 6,
+         "next" : 5,
          "pad_target" : 1,
          "parent" : 2,
          "private_flags" : {
@@ -102,17 +108,17 @@
             "is_mutator_varient" : true,
             "wants_void" : true
          },
-         "sibling" : 6,
+         "sibling" : 5,
          "type" : "UNOP"
       },
       {
-         "addr" : 4,
+         "addr" : 13,
          "is_nullified" : false,
          "is_optimized" : true,
          "name" : "const",
-         "next" : 5,
+         "next" : 4,
          "pad_target" : 0,
-         "parent" : 5,
+         "parent" : 4,
          "private_flags" : {
             "bits" : 0
          },
@@ -128,9 +134,9 @@
          "is_nullified" : true,
          "is_optimized" : true,
          "name" : "padsv",
-         "next" : 5,
+         "next" : 4,
          "pad_target" : 9,
-         "parent" : 5,
+         "parent" : 4,
          "private_flags" : {
             "bits" : 128,
             "introduces_lexical" : true
@@ -146,7 +152,7 @@
          "type" : "OP"
       },
       {
-         "addr" : 6,
+         "addr" : 5,
          "cop_seq" : 1,
          "file" : "(eval)",
          "hints" : 537005570,
@@ -172,7 +178,7 @@
          "label" : null,
          "line" : 7,
          "name" : "nextstate",
-         "next" : 7,
+         "next" : 11,
          "pad_target" : 0,
          "parent" : 2,
          "private_flags" : {
@@ -182,19 +188,19 @@
             "bits" : 1,
             "wants_void" : true
          },
-         "sibling" : 9,
+         "sibling" : 6,
          "stash" : "Test::Allium::DataLoader::Code",
          "type" : "COP",
          "warnings" : null
       },
       {
-         "addr" : 9,
-         "first" : 7,
+         "addr" : 6,
+         "first" : 11,
          "is_nullified" : false,
          "is_optimized" : true,
-         "last" : 8,
+         "last" : 12,
          "name" : "add",
-         "next" : 10,
+         "next" : 7,
          "pad_target" : 3,
          "parent" : 2,
          "private_flags" : {
@@ -206,17 +212,17 @@
             "is_mutator_varient" : true,
             "wants_void" : true
          },
-         "sibling" : 10,
+         "sibling" : 7,
          "type" : "BINOP"
       },
       {
-         "addr" : 7,
+         "addr" : 11,
          "is_nullified" : false,
          "is_optimized" : true,
          "name" : "padsv",
-         "next" : 8,
+         "next" : 12,
          "pad_target" : 1,
-         "parent" : 9,
+         "parent" : 6,
          "private_flags" : {
             "bits" : 0
          },
@@ -226,17 +232,17 @@
             "return_container" : true,
             "wants_scalar" : true
          },
-         "sibling" : 8,
+         "sibling" : 12,
          "type" : "OP"
       },
       {
-         "addr" : 8,
+         "addr" : 12,
          "is_nullified" : false,
          "is_optimized" : true,
          "name" : "const",
-         "next" : 9,
+         "next" : 6,
          "pad_target" : 0,
-         "parent" : 9,
+         "parent" : 6,
          "private_flags" : {
             "bits" : 0
          },
@@ -248,7 +254,7 @@
          "type" : "SVOP"
       },
       {
-         "addr" : 10,
+         "addr" : 7,
          "cop_seq" : 1,
          "file" : "(eval)",
          "hints" : 537005826,
@@ -274,7 +280,7 @@
          "label" : null,
          "line" : 8,
          "name" : "nextstate",
-         "next" : 11,
+         "next" : 10,
          "pad_target" : 0,
          "parent" : 2,
          "private_flags" : {
@@ -284,17 +290,17 @@
             "bits" : 1,
             "wants_void" : true
          },
-         "sibling" : 12,
+         "sibling" : 8,
          "stash" : "Test::Allium::DataLoader::Code",
          "type" : "COP",
          "warnings" : null
       },
       {
-         "addr" : 12,
-         "first" : 13,
+         "addr" : 8,
+         "first" : 9,
          "is_nullified" : false,
          "is_optimized" : false,
-         "last" : 11,
+         "last" : 10,
          "name" : "return",
          "next" : 2,
          "num_children" : 2,
@@ -312,13 +318,13 @@
          "type" : "LISTOP"
       },
       {
-         "addr" : 13,
+         "addr" : 9,
          "is_nullified" : false,
          "is_optimized" : false,
          "name" : "pushmark",
-         "next" : 11,
+         "next" : 10,
          "pad_target" : 0,
-         "parent" : 12,
+         "parent" : 8,
          "private_flags" : {
             "bits" : 0
          },
@@ -326,17 +332,17 @@
             "bits" : 2,
             "wants_scalar" : true
          },
-         "sibling" : 11,
+         "sibling" : 10,
          "type" : "OP"
       },
       {
-         "addr" : 11,
+         "addr" : 10,
          "is_nullified" : false,
          "is_optimized" : true,
          "name" : "padsv",
          "next" : 1,
          "pad_target" : 1,
-         "parent" : 12,
+         "parent" : 8,
          "private_flags" : {
             "bits" : 0
          },
@@ -403,5 +409,11 @@
       }
    ],
    "root" : 1,
+   "st_seq" : {
+      "current" : 2,
+      "start" : 0,
+      "step" : 1,
+      "type" : "Statement"
+   },
    "start" : 3
 }

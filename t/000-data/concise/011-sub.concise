@@ -1,0 +1,15 @@
+main::sub_011:
+b  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->b
+1        <;> nextstate(main 4 011-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,7] vKS/LVINTRO ->4
+2           <$> const(IV 10) s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 011-sub.pl:7) v:us,*,&,$,fea=8 ->5
+6        <1> padsv_store[$y:5,7] vKS/LVINTRO ->7
+5           <0> padsv[$x:4,7] s ->6
+-           <0> ex-padsv sRM*/LVINTRO ->6
+7        <;> nextstate(main 6 011-sub.pl:8) v:us,*,&,{,$,fea=8 ->8
+a        <2> sassign sKS/2 ->b
+8           <0> padsv[$y:5,7] s ->9
+9           <0> padsv[$z:6,7] sRM*/LVINTRO ->a

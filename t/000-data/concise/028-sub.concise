@@ -1,0 +1,164 @@
+main::sub_028:
+3j <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->3j
+1        <;> nextstate(main 4 028-sub.pl:6) v:us,*,&,$,fea=8 ->2
+3        <1> padsv_store[$x:4,36] vKS/LVINTRO ->4
+2           <$> const(PV "10") s ->3
+-           <0> ex-padsv sRM*/LVINTRO ->3
+4        <;> nextstate(main 5 028-sub.pl:7) v:us,*,&,$,fea=8 ->5
+7        <1> padsv_store[$y:5,36] vKS/LVINTRO ->8
+6           <1> int[t3] sK/1 ->7
+5              <0> padsv[$x:4,36] s ->6
+-           <0> ex-padsv sRM*/LVINTRO ->7
+8        <;> nextstate(main 6 028-sub.pl:8) v:us,*,&,{,$,fea=8 ->9
+b        <1> padsv_store[$z:6,36] vKS/LVINTRO ->c
+a           <1> ref[t5] sK/1 ->b
+9              <0> padsv[$x:4,36] s ->a
+-           <0> ex-padsv sRM*/LVINTRO ->b
+c        <;> nextstate(main 7 028-sub.pl:10) v:us,*,&,{,$,fea=8 ->d
+e        <1> padsv_store[$p:7,36] vKS/LVINTRO ->f
+-           <1> scalar sK/1 ->e
+d              <0> padsv[$x:4,36] s ->e
+-           <0> ex-padsv sRM*/LVINTRO ->e
+f        <;> nextstate(main 8 028-sub.pl:11) v:us,*,&,{,$,fea=8 ->g
+h        <1> padsv_store[$q:8,36] vKS/LVINTRO ->i
+-           <1> scalar sK/1 ->h
+g              <0> padsv[$y:5,36] s ->h
+-           <0> ex-padsv sRM*/LVINTRO ->h
+i        <;> nextstate(main 9 028-sub.pl:12) v:us,*,&,{,$,fea=8 ->j
+l        <1> padsv_store[$r:9,36] vKS/LVINTRO ->m
+k           <1> defined sK/1 ->l
+j              <0> padsv[$y:5,36] s ->k
+-           <0> ex-padsv sRM*/LVINTRO ->l
+m        <;> nextstate(main 10 028-sub.pl:13) v:us,*,&,{,$,fea=8 ->n
+p        <1> padsv_store[$s:10,36] vKS/LVINTRO ->q
+o           <1> is_weak sK/1 ->p
+n              <0> padsv[$x:4,36] sM ->o
+-           <0> ex-padsv sRM*/LVINTRO ->p
+q        <;> nextstate(main 11 028-sub.pl:14) v:us,*,&,{,$,fea=8 ->r
+t        <1> padsv_store[$t:11,36] vKS/LVINTRO ->u
+s           <1> is_tainted sK/1 ->t
+r              <0> padsv[$q:8,36] sM ->s
+-           <0> ex-padsv sRM*/LVINTRO ->t
+u        <;> nextstate(main 12 028-sub.pl:15) v:us,*,&,{,$,fea=8 ->v
+x        <1> padsv_store[$u:12,36] vKS/LVINTRO ->y
+w           <1> refaddr[t16] sK/TARG,1 ->x
+v              <0> padsv[$r:9,36] sM ->w
+-           <0> ex-padsv sRM*/LVINTRO ->x
+y        <;> nextstate(main 13 028-sub.pl:16) v:us,*,&,{,$,fea=8 ->z
+11       <1> padsv_store[$v:13,36] vKS/LVINTRO ->12
+10          <1> reftype[t19] sK/TARG,1 ->11
+z              <0> padsv[$r:9,36] sM ->10
+-           <0> ex-padsv sRM*/LVINTRO ->11
+12       <;> nextstate(main 14 028-sub.pl:17) v:us,*,&,{,$,fea=8 ->13
+15       <1> padsv_store[$w:14,36] vKS/LVINTRO ->16
+14          <1> ceil[t22] sK/TARG,1 ->15
+13             <0> padsv[$r:9,36] sM ->14
+-           <0> ex-padsv sRM*/LVINTRO ->15
+16       <;> nextstate(main 15 028-sub.pl:19) v:us,*,&,{,$,fea=8 ->17
+19       <1> padsv_store[$c:15,36] vKS/LVINTRO ->1a
+18          <1> floor[t25] sK/TARG,1 ->19
+17             <0> padsv[$r:9,36] sM ->18
+-           <0> ex-padsv sRM*/LVINTRO ->19
+1a       <;> nextstate(main 16 028-sub.pl:20) v:us,*,&,{,$,fea=8 ->1b
+1d       <1> padsv_store[$d:16,36] vKS/LVINTRO ->1e
+1c          <1> hex[t27] sK/1 ->1d
+1b             <0> padsv[$y:5,36] s ->1c
+-           <0> ex-padsv sRM*/LVINTRO ->1d
+1e       <;> nextstate(main 17 028-sub.pl:21) v:us,*,&,{,$,fea=8 ->1f
+1h       <1> padsv_store[$e:17,36] vKS/LVINTRO ->1i
+1g          <1> oct[t29] sK/1 ->1h
+1f             <0> padsv[$d:16,36] s ->1g
+-           <0> ex-padsv sRM*/LVINTRO ->1h
+1i       <;> nextstate(main 18 028-sub.pl:22) v:us,*,&,{,$,fea=8 ->1j
+1l       <1> padsv_store[$f:18,36] vKS/LVINTRO ->1m
+1k          <1> ord[t31] sK/1 ->1l
+1j             <0> padsv[$s:10,36] s ->1k
+-           <0> ex-padsv sRM*/LVINTRO ->1l
+1m       <;> nextstate(main 19 028-sub.pl:23) v:us,*,&,{,$,fea=8 ->1n
+1p       <1> padsv_store[$g:19,36] vKS/LVINTRO ->1q
+1o          <1> chr[t33] sK/1 ->1p
+1n             <0> padsv[$z:6,36] s ->1o
+-           <0> ex-padsv sRM*/LVINTRO ->1p
+1q       <;> nextstate(main 20 028-sub.pl:24) v:us,*,&,{,$,fea=8 ->1r
+1t       <1> padsv_store[$h:20,36] vKS/LVINTRO ->1u
+1s          <1> fc[t35] sK/1 ->1t
+1r             <0> padsv[$v:13,36] s ->1s
+-           <0> ex-padsv sRM*/LVINTRO ->1t
+1u       <;> nextstate(main 21 028-sub.pl:25) v:us,*,&,{,$,fea=8 ->1v
+1x       <1> padsv_store[$i:21,36] vKS/LVINTRO ->1y
+1w          <1> lc[t37] sK/1 ->1x
+1v             <0> padsv[$h:20,36] s ->1w
+-           <0> ex-padsv sRM*/LVINTRO ->1x
+1y       <;> nextstate(main 22 028-sub.pl:26) v:us,*,&,{,$,fea=8 ->1z
+21       <1> padsv_store[$j:22,36] vKS/LVINTRO ->22
+20          <1> uc[t39] sK/1 ->21
+1z             <0> padsv[$g:19,36] s ->20
+-           <0> ex-padsv sRM*/LVINTRO ->21
+22       <;> nextstate(main 23 028-sub.pl:27) v:us,*,&,{,$,fea=8 ->23
+25       <1> padsv_store[$k:23,36] vKS/LVINTRO ->26
+24          <1> ucfirst[t41] sK/1 ->25
+23             <0> padsv[$d:16,36] s ->24
+-           <0> ex-padsv sRM*/LVINTRO ->25
+26       <;> nextstate(main 24 028-sub.pl:28) v:us,*,&,{,$,fea=8 ->27
+29       <1> padsv_store[$l:24,36] vKS/LVINTRO ->2a
+28          <1> lcfirst[t43] sK/1 ->29
+27             <0> padsv[$d:16,36] s ->28
+-           <0> ex-padsv sRM*/LVINTRO ->29
+2a       <;> nextstate(main 25 028-sub.pl:29) v:us,*,&,{,$,fea=8 ->2b
+2d       <1> padsv_store[$m:25,36] vKS/LVINTRO ->2e
+2c          <1> length[t45] sK/1 ->2d
+2b             <0> padsv[$k:23,36] s ->2c
+-           <0> ex-padsv sRM*/LVINTRO ->2d
+2e       <;> nextstate(main 26 028-sub.pl:30) v:us,*,&,{,$,fea=8 ->2f
+2h       <1> padsv_store[$n:26,36] vKS/LVINTRO ->2i
+2g          <1> schomp[t47] sK/1 ->2h
+-              <1> ex-list lKRM ->2g
+2f                <0> padsv[$m:25,36] sRM ->2g
+-           <0> ex-padsv sRM*/LVINTRO ->2h
+2i       <;> nextstate(main 27 028-sub.pl:31) v:us,*,&,{,$,fea=8 ->2j
+2l       <1> padsv_store[$o:27,36] vKS/LVINTRO ->2m
+2k          <1> schop[t49] sK/1 ->2l
+-              <1> ex-list lKRM ->2k
+2j                <0> padsv[$m:25,36] sRM ->2k
+-           <0> ex-padsv sRM*/LVINTRO ->2l
+2m       <;> nextstate(main 28 028-sub.pl:33) v:us,*,&,{,$,fea=8 ->2n
+2p       <1> padsv_store[$aa:28,36] vKS/LVINTRO ->2q
+2o          <1> abs[t51] sK/1 ->2p
+2n             <0> padsv[$y:5,36] s ->2o
+-           <0> ex-padsv sRM*/LVINTRO ->2p
+2q       <;> nextstate(main 29 028-sub.pl:34) v:us,*,&,{,$,fea=8 ->2r
+2t       <1> padsv_store[$bb:29,36] vKS/LVINTRO ->2u
+2s          <1> cos[t53] sK/1 ->2t
+2r             <0> padsv[$aa:28,36] s ->2s
+-           <0> ex-padsv sRM*/LVINTRO ->2t
+2u       <;> nextstate(main 30 028-sub.pl:35) v:us,*,&,{,$,fea=8 ->2v
+2x       <1> padsv_store[$cc:30,36] vKS/LVINTRO ->2y
+2w          <1> exp[t55] sK/1 ->2x
+2v             <0> padsv[$aa:28,36] s ->2w
+-           <0> ex-padsv sRM*/LVINTRO ->2x
+2y       <;> nextstate(main 31 028-sub.pl:36) v:us,*,&,{,$,fea=8 ->2z
+31       <1> padsv_store[$dd:31,36] vKS/LVINTRO ->32
+30          <1> log[t57] sK/1 ->31
+2z             <0> padsv[$aa:28,36] s ->30
+-           <0> ex-padsv sRM*/LVINTRO ->31
+32       <;> nextstate(main 32 028-sub.pl:37) v:us,*,&,{,$,fea=8 ->33
+35       <1> padsv_store[$ee:32,36] vKS/LVINTRO ->36
+34          <1> sin[t59] sK/1 ->35
+33             <0> padsv[$aa:28,36] s ->34
+-           <0> ex-padsv sRM*/LVINTRO ->35
+36       <;> nextstate(main 33 028-sub.pl:38) v:us,*,&,{,$,fea=8 ->37
+39       <1> padsv_store[$ff:33,36] vKS/LVINTRO ->3a
+38          <1> sqrt[t61] sK/1 ->39
+37             <0> padsv[$aa:28,36] s ->38
+-           <0> ex-padsv sRM*/LVINTRO ->39
+3a       <;> nextstate(main 34 028-sub.pl:39) v:us,*,&,{,$,fea=8 ->3b
+3d       <1> padsv_store[$gg:34,36] vKS/LVINTRO ->3e
+3c          <1> quotemeta[t63] sK/1 ->3d
+3b             <0> padsv[$aa:28,36] s ->3c
+-           <0> ex-padsv sRM*/LVINTRO ->3d
+3e       <;> nextstate(main 35 028-sub.pl:40) v:us,*,&,{,$,fea=8 ->3f
+3i       <2> sassign sKS/2 ->3j
+3g          <1> blessed sK/1 ->3h
+3f             <0> padsv[$aa:28,36] sM ->3g
+3h          <0> padsv[$hh:35,36] sRM*/LVINTRO ->3i

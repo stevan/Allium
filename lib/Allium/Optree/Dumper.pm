@@ -14,11 +14,22 @@ class Allium::Optree::Dumper {
         )->walk($optree->root);
 
         return +{
-            root  => $optree->root->addr,
-            start => $optree->start->addr,
-            pad   => $self->dump_pad( $optree->pad ),
-            ops   => \@ops,
+            root   => $optree->root->addr,
+            start  => $optree->start->addr,
+            pad    => $self->dump_pad( $optree->pad ),
+            ops    => \@ops,
+            op_seq => $self->dump_sequence( $optree->op_seq ),
+            st_seq => $self->dump_sequence( $optree->st_seq ),
         };
+    }
+
+    method dump_sequence ($seq) {
+        return +{
+            type    => $seq->type,
+            start   => $seq->start,
+            step    => $seq->step,
+            current => $seq->current,
+        }
     }
 
     method dump_pad ($pad) {

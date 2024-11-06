@@ -1,0 +1,42 @@
+main::sub_008:
+u  <1> leavesub[1 ref] K/REFC,1 ->(end)
+-     <@> lineseq KP ->u
+-        <1> ex-argcheck vK/1 ->7
+-           <@> lineseq vK ->-
+1              <;> nextstate(main 6 008-sub.pl:5) v:us,*,&,$,fea=8 ->2
+2              <+> argcheck(1,0,%) v ->3
+3              <;> nextstate(main 4 008-sub.pl:5) v:us,*,&,$,fea=8 ->4
+4              <+> argelem(0)[$name:4,12] v/SV ->5
+5              <;> nextstate(main 5 008-sub.pl:5) v:us,*,&,$,fea=8 ->6
+6              <+> argelem(1)[%opts:5,12] v/HV ->7
+-              <;> ex-nextstate(main 6 008-sub.pl:5) v:us,*,&,$,fea=8 ->-
+7        <;> nextstate(main 6 008-sub.pl:6) v:us,*,&,$,fea=8 ->8
+8        <0> padav[@out:6,12] vM/LVINTRO ->9
+9        <;> nextstate(main 7 008-sub.pl:7) v:us,*,&,$,fea=8 ->a
+o        <2> leaveloop vK/2 ->p
+d           <{> enteriter(next->l last->o redo->e)[$opt:8,11] vK/LVINTRO ->m
+-              <0> ex-pushmark s ->a
+-              <1> ex-list lKM ->d
+a                 <0> pushmark sM ->b
+c                 <1> keys[t5] lKM/1 ->d
+b                    <0> padhv[%opts:5,12] lRM ->c
+-           <1> null vK/1 ->o
+n              <|> and(other->e) vK/1 ->o
+m                 <0> iter s ->n
+-                 <@> lineseq vK ->-
+e                    <;> nextstate(main 10 008-sub.pl:8) v:us,*,&,$,fea=8 ->f
+k                    <@> push[t9] vK/2 ->l
+f                       <0> pushmark s ->g
+g                       <0> padav[@out:6,12] lRM ->h
+j                       <+> multiconcat(" => ",-1,4,-1)[t8] sK/STRINGIFY ->k
+-                          <0> ex-pushmark s ->h
+h                          <0> padsv[$name:4,12] s ->i
+i                          <0> padsv[$opt:8,11] s ->j
+l                    <0> unstack v ->m
+p        <;> nextstate(main 12 008-sub.pl:10) v:us,*,&,{,$,fea=8 ->q
+-        <@> return K* ->-
+-           <0> pushmark s ->q
+t           <@> join[t10] sK/2 ->u
+q              <0> pushmark s ->r
+r              <$> const(PV ", ") s ->s
+s              <0> padav[@out:6,12] l ->t

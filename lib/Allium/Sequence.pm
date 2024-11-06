@@ -4,32 +4,30 @@ use experimental qw[ class ];
 
 class Allium::Sequence {
     use overload '""' => 'to_string';
+    field $start   :param :reader = 0;
+    field $step    :param :reader = 1;
+    field $current :param :reader = 0;
+
     field $type :reader;
-    field $next;
 
     ADJUST {
         $type = (split '::' => __CLASS__)[-1];
-        $next = $self->start;
     }
 
-    method start { 0 }
-    method step  { 1 }
+    method next { $current += $step }
 
-    method current { $next }
-    method next    { $next += $self->step }
-
-    method get_range ($start, $end) {
-        ($start < $next && $end <= $next)
-            || die "Could not create range($start, $end) it is not a valid range ($next)";
+    method get_range ($s, $e) {
+        ($s < $current && $e <= $current)
+            || die "Could not create range($s, $e) it is not a valid range ($current)";
         Allium::Sequence::Range->new(
             type  => $type,
-            start => $start,
-            end   => $end,
+            start => $s,
+            end   => $e,
         )
     }
 
     method to_string {
-        sprintf 'SEQ[%s](%d, %d)' => $type, $self->start, $next
+        sprintf 'SEQ[%s](%d, %d)' => $type, $start, $current
     }
 }
 

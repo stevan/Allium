@@ -1,4 +1,10 @@
 {
+   "op_seq" : {
+      "current" : 10,
+      "start" : 0,
+      "step" : 1,
+      "type" : "OpAddress"
+   },
    "ops" : [
       {
          "addr" : 1,
@@ -24,7 +30,7 @@
          "first" : 3,
          "is_nullified" : false,
          "is_optimized" : false,
-         "last" : 8,
+         "last" : 4,
          "name" : "lineseq",
          "next" : 1,
          "num_children" : 2,
@@ -68,7 +74,7 @@
          "label" : null,
          "line" : 10,
          "name" : "nextstate",
-         "next" : 4,
+         "next" : 10,
          "pad_target" : 0,
          "parent" : 2,
          "private_flags" : {
@@ -78,17 +84,17 @@
             "bits" : 1,
             "wants_void" : true
          },
-         "sibling" : 8,
+         "sibling" : 4,
          "stash" : "Test::Allium::DataLoader::Code",
          "type" : "COP",
          "warnings" : null
       },
       {
-         "addr" : 8,
-         "first" : 9,
+         "addr" : 4,
+         "first" : 5,
          "is_nullified" : false,
          "is_optimized" : false,
-         "last" : 7,
+         "last" : 8,
          "name" : "return",
          "next" : 2,
          "num_children" : 4,
@@ -106,13 +112,13 @@
          "type" : "LISTOP"
       },
       {
-         "addr" : 9,
+         "addr" : 5,
          "is_nullified" : false,
          "is_optimized" : false,
          "name" : "pushmark",
-         "next" : 4,
+         "next" : 10,
          "pad_target" : 0,
-         "parent" : 8,
+         "parent" : 4,
          "private_flags" : {
             "bits" : 0
          },
@@ -120,18 +126,18 @@
             "bits" : 2,
             "wants_scalar" : true
          },
-         "sibling" : 10,
+         "sibling" : 6,
          "type" : "OP"
       },
       {
-         "addr" : 10,
-         "first" : 4,
+         "addr" : 6,
+         "first" : 10,
          "is_nullified" : true,
          "is_optimized" : false,
          "name" : "rv2sv",
-         "next" : 5,
+         "next" : 9,
          "pad_target" : 15,
-         "parent" : 8,
+         "parent" : 4,
          "private_flags" : {
             "bits" : 3
          },
@@ -140,52 +146,15 @@
             "has_descendents" : true,
             "wants_scalar" : true
          },
-         "sibling" : 6,
-         "type" : "UNOP"
-      },
-      {
-         "addr" : 4,
-         "is_nullified" : false,
-         "is_optimized" : true,
-         "name" : "gvsv",
-         "next" : 5,
-         "pad_target" : 0,
-         "parent" : 10,
-         "private_flags" : {
-            "bits" : 0
-         },
-         "public_flags" : {
-            "bits" : 2,
-            "wants_scalar" : true
-         },
-         "sibling" : 0,
-         "type" : "SVOP"
-      },
-      {
-         "addr" : 6,
-         "first" : 5,
-         "is_nullified" : false,
-         "is_optimized" : true,
-         "name" : "rv2av",
-         "next" : 7,
-         "pad_target" : 3,
-         "parent" : 8,
-         "private_flags" : {
-            "bits" : 3
-         },
-         "public_flags" : {
-            "bits" : 4,
-            "has_descendents" : true
-         },
          "sibling" : 7,
          "type" : "UNOP"
       },
       {
-         "addr" : 5,
+         "addr" : 10,
          "is_nullified" : false,
          "is_optimized" : true,
-         "name" : "gv",
-         "next" : 6,
+         "name" : "gvsv",
+         "next" : 9,
          "pad_target" : 0,
          "parent" : 6,
          "private_flags" : {
@@ -200,12 +169,49 @@
       },
       {
          "addr" : 7,
+         "first" : 9,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "rv2av",
+         "next" : 8,
+         "pad_target" : 3,
+         "parent" : 4,
+         "private_flags" : {
+            "bits" : 3
+         },
+         "public_flags" : {
+            "bits" : 4,
+            "has_descendents" : true
+         },
+         "sibling" : 8,
+         "type" : "UNOP"
+      },
+      {
+         "addr" : 9,
+         "is_nullified" : false,
+         "is_optimized" : true,
+         "name" : "gv",
+         "next" : 7,
+         "pad_target" : 0,
+         "parent" : 7,
+         "private_flags" : {
+            "bits" : 0
+         },
+         "public_flags" : {
+            "bits" : 2,
+            "wants_scalar" : true
+         },
+         "sibling" : 0,
+         "type" : "SVOP"
+      },
+      {
+         "addr" : 8,
          "is_nullified" : false,
          "is_optimized" : true,
          "name" : "padhv",
          "next" : 1,
          "pad_target" : 4,
-         "parent" : 8,
+         "parent" : 4,
          "private_flags" : {
             "bits" : 0
          },
@@ -293,5 +299,11 @@
       }
    ],
    "root" : 1,
+   "st_seq" : {
+      "current" : 1,
+      "start" : 0,
+      "step" : 1,
+      "type" : "Statement"
+   },
    "start" : 3
 }
