@@ -10,7 +10,12 @@ use Test::Differences;
 
 use Allium::InstructionSet::Loader;
 
-my $INSTR_SET_DIR = path(__FILE__)->parent->parent->child('data')->child('instruction-sets');
+my $INSTR_SET_DIR = path(__FILE__)
+                        ->parent # /t/004-instruction-set
+                        ->parent # /t/
+                        ->parent # /
+                        ->child('data')
+                        ->child('instruction-sets');
 
 my $perl_5_41_4 = Allium::InstructionSet::Loader->new->load_file(
     $INSTR_SET_DIR->child('perl-5.41.4.json')
